@@ -1447,10 +1447,11 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
                                     alignment: Alignment.centerLeft,
                                     child: Row(
                                       children: [
-                                        Text(
-                                          _viewModel.recentTransactionAnalysis!.titleString,
-                                          style: CoconutTypography.body2_14_NumberBold,
-                                        ),
+                                        if (_viewModel.recentTransactionAnalysis!.shouldShowTitleAmount)
+                                          Text(
+                                            _viewModel.recentTransactionAnalysis!.titleString,
+                                            style: CoconutTypography.body2_14_NumberBold,
+                                          ),
                                         Text(
                                           _viewModel.recentTransactionAnalysis!.totalAmountResult,
                                           style: CoconutTypography.body2_14,
