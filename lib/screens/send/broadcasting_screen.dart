@@ -84,16 +84,14 @@ class _BroadcastingScreenState extends State<BroadcastingScreen> {
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/broadcasting-complete', // 이동할 경로
-          ModalRoute.withName(
-            _viewModel.sendEntryPoint == SendEntryPoint.walletDetail
-                ? "/wallet-detail" // '/wallet-detail' 경로를 남기고 그 외의 경로 제거, '/'는 HomeScreen 까지
-                : "/",
-          ),
+          _viewModel.sendEntryPoint == SendEntryPoint.walletDetail
+              ? ModalRoute.withName("/wallet-detail") // '/wallet-detail' 경로를 남기고 그 외의 경로 제거
+              : (route) => route.isFirst, // HomeScreen까지 제거
           arguments: {'id': _viewModel.walletId!, 'txHash': _viewModel.signedTx!.transactionHash},
         );
       }
     } catch (e) {
-      Logger.log(">>>>> broadcast error: $e");
+      Logger.error(">>>>> broadcast error: $e");
       _setOverlayLoading(false);
       String message = t.alert.error_send.broadcasting_failed(error: e.toString());
       if (e.toString().contains('min relay fee not met')) {
@@ -192,10 +190,11 @@ class _BroadcastingScreenState extends State<BroadcastingScreen> {
           leftButtonText: t.transaction_draft.dialog.cancel,
           rightButtonText: t.transaction_draft.dialog.move,
           onTapRight: () {
+            _viewModel.clearSendInfo();
             Navigator.pushNamedAndRemoveUntil(
               context,
               '/transaction-draft',
-              ModalRoute.withName("/"),
+              (route) => route.isFirst,
               arguments: {'isSignedTabActive': true},
             );
           },
