@@ -105,76 +105,83 @@ class _BroadcastingScreenState extends State<BroadcastingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProxyProvider2<ConnectivityProvider, WalletProvider, BroadcastingViewModel>(
-      create: (_) => _viewModel,
-      update: (_, connectivityProvider, walletProvider, viewModel) {
-        if (viewModel!.isNetworkOn != connectivityProvider.isInternetOn) {
-          viewModel.setIsNetworkOn(connectivityProvider.isInternetOn);
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop && _viewModel.isFromSignedDraft) {
+          _viewModel.clearSendInfo();
         }
-
-        return viewModel;
       },
-      child: Consumer<BroadcastingViewModel>(
-        builder:
-            (context, viewModel, child) => Scaffold(
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-              backgroundColor: CoconutColors.black,
-              appBar: CoconutAppBar.build(title: t.broadcasting_screen.title, context: context),
-              body: SafeArea(
-                child: Stack(
-                  children: [
-                    _buildNormalBroadcastInfo(
-                      viewModel,
-                      viewModel.amount,
-                      viewModel.fee,
-                      viewModel.totalAmount,
-                      viewModel.sendingAmountWhenAddressIsMyChange,
-                      viewModel.isSendingToMyAddress,
-                      viewModel.recipientAddresses,
-                      viewModel.isNetworkOn,
-                    ),
-                    if (viewModel.feeBumpingType == null && widget.signedTransactionDraftId == null) ...{
-                      FixedBottomTweenButton(
-                        leftButtonRatio: 0.35,
-                        leftButtonClicked: () async {
-                          if (viewModel.isAlreadySaved) {
-                            CoconutToast.showToast(
-                              context: context,
-                              text: t.broadcasting_screen.toast.already_saved_draft,
-                              isVisibleIcon: true,
-                            );
-                            return;
-                          }
-                          try {
-                            final result = await viewModel.saveTransactionDraft();
-                            if (result.isSuccess) {
-                              _showTransactionDraftSavedDialog();
-                            } else {
-                              _showTransactionDraftSaveFailedDialog(result.error.message);
+      child: ChangeNotifierProxyProvider2<ConnectivityProvider, WalletProvider, BroadcastingViewModel>(
+        create: (_) => _viewModel,
+        update: (_, connectivityProvider, walletProvider, viewModel) {
+          if (viewModel!.isNetworkOn != connectivityProvider.isInternetOn) {
+            viewModel.setIsNetworkOn(connectivityProvider.isInternetOn);
+          }
+
+          return viewModel;
+        },
+        child: Consumer<BroadcastingViewModel>(
+          builder:
+              (context, viewModel, child) => Scaffold(
+                floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                backgroundColor: CoconutColors.black,
+                appBar: CoconutAppBar.build(title: t.broadcasting_screen.title, context: context),
+                body: SafeArea(
+                  child: Stack(
+                    children: [
+                      _buildNormalBroadcastInfo(
+                        viewModel,
+                        viewModel.amount,
+                        viewModel.fee,
+                        viewModel.totalAmount,
+                        viewModel.sendingAmountWhenAddressIsMyChange,
+                        viewModel.isSendingToMyAddress,
+                        viewModel.recipientAddresses,
+                        viewModel.isNetworkOn,
+                      ),
+                      if (viewModel.feeBumpingType == null && widget.signedTransactionDraftId == null) ...{
+                        FixedBottomTweenButton(
+                          leftButtonRatio: 0.35,
+                          leftButtonClicked: () async {
+                            if (viewModel.isAlreadySaved) {
+                              CoconutToast.showToast(
+                                context: context,
+                                text: t.broadcasting_screen.toast.already_saved_draft,
+                                isVisibleIcon: true,
+                              );
+                              return;
                             }
-                          } catch (e) {
-                            _showTransactionDraftSaveFailedDialog(e.toString());
-                          }
-                        },
-                        rightButtonClicked: () async {
-                          _onBroadcastButtonClicked(viewModel);
-                        },
-                        leftText: t.transaction_draft.save,
-                        rightText: t.broadcasting_screen.btn_submit,
-                      ),
-                    } else ...{
-                      FixedBottomButton(
-                        isActive: viewModel.isNetworkOn && viewModel.isInitDone,
-                        onButtonClicked: () async {
-                          _onBroadcastButtonClicked(viewModel);
-                        },
-                        text: t.broadcasting_screen.btn_submit,
-                      ),
-                    },
-                  ],
+                            try {
+                              final result = await viewModel.saveTransactionDraft();
+                              if (result.isSuccess) {
+                                _showTransactionDraftSavedDialog();
+                              } else {
+                                _showTransactionDraftSaveFailedDialog(result.error.message);
+                              }
+                            } catch (e) {
+                              _showTransactionDraftSaveFailedDialog(e.toString());
+                            }
+                          },
+                          rightButtonClicked: () async {
+                            _onBroadcastButtonClicked(viewModel);
+                          },
+                          leftText: t.transaction_draft.save,
+                          rightText: t.broadcasting_screen.btn_submit,
+                        ),
+                      } else ...{
+                        FixedBottomButton(
+                          isActive: viewModel.isNetworkOn && viewModel.isInitDone,
+                          onButtonClicked: () async {
+                            _onBroadcastButtonClicked(viewModel);
+                          },
+                          text: t.broadcasting_screen.btn_submit,
+                        ),
+                      },
+                    ],
+                  ),
                 ),
               ),
-            ),
+        ),
       ),
     );
   }

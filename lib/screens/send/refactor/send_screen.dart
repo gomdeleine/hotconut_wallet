@@ -366,66 +366,73 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
         MediaQuery.of(context).padding.bottom -
         kCoconutAppbarHeight;
 
-    return ChangeNotifierProxyProvider2<ConnectivityProvider, WalletProvider, SendViewModel>(
-      create: (_) => _viewModel,
-      update: (_, connectivityProvider, walletProvider, previous) {
-        if (connectivityProvider.isInternetOn != previous?.isNetworkOn) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            previous?.setIsNetworkOn(connectivityProvider.isInternetOn);
-          });
+    return PopScope(
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) {
+          _viewModel.clearSendInfo();
         }
-        return previous ?? _viewModel;
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.black,
-        appBar: _buildAppBar(context),
-        body: GestureDetector(
-          onTap: _clearFocus,
-          behavior: HitTestBehavior.translucent,
-          child: SizedBox(
-            height: MediaQuery.sizeOf(context).height,
-            child: Stack(
-              children: [
-                SizedBox(
-                  height: usableHeight,
-                  child: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        controller: _screenScrollController,
-                        child: Selector<SendViewModel, bool>(
-                          selector: (_, viewModel) => viewModel.showAddressBoard,
-                          builder: (context, data, child) {
-                            return SizedBox(height: _getScrollableHeight(usableHeight), child: child);
-                          },
-                          child: Stack(
-                            children: [
-                              _buildInvisibleAmountField(),
-                              _buildCounter(context),
-                              _buildPageView(context),
-                              _buildBoard(context),
-                              if (_amountFocusNode.hasFocus || _feeRateFocusNode.hasFocus)
-                                _buildKeyboardToolbar(context),
-                            ],
+      child: ChangeNotifierProxyProvider2<ConnectivityProvider, WalletProvider, SendViewModel>(
+        create: (_) => _viewModel,
+        update: (_, connectivityProvider, walletProvider, previous) {
+          if (connectivityProvider.isInternetOn != previous?.isNetworkOn) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              previous?.setIsNetworkOn(connectivityProvider.isInternetOn);
+            });
+          }
+          return previous ?? _viewModel;
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.black,
+          appBar: _buildAppBar(context),
+          body: GestureDetector(
+            onTap: _clearFocus,
+            behavior: HitTestBehavior.translucent,
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height,
+              child: Stack(
+                children: [
+                  SizedBox(
+                    height: usableHeight,
+                    child: Stack(
+                      children: [
+                        SingleChildScrollView(
+                          controller: _screenScrollController,
+                          child: Selector<SendViewModel, bool>(
+                            selector: (_, viewModel) => viewModel.showAddressBoard,
+                            builder: (context, data, child) {
+                              return SizedBox(height: _getScrollableHeight(usableHeight), child: child);
+                            },
+                            child: Stack(
+                              children: [
+                                _buildInvisibleAmountField(),
+                                _buildCounter(context),
+                                _buildPageView(context),
+                                _buildBoard(context),
+                                if (_amountFocusNode.hasFocus || _feeRateFocusNode.hasFocus)
+                                  _buildKeyboardToolbar(context),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Selector<SendViewModel, Tuple4<bool, bool?, bool, bool>>(
-                        selector: (_, vm) => Tuple4(vm.isSaved, vm.hasDrafts, vm.canGoNext, vm.isUtxoSelectionAuto),
-                        builder: (context, data, child) {
-                          return _buildDropdownMenu(
-                            isSaved: data.item1,
-                            hasDrafts: data.item2,
-                            canGoNext: data.item3,
-                            isUtxoSelectionAuto: data.item4,
-                          );
-                        },
-                      ),
-                    ],
+                        Selector<SendViewModel, Tuple4<bool, bool?, bool, bool>>(
+                          selector: (_, vm) => Tuple4(vm.isSaved, vm.hasDrafts, vm.canGoNext, vm.isUtxoSelectionAuto),
+                          builder: (context, data, child) {
+                            return _buildDropdownMenu(
+                              isSaved: data.item1,
+                              hasDrafts: data.item2,
+                              canGoNext: data.item3,
+                              isUtxoSelectionAuto: data.item4,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                _buildFinalButton(context),
-              ],
+                  _buildFinalButton(context),
+                ],
+              ),
             ),
           ),
         ),
