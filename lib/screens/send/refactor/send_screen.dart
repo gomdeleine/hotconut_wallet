@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
+import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/extensions/string_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/utxo/utxo_state.dart';
@@ -946,7 +947,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                           fit: BoxFit.scaleDown,
                           alignment: Alignment.centerRight,
                           child: Text(
-                            "${_viewModel.estimatedFeeInSats ?? '-'} sats",
+                            "${_viewModel.estimatedFeeInSats?.toThousandsSeparatedString() ?? '-'} sats",
                             style: CoconutTypography.body2_14_NumberBold.setColor(
                               _viewModel.isEstimatedFeeGreaterThanBalance ? CoconutColors.hotPink : CoconutColors.white,
                             ),
@@ -1017,48 +1018,51 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerRight,
             child: IntrinsicWidth(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: MediaQuery(
-                  data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
-                  child: CoconutTextField(
-                    textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                    textInputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
-                    enableInteractiveSelection: false,
-                    textAlign: TextAlign.end,
-                    controller: _feeRateController,
-                    focusNode: _feeRateFocusNode,
-                    backgroundColor: feeRateFieldGray,
-                    onEditingComplete: () {
-                      _feeRateController.text = _removeTrailingDot(_feeRateController.text);
-                      FocusScope.of(context).unfocus();
-                    },
-                    height: 30,
-                    padding: const EdgeInsets.only(left: 12, right: 2),
-                    onChanged: (text) {
-                      final isTooLow = _viewModel.handleFeeRateChanged(text, (formattedText) {
-                        _feeRateController.text = formattedText;
-                        _viewModel.setFeeRateText(formattedText);
-                      });
-                      if (isTooLow) {
-                        CoconutToast.showBottomToast(
-                          context: context,
-                          text: t.send_screen.fee_rate_too_low,
-                          seconds: 1,
-                        );
-                      }
-                    },
-                    maxLines: 1,
-                    fontFamily: 'SpaceGrotesk',
-                    fontSize: 14,
-                    activeColor: CoconutColors.white,
-                    fontWeight: FontWeight.bold,
-                    borderRadius: 8,
-                    suffix: Container(
-                      padding: const EdgeInsets.only(right: 12),
-                      child: Text(
-                        t.send_screen.fee_rate_suffix,
-                        style: CoconutTypography.body2_14_NumberBold.setColor(CoconutColors.white),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 75),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
+                    child: CoconutTextField(
+                      textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+                      textInputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+                      enableInteractiveSelection: false,
+                      textAlign: TextAlign.end,
+                      controller: _feeRateController,
+                      focusNode: _feeRateFocusNode,
+                      backgroundColor: feeRateFieldGray,
+                      onEditingComplete: () {
+                        _feeRateController.text = _removeTrailingDot(_feeRateController.text);
+                        FocusScope.of(context).unfocus();
+                      },
+                      height: 30,
+                      padding: const EdgeInsets.only(left: 12, right: 2),
+                      onChanged: (text) {
+                        final isTooLow = _viewModel.handleFeeRateChanged(text, (formattedText) {
+                          _feeRateController.text = formattedText;
+                          _viewModel.setFeeRateText(formattedText);
+                        });
+                        if (isTooLow) {
+                          Fluttertoast.showToast(
+                            msg: t.send_screen.fee_rate_too_low,
+                            backgroundColor: CoconutColors.gray700,
+                            toastLength: Toast.LENGTH_SHORT,
+                          );
+                        }
+                      },
+                      maxLines: 1,
+                      fontFamily: 'SpaceGrotesk',
+                      fontSize: 14,
+                      activeColor: CoconutColors.white,
+                      fontWeight: FontWeight.bold,
+                      borderRadius: 8,
+                      suffix: Container(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: Text(
+                          t.send_screen.fee_rate_suffix,
+                          style: CoconutTypography.body2_14_NumberBold.setColor(CoconutColors.white),
+                        ),
                       ),
                     ),
                   ),
@@ -1204,21 +1208,22 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
           padding: const EdgeInsets.only(top: 40, left: 16, right: 16),
           child: Column(
             children: [
-              Selector<SendViewModel, Tuple7<BitcoinUnit, String, bool, bool, bool, bool, int?>>(
+              Selector<SendViewModel, Tuple7<String, bool, bool, BitcoinUnit, bool, bool, int?>>(
                 selector:
                     (_, viewModel) => Tuple7(
-                      viewModel.currentUnit,
                       viewModel.recipientList[index].amount,
-                      viewModel.isMaxMode,
-                      viewModel.isTotalSendAmountExceedsBalance,
                       viewModel.isLastAmountInsufficient,
                       viewModel.recipientList[index].minimumAmountError.isError,
+                      // 이하 리빌드를 위한 값들
+                      viewModel.currentUnit,
+                      viewModel.isMaxMode,
+                      viewModel.isTotalSendAmountExceedsBalance,
                       viewModel.estimatedFeeInSats,
                     ),
                 builder: (context, data, child) {
-                  String amountText = data.item2;
-                  final isMinimumAmount = data.item6;
-                  final hasInsufficientBalanceErrorOfLastRecipient = data.item5 && index == _viewModel.lastIndex;
+                  String amountText = data.item1;
+                  final hasInsufficientBalanceErrorOfLastRecipient = data.item2 && index == _viewModel.lastIndex;
+                  final isMinimumAmount = data.item3;
 
                   Color amountTextColor;
                   if (_viewModel.isTotalSendAmountExceedsBalance ||
