@@ -25,6 +25,8 @@ class WidgetTestScreen extends StatelessWidget {
         separatorBuilder: (context, index) => CoconutLayout.spacing_200h,
         itemBuilder: (context, index) {
           final bool isParent = index % 2 == 0;
+          final roleTheme = isParent ? RoleDescriptionTheme.cosigner : RoleDescriptionTheme.heir;
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,7 +35,12 @@ class WidgetTestScreen extends StatelessWidget {
                 style: CoconutTypography.body3_12.setColor(CoconutColors.gray400),
               ),
               CoconutLayout.spacing_100h,
-              RoleDescriptionCard(text: _testCases[index], isParent: isParent),
+              RoleDescriptionCard(
+                description: _testCases[index],
+                themeColor: roleTheme.themeColor,
+                backgroundColor: roleTheme.backgroundColor,
+                highlightPattern: roleTheme.highlightPattern,
+              ),
             ],
           );
         },
