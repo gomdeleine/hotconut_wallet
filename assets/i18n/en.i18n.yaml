@@ -722,6 +722,10 @@ wallet_info_screen:
   error:
     delete: "Failed to delete wallet"
 
+taproot_wallet_detail_screen:
+  cosigner: "cosigner"
+  heir: "heir"
+
 transaction_fee_bumping_screen:
   rbf: "RBF"
   cpfp: "CPFP"

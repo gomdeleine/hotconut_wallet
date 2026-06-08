@@ -726,6 +726,10 @@ wallet_info_screen:
   error:
     delete: "지갑 삭제 실패"
 
+taproot_wallet_detail_screen:
+  cosigner: "공동 서명자"
+  heir: "상속자"
+
 transaction_fee_bumping_screen:
   rbf: "RBF"
   cpfp: "CPFP"

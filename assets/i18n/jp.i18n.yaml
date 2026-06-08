@@ -723,6 +723,10 @@ wallet_info_screen:
   error:
     delete: "ウォレットの削除に失敗しました"
 
+taproot_wallet_detail_screen:
+  cosigner: "共同署명者"
+  heir: "相続人"
+
 transaction_fee_bumping_screen:
   rbf: "RBF"
   cpfp: "CPFP"
