@@ -103,9 +103,9 @@ class WidgetTestScreen extends StatelessWidget {
           const TaprootParticipantCard(
             role: TaprootParticipantRole.child,
             isMine: false,
-            walletName: 'Heir 1',
             mfp: 'E5F6G7H8',
             derivationPath: "m/86'/1'/0'/0/2",
+            locktime: 1735689600, // 2025.01.01 00:00 (Unix timestamp)
           ),
           CoconutLayout.spacing_200h,
 
@@ -123,7 +123,7 @@ class WidgetTestScreen extends StatelessWidget {
           // 5. 일시 이후 (locktime 설정)
           const TaprootParticipantCard(
             role: TaprootParticipantRole.child,
-            isMine: false,
+            isMine: true,
             hasBackgroundColor: true,
             mfp: 'M3N4O5P6',
             derivationPath: "m/86'/1'/0'/0/4",
