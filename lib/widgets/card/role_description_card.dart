@@ -23,7 +23,7 @@ class RoleDescriptionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: themeColor),
+        border: Border.all(color: themeColor.withValues(alpha: 0.5), width: 1),
       ),
       child: RichText(
         text: TextSpan(
@@ -73,14 +73,14 @@ class RoleDescriptionTheme {
   const RoleDescriptionTheme({required this.themeColor, required this.backgroundColor, required this.highlightPattern});
 
   static RoleDescriptionTheme get cosigner => RoleDescriptionTheme(
-    themeColor: CoconutColors.periwinkle,
-    backgroundColor: CoconutColors.periwinkle.withValues(alpha: 0.2),
+    themeColor: CoconutColors.purple,
+    backgroundColor: CoconutColors.purple.withValues(alpha: 0.2),
     highlightPattern: RegExp(r'共同署名者|공동 서명자|cosigner', caseSensitive: false),
   );
 
   static RoleDescriptionTheme get heir => RoleDescriptionTheme(
-    themeColor: CoconutColors.lightSky,
-    backgroundColor: CoconutColors.lightSky.withValues(alpha: 0.2),
+    themeColor: CoconutColors.sky,
+    backgroundColor: CoconutColors.sky.withValues(alpha: 0.2),
     highlightPattern: RegExp(r'상속자|相続人|heir', caseSensitive: false),
   );
 }

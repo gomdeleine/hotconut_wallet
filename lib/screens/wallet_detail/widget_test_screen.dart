@@ -12,8 +12,6 @@ class WidgetTestScreen extends StatelessWidget {
   static const List<String> _testCases = [
     '나는 이 지갑의 공동 서명자예요.\n다른 공동 서명자와 함께 서명해야 자산을 사용할 수 있어요.',
     '나는 이 지갑의 상속자예요.\n정해진 시점이 지나면 자산을 사용할 수 있어요.',
-    'You are a cosigner for this wallet.\nYou must sign with other cosigners to use assets.',
-    'You are the heir to this wallet.\nYou can use assets after a set point in time.',
   ];
 
   @override

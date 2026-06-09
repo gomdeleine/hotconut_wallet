@@ -61,7 +61,7 @@ class TaprootParticipantCard extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              border: Border.all(color: CoconutColors.gray100.withValues(alpha: 0.12), width: 1),
+              border: Border.all(color: CoconutColors.gray800, width: 1),
               borderRadius: BorderRadius.circular(8),
               color: CoconutColors.gray100.withValues(alpha: 0.12),
             ),
