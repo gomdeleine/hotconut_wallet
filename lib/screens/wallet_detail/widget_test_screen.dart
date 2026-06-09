@@ -6,13 +6,20 @@ import 'package:coconut_wallet/widgets/card/taproot_participant_card.dart';
 import 'package:coconut_wallet/widgets/card/taproot_setup_summary_card.dart';
 import 'package:flutter/material.dart';
 
-class WidgetTestScreen extends StatelessWidget {
+class WidgetTestScreen extends StatefulWidget {
   const WidgetTestScreen({super.key});
 
+  @override
+  State<WidgetTestScreen> createState() => _WidgetTestScreenState();
+}
+
+class _WidgetTestScreenState extends State<WidgetTestScreen> {
   static const List<String> _testCases = [
     '나는 이 지갑의 공동 서명자예요.\n다른 공동 서명자와 함께 서명해야 자산을 사용할 수 있어요.',
     '나는 이 지갑의 상속자예요.\n정해진 시점이 지나면 자산을 사용할 수 있어요.',
   ];
+
+  int _currentSegmentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,45 @@ class WidgetTestScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
+          _buildSectionTitle('Segmented Control'),
+          CoconutLayout.spacing_200h,
+          CoconutSegmentedControl(
+            labels: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('부모 키로'),
+                  Text(
+                    _currentSegmentIndex == 0 ? '현재 사용 중' : '기본 경로',
+                    style: CoconutTypography.caption_10.setColor(
+                      _currentSegmentIndex == 0 ? CoconutColors.gray400 : CoconutColors.gray400.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('자식 키로'),
+                  Text(
+                    _currentSegmentIndex == 1 ? '현재 사용 중' : '상속 경로',
+                    style: CoconutTypography.caption_10.setColor(
+                      _currentSegmentIndex == 1 ? CoconutColors.gray400 : CoconutColors.gray400.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            isSelected: [_currentSegmentIndex == 0, _currentSegmentIndex == 1],
+            onPressed: (index) {
+              setState(() {
+                _currentSegmentIndex = index;
+              });
+            },
+          ),
+          CoconutLayout.spacing_400h,
+          const Divider(color: CoconutColors.gray800, height: 40),
+
           _buildSectionTitle('Existing Role Description Cards'),
           ...List.generate(_testCases.length, (index) {
             final bool isParent = index % 2 == 0;

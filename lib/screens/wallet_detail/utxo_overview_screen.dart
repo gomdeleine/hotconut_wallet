@@ -239,7 +239,7 @@ class _UtxoOverviewScreenState extends State<UtxoOverviewScreen> {
       customTitle: ConstrainedBox(
         constraints: const BoxConstraints(minWidth: 260),
         child: CoconutSegmentedControl(
-          labels: [t.utxo_overview_screen.by_amount, t.utxo_overview_screen.by_tag],
+          labels: [Text(t.utxo_overview_screen.by_amount), Text(t.utxo_overview_screen.by_tag)],
           isSelected: [_isByAmount, !_isByAmount],
           onPressed: (index) {
             WidgetsBinding.instance.addPostFrameCallback((_) {

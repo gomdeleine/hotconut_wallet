@@ -110,7 +110,7 @@ class _TransactionDraftScreenState extends State<TransactionDraftScreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 14, left: 16, right: 16),
       child: CoconutSegmentedControl(
-        labels: [t.transaction_draft.signed, t.transaction_draft.unsigned],
+        labels: [Text(t.transaction_draft.signed), Text(t.transaction_draft.unsigned)],
         isSelected: [_isSignedTransactionSelected ?? true, !(_isSignedTransactionSelected ?? true)],
         onPressed: (index) async {
           final wasSignedSelected = _isSignedTransactionSelected ?? true;
@@ -283,9 +283,5 @@ class _TransactionDraftScreenState extends State<TransactionDraftScreen> {
         },
       );
     }
-  }
-
-  Future<void> _refreshList(TransactionDraftViewModel viewModel) async {
-    await viewModel.initializeDraftList();
   }
 }

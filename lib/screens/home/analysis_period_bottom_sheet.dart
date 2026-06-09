@@ -246,10 +246,10 @@ class _AnalysisPeriodBottomSheetState extends State<AnalysisPeriodBottomSheet> {
                       data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                       child: CoconutSegmentedControl(
                         labels: [
-                          t.wallet_home_screen.analysis_period_bottom_sheet.days_30,
-                          t.wallet_home_screen.analysis_period_bottom_sheet.days_60,
-                          t.wallet_home_screen.analysis_period_bottom_sheet.days_90,
-                          t.wallet_home_screen.analysis_period_bottom_sheet.custom,
+                          Text(t.wallet_home_screen.analysis_period_bottom_sheet.days_30),
+                          Text(t.wallet_home_screen.analysis_period_bottom_sheet.days_60),
+                          Text(t.wallet_home_screen.analysis_period_bottom_sheet.days_90),
+                          Text(t.wallet_home_screen.analysis_period_bottom_sheet.custom),
                         ],
                         isSelected: _selectedPeriodIndices,
                         onPressed: (index) {
@@ -318,7 +318,7 @@ class _AnalysisPeriodBottomSheetState extends State<AnalysisPeriodBottomSheet> {
                     MediaQuery(
                       data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                       child: CoconutSegmentedControl(
-                        labels: [t.all, t.send, t.receive],
+                        labels: [Text(t.all), Text(t.send), Text(t.receive)],
                         isSelected: transactionTypes.map((type) => type == _selectedAnalysisTransactionType).toList(),
                         onPressed: (index) {
                           setState(() {
