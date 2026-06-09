@@ -1146,3 +1146,6 @@ taproot:
     beneficiary: "条件付き署名者"
     signer: "署名者"
     locktime_after: "${dateTime} 以降"
+  setup_summary_card:
+    signer_configuration: "署名構成"
+    inheritance_condition: "相続条件"

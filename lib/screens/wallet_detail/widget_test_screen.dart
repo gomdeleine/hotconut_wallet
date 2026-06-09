@@ -3,6 +3,7 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_wallet/widgets/card/role_description_card.dart';
 import 'package:coconut_wallet/widgets/card/taproot_participant_card.dart';
+import 'package:coconut_wallet/widgets/card/taproot_setup_summary_card.dart';
 import 'package:flutter/material.dart';
 
 class WidgetTestScreen extends StatelessWidget {
@@ -17,6 +18,31 @@ class WidgetTestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<TaprootParticipantCard> summaryItems = [
+      const TaprootParticipantCard(
+        role: TaprootParticipantRole.parent,
+        isMine: true,
+        walletName: 'My Hot Wallet',
+        mfp: 'F75F7AB5',
+        derivationPath: "m/86'/1'/0'/0/0",
+      ),
+      const TaprootParticipantCard(
+        role: TaprootParticipantRole.parent,
+        isMine: false,
+        walletName: 'Cosigner A',
+        mfp: 'A1B2C3D4',
+        derivationPath: "m/86'/1'/0'/0/1",
+      ),
+      const TaprootParticipantCard(
+        role: TaprootParticipantRole.child,
+        isMine: false,
+        walletName: 'Heir 1',
+        mfp: 'E5F6G7H8',
+        derivationPath: "m/86'/1'/0'/0/2",
+        locktime: 1735689600,
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: CoconutColors.black,
       appBar: CoconutAppBar.build(title: 'Widget Test', context: context),
@@ -98,9 +124,37 @@ class WidgetTestScreen extends StatelessWidget {
           const TaprootParticipantCard(
             role: TaprootParticipantRole.child,
             isMine: false,
+            hasBackgroundColor: true,
             mfp: 'M3N4O5P6',
             derivationPath: "m/86'/1'/0'/0/4",
             locktime: 1735689600, // 2025.01.01 00:00 (Unix timestamp)
+          ),
+          CoconutLayout.spacing_400h,
+
+          const Divider(color: CoconutColors.gray800, height: 40),
+          _buildSectionTitle('Taproot Setup Summary Card - Card Type'),
+          CoconutLayout.spacing_200h,
+          TaprootSetupSummaryCard(
+            itemList: summaryItems,
+            taprootSetupSummaryCardType: TaprootSetupSummaryCardType.card,
+          ),
+          CoconutLayout.spacing_400h,
+
+          const Divider(color: CoconutColors.gray800, height: 40),
+          _buildSectionTitle('Taproot Setup Summary Card - Tree Type'),
+          CoconutLayout.spacing_200h,
+          TaprootSetupSummaryCard(
+            itemList: summaryItems,
+            taprootSetupSummaryCardType: TaprootSetupSummaryCardType.tree,
+          ),
+          CoconutLayout.spacing_400h,
+
+          const Divider(color: CoconutColors.gray800, height: 40),
+          _buildSectionTitle('Taproot Setup Summary Card - Column Type'),
+          CoconutLayout.spacing_200h,
+          TaprootSetupSummaryCard(
+            itemList: summaryItems,
+            taprootSetupSummaryCardType: TaprootSetupSummaryCardType.column,
           ),
           CoconutLayout.spacing_400h,
         ],

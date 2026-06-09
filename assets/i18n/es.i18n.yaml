@@ -1144,3 +1144,6 @@ taproot:
     beneficiary: "Firmante condicional"
     signer: "Firmante"
     locktime_after: "Después de ${dateTime}"
+  setup_summary_card:
+    signer_configuration: "Configuración de firmantes"
+    inheritance_condition: "Condición de herencia"

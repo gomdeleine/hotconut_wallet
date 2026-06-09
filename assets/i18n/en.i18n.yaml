@@ -1145,3 +1145,6 @@ taproot:
     beneficiary: "Conditional Signer"
     signer: "Signer"
     locktime_after: "After ${dateTime}"
+  setup_summary_card:
+    signer_configuration: "Signer Configuration"
+    inheritance_condition: "Inheritance Condition"
