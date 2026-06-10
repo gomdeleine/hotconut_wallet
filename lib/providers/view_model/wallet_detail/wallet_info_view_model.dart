@@ -65,7 +65,7 @@ class WalletInfoViewModel extends ChangeNotifier {
             (walletItemBase.walletBase as SingleSignatureWallet).keyStore.extendedPublicKey.serialize();
         break;
       case WalletType.taproot:
-      // TODO
+        break;
     }
 
     _prevWalletUpdateInfo = WalletUpdateInfo(_walletId);
@@ -101,6 +101,14 @@ class WalletInfoViewModel extends ChangeNotifier {
   int get transactionCount => _walletProvider.getTransactionRecordList(_walletId).length;
   int get utxoCount => _walletProvider.getUtxoList(_walletId).length;
   Balance get walletBalance => _walletProvider.getWalletBalance(_walletId);
+
+  bool get hasTaprootKeyPath =>
+      _walletItemBase is TaprootWalletListItem &&
+      (_walletItemBase as TaprootWalletListItem).keyPathSeedInfos.isNotEmpty;
+
+  bool get hasTaprootScriptPath =>
+      _walletItemBase is TaprootWalletListItem &&
+      (_walletItemBase as TaprootWalletListItem).scriptPathSeedInfos.isNotEmpty;
 
   /// 지갑별 목표 수량 (sats). null이면 미설정
   int? get targetSats => _sharedPrefs.getWalletTargetSats(_walletId);

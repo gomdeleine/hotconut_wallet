@@ -46,6 +46,15 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
     }
 
     if (widget.walletType == WalletType.taproot) {
+      final hasKeyPath = viewModel.hasTaprootKeyPath;
+      final hasScriptPath = viewModel.hasTaprootScriptPath;
+      final hasBothKeys = hasKeyPath && hasScriptPath;
+
+      int effectiveIndex = _currentSegmentIndex;
+      if (!hasBothKeys && (hasKeyPath || hasScriptPath)) {
+        effectiveIndex = hasKeyPath ? 0 : 1;
+      }
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -53,20 +62,25 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: Text('서명 방식', style: CoconutTypography.body3_12_Bold.setColor(CoconutColors.white)),
           ),
-          CoconutLayout.spacing_200h,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: CoconutSegmentedControl(
-              labels: [
-                _buildSegmentLabel('부모 키로', _currentSegmentIndex == 0 ? '현재 사용 중' : '기본 경로', _currentSegmentIndex == 0),
-                _buildSegmentLabel('자식 키로', _currentSegmentIndex == 1 ? '현재 사용 중' : '상속 경로', _currentSegmentIndex == 1),
-              ],
-              isSelected: [_currentSegmentIndex == 0, _currentSegmentIndex == 1],
-              onPressed: (index) => setState(() => _currentSegmentIndex = index),
+          if (hasBothKeys) ...[
+            CoconutLayout.spacing_200h,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: CoconutSegmentedControl(
+                labels: [
+                  _buildSegmentLabel('부모 키로', effectiveIndex == 0 ? '현재 사용 중' : '기본 경로', effectiveIndex == 0),
+                  _buildSegmentLabel('자식 키로', effectiveIndex == 1 ? '현재 사용 중' : '상속 경로', effectiveIndex == 1),
+                ],
+                isSelected: [effectiveIndex == 0, effectiveIndex == 1],
+                onPressed: (index) => setState(() => _currentSegmentIndex = index),
+              ),
             ),
-          ),
+          ],
           CoconutLayout.spacing_100h,
-          Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: _buildRoleDescriptionCard()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _buildRoleDescriptionCard(effectiveIndex),
+          ),
           const Divider(color: CoconutColors.gray800, height: 40, indent: 16, endIndent: 16),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -121,8 +135,8 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
     );
   }
 
-  Widget _buildRoleDescriptionCard() {
-    final isParent = _currentSegmentIndex == 0;
+  Widget _buildRoleDescriptionCard(int index) {
+    final isParent = index == 0;
     final theme = isParent ? RoleDescriptionTheme.cosigner : RoleDescriptionTheme.heir;
     final description =
         isParent
