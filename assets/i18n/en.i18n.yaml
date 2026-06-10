@@ -721,10 +721,14 @@ wallet_info_screen:
       select: "Select"
   error:
     delete: "Failed to delete wallet"
-
-taproot_wallet_detail_screen:
-  cosigner: "cosigner"
-  heir: "heir"
+wallet_signer_section:
+  title: "Signing Method"
+  segmented_control:
+    parent_key: "With Parent Key"
+    child_key: "With Child Key"
+    currently_using: "Currently using"
+    default_path: "Default path"
+    inheritance_path: "Inheritance path"
 
 transaction_fee_bumping_screen:
   rbf: "RBF"
@@ -1139,6 +1143,9 @@ long_pressed_menu:
   hide_home_widget_description: "You can show it again later by going to the 'Home Screen Settings' menu in the top right menu button."
 
 taproot:
+  role_description_card:
+    parent_description: "I am a co-signer of this wallet.\nAssets can be used by signing with other co-signers."
+    child_description: "I am an heir of this wallet.\nAssets can be used after a set point in time."
   participant_card:
     me: "Me"
     co_signer: "Co-signer"

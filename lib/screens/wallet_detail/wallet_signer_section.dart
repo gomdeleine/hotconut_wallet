@@ -1,5 +1,6 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_wallet/enums/wallet_enums.dart';
+import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/providers/view_model/wallet_detail/wallet_info_view_model.dart';
 import 'package:coconut_wallet/widgets/card/multisig_signer_card.dart';
 import 'package:coconut_wallet/widgets/card/role_description_card.dart';
@@ -60,7 +61,10 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Text('서명 방식', style: CoconutTypography.body3_12_Bold.setColor(CoconutColors.white)),
+            child: Text(
+              t.wallet_signer_section.title,
+              style: CoconutTypography.body3_12_Bold.setColor(CoconutColors.white),
+            ),
           ),
           if (hasBothKeys) ...[
             CoconutLayout.spacing_200h,
@@ -68,8 +72,20 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: CoconutSegmentedControl(
                 labels: [
-                  _buildSegmentLabel('부모 키로', effectiveIndex == 0 ? '현재 사용 중' : '기본 경로', effectiveIndex == 0),
-                  _buildSegmentLabel('자식 키로', effectiveIndex == 1 ? '현재 사용 중' : '상속 경로', effectiveIndex == 1),
+                  _buildSegmentLabel(
+                    t.wallet_signer_section.segmented_control.parent_key,
+                    effectiveIndex == 0
+                        ? t.wallet_signer_section.segmented_control.currently_using
+                        : t.wallet_signer_section.segmented_control.default_path,
+                    effectiveIndex == 0,
+                  ),
+                  _buildSegmentLabel(
+                    t.wallet_signer_section.segmented_control.child_key,
+                    effectiveIndex == 1
+                        ? t.wallet_signer_section.segmented_control.currently_using
+                        : t.wallet_signer_section.segmented_control.inheritance_path,
+                    effectiveIndex == 1,
+                  ),
                 ],
                 isSelected: [effectiveIndex == 0, effectiveIndex == 1],
                 onPressed: (index) => setState(() => _currentSegmentIndex = index),
@@ -140,8 +156,8 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
     final theme = isParent ? RoleDescriptionTheme.cosigner : RoleDescriptionTheme.heir;
     final description =
         isParent
-            ? '나는 이 지갑의 공동 서명자예요.\n다른 공동 서명자와 함께 서명해야 자산을 사용할 수 있어요.'
-            : '나는 이 지갑의 상속자예요.\n정해진 시점이 지나면 자산을 사용할 수 있어요.';
+            ? t.taproot.role_description_card.parent_description
+            : t.taproot.role_description_card.child_description;
     return RoleDescriptionCard(
       description: description,
       themeColor: theme.themeColor,

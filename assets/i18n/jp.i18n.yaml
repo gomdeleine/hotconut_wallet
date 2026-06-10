@@ -722,10 +722,14 @@ wallet_info_screen:
       select: "選択"
   error:
     delete: "ウォレットの削除に失敗しました"
-
-taproot_wallet_detail_screen:
-  cosigner: "共同署명者"
-  heir: "相続人"
+wallet_signer_section:
+  title: "署名方式"
+  segmented_control:
+    parent_key: "親キーで"
+    child_key: "子キーで"
+    currently_using: "現在使用中"
+    default_path: "デフォルトのパス"
+    inheritance_path: "継承パス"
 
 transaction_fee_bumping_screen:
   rbf: "RBF"
@@ -1140,6 +1144,9 @@ long_pressed_menu:
   hide_home_widget_description: "後で右上のメニューボタン > 'ホーム画面設定' メニューから再表示できます。"
 
 taproot:
+  role_description_card:
+    parent_description: "私はこのウォレットの共同署名者です。\n他の共同署名者と一緒に署名することで資産を使用できます。"
+    child_description: "私はこのウォレットの継承人です。\n決められた時間が経過すると資産を使用できるようになります。"
   participant_card:
     me: "自分"
     co_signer: "共同署名者"
