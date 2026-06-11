@@ -1149,6 +1149,7 @@ long_pressed_menu:
   hide_home_widget_description: "나중에 우측 상단 메뉴 버튼 > '홈 화면 설정' 메뉴에서 다시 표시할 수 있어요."
 
 taproot:
+  parent: "부모 지갑"
   role_description_card:
     signer: "서명자"
     co_signer: "공동 서명자"

@@ -4,6 +4,7 @@ import 'package:coconut_lib/coconut_lib.dart';
 import 'package:coconut_wallet/core/bip/129/signer_bsms.dart';
 import 'package:coconut_wallet/enums/network_enums.dart';
 import 'package:coconut_wallet/enums/wallet_enums.dart';
+import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/node/wallet_update_info.dart';
 import 'package:coconut_wallet/model/wallet/balance.dart';
 import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
@@ -172,7 +173,7 @@ class WalletInfoViewModel extends ChangeNotifier {
 
       final walletName =
           isParent
-              ? (parentCount > 1 ? '부모 지갑 ${String.fromCharCode(65 + parentIndex++)}' : '부모 지갑')
+              ? (parentCount > 1 ? '${t.taproot.parent} ${String.fromCharCode(65 + parentIndex++)}' : t.taproot.parent)
               : (isMine ? item.name : null);
 
       return TaprootParticipantCard(

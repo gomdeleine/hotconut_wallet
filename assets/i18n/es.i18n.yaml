@@ -1146,6 +1146,7 @@ long_pressed_menu:
   hide_home_widget_description: "Puedes mostrarlo nuevamente más tarde al ir al menú 'Configuración de inicio' en el botón de menú superior derecho."
 
 taproot:
+  parent: "Billetera padre"
   role_description_card:
     signer: "firmante"
     co_signer: "cosignatario"

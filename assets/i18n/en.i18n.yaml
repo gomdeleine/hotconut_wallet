@@ -1143,6 +1143,7 @@ long_pressed_menu:
   hide_home_widget_description: "You can show it again later by going to the 'Home Screen Settings' menu in the top right menu button."
 
 taproot:
+  parent: "Parent Wallet"
   role_description_card:
     signer: "signer"
     co_signer: "co-signer"

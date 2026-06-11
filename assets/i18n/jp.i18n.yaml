@@ -1144,6 +1144,7 @@ long_pressed_menu:
   hide_home_widget_description: "後で右上のメニューボタン > 'ホーム画面設定' メニューから再表示できます。"
 
 taproot:
+  parent: "親ウォレット"
   role_description_card:
     signer: "署名者"
     co_signer: "共同署名者"
