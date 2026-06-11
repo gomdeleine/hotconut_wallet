@@ -139,10 +139,12 @@ class WalletInfoViewModel extends ChangeNotifier {
       final isPathSelected = (currentSegmentIndex == 0) == isParent;
 
       final isMine =
-          item.keyPathSeedInfos.any((key) => key.contains(xpub) || xpub.contains(key)) ||
-          item.scriptPathSeedInfos.any(
-            (s) => s.extendedPublicKeys.any((key) => key.contains(xpub) || xpub.contains(key)),
-          );
+          isPathSelected &&
+          (isParent
+              ? item.keyPathSeedInfos.any((key) => key.contains(xpub) || xpub.contains(key))
+              : item.scriptPathSeedInfos.any(
+                (s) => s.extendedPublicKeys.any((key) => key.contains(xpub) || xpub.contains(key)),
+              ));
 
       int? locktime;
       if (!isParent) {
