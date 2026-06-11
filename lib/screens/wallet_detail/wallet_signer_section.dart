@@ -4,7 +4,6 @@ import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/providers/view_model/wallet_detail/wallet_info_view_model.dart';
 import 'package:coconut_wallet/widgets/card/multisig_signer_card.dart';
 import 'package:coconut_wallet/widgets/card/role_description_card.dart';
-import 'package:coconut_wallet/widgets/card/taproot_participant_card.dart';
 import 'package:coconut_wallet/widgets/card/taproot_setup_summary_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -98,33 +97,10 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
             child: _buildRoleDescriptionCard(effectiveIndex),
           ),
           const Divider(color: CoconutColors.gray800, height: 40, indent: 16, endIndent: 16),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TaprootSetupSummaryCard(
-              itemList: [
-                TaprootParticipantCard(
-                  role: TaprootParticipantRole.parent,
-                  isMine: true,
-                  walletName: 'My Hot Wallet',
-                  mfp: 'F75F7AB5',
-                  derivationPath: "m/86'/1'/0'/0/0",
-                ),
-                TaprootParticipantCard(
-                  role: TaprootParticipantRole.parent,
-                  isMine: false,
-                  walletName: 'Cosigner A',
-                  mfp: 'A1B2C3D4',
-                  derivationPath: "m/86'/1'/0'/0/1",
-                ),
-                TaprootParticipantCard(
-                  role: TaprootParticipantRole.child,
-                  isMine: false,
-                  walletName: 'Heir 1',
-                  mfp: 'E5F6G7H8',
-                  derivationPath: "m/86'/1'/0'/0/2",
-                  locktime: 1735689600,
-                ),
-              ],
+              itemList: viewModel.getTaprootParticipants(effectiveIndex),
               taprootSetupSummaryCardType: TaprootSetupSummaryCardType.column,
             ),
           ),

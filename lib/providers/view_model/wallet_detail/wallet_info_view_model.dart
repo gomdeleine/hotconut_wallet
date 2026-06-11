@@ -16,6 +16,8 @@ import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
 import 'package:coconut_wallet/providers/wallet_provider.dart';
 import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
 import 'package:coconut_wallet/services/wallet_add_service.dart';
+import 'package:coconut_wallet/widgets/card/taproot_participant_card.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
 class WalletInfoViewModel extends ChangeNotifier {
@@ -109,6 +111,84 @@ class WalletInfoViewModel extends ChangeNotifier {
   bool get hasTaprootScriptPath =>
       _walletItemBase is TaprootWalletListItem &&
       (_walletItemBase as TaprootWalletListItem).scriptPathSeedInfos.isNotEmpty;
+
+  List<TaprootParticipantCard> getTaprootParticipants(int currentSegmentIndex) {
+    if (_walletItemBase is! TaprootWalletListItem) return [];
+    final item = _walletItemBase as TaprootWalletListItem;
+
+    final descriptor = item.descriptor;
+
+    int trStart = descriptor.indexOf('tr(');
+    if (trStart == -1) return [];
+    int keyPathEndIndex = _findKeyPathEndIndex(descriptor, trStart);
+
+    final matches = RegExp(r'\[([0-9a-fA-F]{8})([^\]]+)\]([a-zA-Z0-9]+)').allMatches(descriptor).toList();
+
+    final parentCount = matches.where((m) => m.start < keyPathEndIndex).length;
+    int parentIndex = 0;
+
+    return matches.map((match) {
+      final mfp = match.group(1)!.toUpperCase();
+      final path = match.group(2)!.replaceAll('h', "'");
+      final xpub = match.group(3)!;
+
+      final isParent = match.start < keyPathEndIndex;
+      final role = isParent ? TaprootParticipantRole.parent : TaprootParticipantRole.child;
+
+      final isPathSelected = (currentSegmentIndex == 0 && isParent) || (currentSegmentIndex == 1 && !isParent);
+
+      final isMine =
+          item.keyPathSeedInfos.any((key) => key.contains(xpub) || xpub.contains(key)) ||
+          item.scriptPathSeedInfos.any(
+            (s) => s.extendedPublicKeys.any((key) => key.contains(xpub) || xpub.contains(key)),
+          );
+
+      int? locktime;
+      if (!isParent) {
+        locktime = item.policies?.whereType<InheritancePolicy>().firstOrNull?.locktime;
+
+        if (locktime == null) {
+          final locktimeMatch = RegExp(r'(older|after)\s*\(\s*(\d+)\s*\)', caseSensitive: false).firstMatch(descriptor);
+          if (locktimeMatch != null) {
+            locktime = int.tryParse(locktimeMatch.group(2) ?? '');
+          }
+        }
+      }
+
+      String? walletName;
+      if (isParent) {
+        walletName = parentCount > 1 ? '부모 지갑 ${String.fromCharCode(65 + parentIndex++)}' : '부모 지갑';
+      } else {
+        walletName = isMine ? _walletName : null;
+      }
+
+      return TaprootParticipantCard(
+        role: role,
+        isMine: isMine,
+        hasBackgroundColor: isMine && isPathSelected,
+        mfp: mfp,
+        derivationPath: "m$path",
+        locktime: locktime,
+        walletName: walletName,
+      );
+    }).toList();
+  }
+
+  int _findKeyPathEndIndex(String descriptor, int trStart) {
+    String trContent = descriptor.substring(trStart + 3);
+    int depth = 0;
+    for (int i = 0; i < trContent.length; i++) {
+      if (trContent[i] == '(') {
+        depth++;
+      } else if (trContent[i] == ')') {
+        if (depth == 0) break;
+        depth--;
+      } else if (trContent[i] == ',' && depth == 0) {
+        return trStart + 3 + i;
+      }
+    }
+    return descriptor.lastIndexOf(')');
+  }
 
   /// 지갑별 목표 수량 (sats). null이면 미설정
   int? get targetSats => _sharedPrefs.getWalletTargetSats(_walletId);
