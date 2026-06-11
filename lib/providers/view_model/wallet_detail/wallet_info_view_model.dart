@@ -113,16 +113,18 @@ class WalletInfoViewModel extends ChangeNotifier {
       (_walletItemBase as TaprootWalletListItem).scriptPathSeedInfos.isNotEmpty;
 
   List<TaprootParticipantCard> getTaprootParticipants(int currentSegmentIndex) {
-    if (_walletItemBase is! TaprootWalletListItem) return [];
-    final item = _walletItemBase as TaprootWalletListItem;
+    final item = _walletItemBase;
+    if (item is! TaprootWalletListItem) return [];
 
     final descriptor = item.descriptor;
 
-    int trStart = descriptor.indexOf('tr(');
+    final trStart = descriptor.indexOf('tr(');
     if (trStart == -1) return [];
-    int keyPathEndIndex = _findKeyPathEndIndex(descriptor, trStart);
 
-    final matches = RegExp(r'\[([0-9a-fA-F]{8})([^\]]+)\]([a-zA-Z0-9]+)').allMatches(descriptor).toList();
+    final keyPathEndIndex = _findKeyPathEndIndex(descriptor, trStart);
+
+    final matches = RegExp(r'\[([0-9a-fA-F]{8})([^\]]+)\]([a-zA-Z0-9]+)').allMatches(descriptor);
+    if (matches.isEmpty) return [];
 
     final parentCount = matches.where((m) => m.start < keyPathEndIndex).length;
     int parentIndex = 0;
@@ -134,8 +136,7 @@ class WalletInfoViewModel extends ChangeNotifier {
 
       final isParent = match.start < keyPathEndIndex;
       final role = isParent ? TaprootParticipantRole.parent : TaprootParticipantRole.child;
-
-      final isPathSelected = (currentSegmentIndex == 0 && isParent) || (currentSegmentIndex == 1 && !isParent);
+      final isPathSelected = (currentSegmentIndex == 0) == isParent;
 
       final isMine =
           item.keyPathSeedInfos.any((key) => key.contains(xpub) || xpub.contains(key)) ||
@@ -149,18 +150,14 @@ class WalletInfoViewModel extends ChangeNotifier {
 
         if (locktime == null) {
           final locktimeMatch = RegExp(r'(older|after)\s*\(\s*(\d+)\s*\)', caseSensitive: false).firstMatch(descriptor);
-          if (locktimeMatch != null) {
-            locktime = int.tryParse(locktimeMatch.group(2) ?? '');
-          }
+          locktime = int.tryParse(locktimeMatch?.group(2) ?? '');
         }
       }
 
-      String? walletName;
-      if (isParent) {
-        walletName = parentCount > 1 ? '부모 지갑 ${String.fromCharCode(65 + parentIndex++)}' : '부모 지갑';
-      } else {
-        walletName = isMine ? _walletName : null;
-      }
+      final walletName =
+          isParent
+              ? (parentCount > 1 ? '부모 지갑 ${String.fromCharCode(65 + parentIndex++)}' : '부모 지갑')
+              : (isMine ? item.name : null);
 
       return TaprootParticipantCard(
         role: role,
