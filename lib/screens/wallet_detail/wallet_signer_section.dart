@@ -65,8 +65,8 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
               style: CoconutTypography.body3_12_Bold.setColor(CoconutColors.white),
             ),
           ),
+          CoconutLayout.spacing_200h,
           if (hasBothKeys) ...[
-            CoconutLayout.spacing_200h,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: CoconutSegmentedControl(
