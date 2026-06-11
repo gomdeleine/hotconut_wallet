@@ -225,6 +225,17 @@ class WalletInfoViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  int get taprootSpendTypeIndex {
+    if (_walletItemBase is! TaprootWalletListItem) return 0;
+    final item = _walletItemBase as TaprootWalletListItem;
+    return item.defaultSpendType == TaprootSpendType.keyPath ? 0 : 1;
+  }
+
+  Future<void> updateTaprootSpendType(int index) async {
+    final type = index == 0 ? TaprootSpendType.keyPath : TaprootSpendType.scriptPath;
+    await _walletProvider.updateTaprootSpendType(_walletId, type);
+  }
+
   @override
   void dispose() {
     _syncWalletStateSubscription?.cancel();

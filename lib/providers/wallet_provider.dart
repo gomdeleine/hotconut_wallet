@@ -649,6 +649,14 @@ class WalletProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateTaprootSpendType(int walletId, TaprootSpendType type) async {
+    final success = await _walletRepository.updateTaprootDefaultSpendType(walletId, type);
+    if (success) {
+      _setWalletItemList(await _fetchWalletListFromDB());
+      notifyListeners();
+    }
+  }
+
   bool isTransactionSuspicious(TransactionRecord record) {
     return SuspiciousTransactionUtil.isTransactionSuspicious(record, _addressRepository.containsAddressInAnyWallet);
   }

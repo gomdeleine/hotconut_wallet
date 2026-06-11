@@ -8,23 +8,16 @@ import 'package:coconut_wallet/widgets/card/taproot_setup_summary_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class WalletSignerSection extends StatefulWidget {
+class WalletSignerSection extends StatelessWidget {
   final WalletType walletType;
 
   const WalletSignerSection({super.key, required this.walletType});
 
   @override
-  State<WalletSignerSection> createState() => _WalletSignerSectionState();
-}
-
-class _WalletSignerSectionState extends State<WalletSignerSection> {
-  int _currentSegmentIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<WalletInfoViewModel>();
 
-    if (widget.walletType == WalletType.multiSignature) {
+    if (walletType == WalletType.multiSignature) {
       return Container(
         margin: const EdgeInsets.only(top: 8, bottom: 32),
         child: ListView.separated(
@@ -45,15 +38,12 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
       );
     }
 
-    if (widget.walletType == WalletType.taproot) {
+    if (walletType == WalletType.taproot) {
       final hasKeyPath = viewModel.hasTaprootKeyPath;
       final hasScriptPath = viewModel.hasTaprootScriptPath;
       final hasBothKeys = hasKeyPath && hasScriptPath;
 
-      int effectiveIndex = _currentSegmentIndex;
-      if (!hasBothKeys && (hasKeyPath || hasScriptPath)) {
-        effectiveIndex = hasKeyPath ? 0 : 1;
-      }
+      final effectiveIndex = viewModel.taprootSpendTypeIndex;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +77,9 @@ class _WalletSignerSectionState extends State<WalletSignerSection> {
                   ),
                 ],
                 isSelected: [effectiveIndex == 0, effectiveIndex == 1],
-                onPressed: (index) => setState(() => _currentSegmentIndex = index),
+                onPressed: (index) {
+                  viewModel.updateTaprootSpendType(index);
+                },
               ),
             ),
           ],
