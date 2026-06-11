@@ -112,6 +112,20 @@ class WalletInfoViewModel extends ChangeNotifier {
       _walletItemBase is TaprootWalletListItem &&
       (_walletItemBase as TaprootWalletListItem).scriptPathSeedInfos.isNotEmpty;
 
+  bool get hasSingleTaprootParent {
+    final item = _walletItemBase;
+    if (item is! TaprootWalletListItem) return false;
+
+    final descriptor = item.descriptor;
+    final trStart = descriptor.indexOf('tr(');
+    if (trStart == -1) return false;
+
+    final keyPathEndIndex = _findKeyPathEndIndex(descriptor, trStart);
+    final matches = RegExp(r'\[([0-9a-fA-F]{8})([^\]]+)\]([a-zA-Z0-9]+)').allMatches(descriptor);
+
+    return matches.where((m) => m.start < keyPathEndIndex).length == 1;
+  }
+
   List<TaprootParticipantCard> getTaprootParticipants(int currentSegmentIndex) {
     final item = _walletItemBase;
     if (item is! TaprootWalletListItem) return [];
@@ -169,6 +183,7 @@ class WalletInfoViewModel extends ChangeNotifier {
         derivationPath: "m$path",
         locktime: locktime,
         walletName: walletName,
+        hasSingleParent: isParent && parentCount == 1,
       );
     }).toList();
   }

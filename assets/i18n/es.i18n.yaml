@@ -1147,7 +1147,11 @@ long_pressed_menu:
 
 taproot:
   role_description_card:
-    parent_description: "Soy cosignatario de esta billetera.\nLos activos se pueden usar firmando con otros cosignatarios."
+    signer: "firmante"
+    co_signer: "cosignatario"
+    heir: "heredero"
+    single_parent_description: "Soy el firmante de esta billetera.\nPuedo usar esta billetera normalmente."
+    multi_parent_description: "Soy cosignatario de esta billetera.\nLos activos se pueden usar firmando con otros cosignatarios."
     child_description: "Soy heredero de esta billetera.\nLos activos se pueden usar después de un momento determinado."
   participant_card:
     me: "Yo"

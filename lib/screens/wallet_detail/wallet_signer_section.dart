@@ -86,7 +86,7 @@ class WalletSignerSection extends StatelessWidget {
           CoconutLayout.spacing_100h,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _buildRoleDescriptionCard(effectiveIndex),
+            child: _buildRoleDescriptionCard(effectiveIndex, viewModel),
           ),
           const Divider(color: CoconutColors.gray800, height: 40, indent: 16, endIndent: 16),
           Padding(
@@ -119,13 +119,18 @@ class WalletSignerSection extends StatelessWidget {
     );
   }
 
-  Widget _buildRoleDescriptionCard(int index) {
+  Widget _buildRoleDescriptionCard(int index, WalletInfoViewModel viewModel) {
     final isParent = index == 0;
     final theme = isParent ? RoleDescriptionTheme.cosigner : RoleDescriptionTheme.heir;
-    final description =
-        isParent
-            ? t.taproot.role_description_card.parent_description
-            : t.taproot.role_description_card.child_description;
+    String description;
+    if (isParent) {
+      description =
+          viewModel.hasSingleTaprootParent
+              ? t.taproot.role_description_card.single_parent_description
+              : t.taproot.role_description_card.multi_parent_description;
+    } else {
+      description = t.taproot.role_description_card.child_description;
+    }
     return RoleDescriptionCard(
       description: description,
       themeColor: theme.themeColor,

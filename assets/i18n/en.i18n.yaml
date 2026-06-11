@@ -1144,7 +1144,11 @@ long_pressed_menu:
 
 taproot:
   role_description_card:
-    parent_description: "I am a co-signer of this wallet.\nAssets can be used by signing with other co-signers."
+    signer: "signer"
+    co_signer: "co-signer"
+    heir: "heir"
+    single_parent_description: "I am the signer of this wallet.\nI can use this wallet normally."
+    multi_parent_description: "I am a co-signer of this wallet.\nAssets can be used by signing with other co-signers."
     child_description: "I am an heir of this wallet.\nAssets can be used after a set point in time."
   participant_card:
     me: "Me"

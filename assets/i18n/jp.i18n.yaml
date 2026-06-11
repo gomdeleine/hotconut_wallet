@@ -1145,7 +1145,11 @@ long_pressed_menu:
 
 taproot:
   role_description_card:
-    parent_description: "私はこのウォレットの共同署名者です。\n他の共同署名者と一緒に署名することで資産を使用できます。"
+    signer: "署名者"
+    co_signer: "共同署名者"
+    heir: "継承人"
+    single_parent_description: "私はこのウォレットの署名者です。\n普段からこのウォレットを使用できます。"
+    multi_parent_description: "私はこのウォレットの共同署名者です。\n他の共同署名者と一緒に署名することで資産を使用できます。"
     child_description: "私はこのウォレットの継承人です。\n決められた時間が経過すると資産を使用できるようになります。"
   participant_card:
     me: "自分"
