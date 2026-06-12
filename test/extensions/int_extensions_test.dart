@@ -19,40 +19,22 @@ void main() {
     });
 
     test('toThousandsSeparatedString formats millions correctly', () {
-      expect(
-        1000000.toThousandsSeparatedString(localeName: 'en_US'),
-        '1,000,000',
-      );
-      expect(
-        1234567.toThousandsSeparatedString(localeName: 'en_US'),
-        '1,234,567',
-      );
+      expect(1000000.toThousandsSeparatedString(localeName: 'en_US'), '1,000,000');
+      expect(1234567.toThousandsSeparatedString(localeName: 'en_US'), '1,234,567');
     });
 
     test('toThousandsSeparatedString formats by locale', () {
-      expect(
-        1234567.toThousandsSeparatedString(localeName: 'de_DE'),
-        '1.234.567',
-      );
+      expect(1234567.toThousandsSeparatedString(localeName: 'de_DE'), '1.234.567');
     });
 
     test('toThousandsSeparatedString formats negative numbers correctly', () {
       expect((-1000).toThousandsSeparatedString(localeName: 'en_US'), '-1,000');
-      expect(
-        (-1000000).toThousandsSeparatedString(localeName: 'en_US'),
-        '-1,000,000',
-      );
+      expect((-1000000).toThousandsSeparatedString(localeName: 'en_US'), '-1,000,000');
     });
 
     test('toThousandsSeparatedString formats max/min int values correctly', () {
-      expect(
-        2147483647.toThousandsSeparatedString(localeName: 'en_US'),
-        '2,147,483,647',
-      ); // max 32-bit int
-      expect(
-        (-2147483648).toThousandsSeparatedString(localeName: 'en_US'),
-        '-2,147,483,648',
-      ); // min 32-bit int
+      expect(2147483647.toThousandsSeparatedString(localeName: 'en_US'), '2,147,483,647'); // max 32-bit int
+      expect((-2147483648).toThousandsSeparatedString(localeName: 'en_US'), '-2,147,483,648'); // min 32-bit int
     });
   });
 }
