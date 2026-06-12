@@ -24,6 +24,7 @@ import 'package:coconut_wallet/utils/address_scan_util.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/dashed_border_painter.dart';
 import 'package:coconut_wallet/utils/fee_rate_mixin.dart';
+import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/utils/vibration_util.dart';
 import 'package:coconut_wallet/utils/wallet_util.dart';
 import 'package:coconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
@@ -152,7 +153,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
         final amountText =
             _viewModel.currentUnit.isBasedOnSatoshi
                 ? sats.toString()
-                : BalanceFormatUtil.formatSatoshiToReadableBitcoin(sats);
+                : UnitUtil.convertSatoshiToBitcoin(sats).toString();
         _amountController.text = amountText;
         _viewModel.setAmountText(sats, 0);
       });
@@ -326,7 +327,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
 
   void _setDropdownMenuVisiblility(bool isVisible) {
     if (isVisible) {
-      _feeRateController.text = _removeTrailingDot(_feeRateController.text);
+      _feeRateController.text = _removeTrailingDecimalSeparator(_feeRateController.text);
       _amountController.text = _removeTrailingDot(_amountController.text);
       FocusManager.instance.primaryFocus?.unfocus();
 
@@ -623,7 +624,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
         keyboardType: TextInputType.numberWithOptions(signed: false, decimal: allowDecimal),
         inputFormatters:
             allowDecimal
-                ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')), SingleDotInputFormatter()]
+                ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')), const SingleDotInputFormatter()]
                 : [FilteringTextInputFormatter.digitsOnly],
       ),
     );
@@ -701,6 +702,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildFeeItem(String imagePath, double? sats, bool isFetching) {
+    final feeRateText = sats != null ? _formatDecimalTextForDisplay(sats.toStringAsFixed(1)) : "-";
     final child = MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
       child: Container(
@@ -722,7 +724,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerRight,
               child: Text(
-                "${sats != null ? sats.toStringAsFixed(1) : "-"} ${t.send_screen.fee_rate_suffix}",
+                "$feeRateText ${t.send_screen.fee_rate_suffix}",
                 style: CoconutTypography.body2_14.setColor(CoconutColors.white),
               ),
             ),
@@ -736,7 +738,9 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
         borderRadius: 8,
         onTap: () {
           if (isFetching) return;
-          _feeRateController.text = sats != null ? sats.toStringAsFixed(1) : '';
+          final feeRateText = sats != null ? sats.toStringAsFixed(1) : '';
+          _feeRateController.text = _formatDecimalTextForDisplay(feeRateText);
+          _viewModel.setFeeRateText(feeRateText);
           _clearFocus();
         },
         child:
@@ -1033,21 +1037,26 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                     data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                     child: CoconutTextField(
                       textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                      textInputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))],
+                      textInputFormatter: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
+                        const SingleDotInputFormatter(normalizeToDot: false),
+                      ],
                       enableInteractiveSelection: false,
                       textAlign: TextAlign.end,
                       controller: _feeRateController,
                       focusNode: _feeRateFocusNode,
                       backgroundColor: feeRateFieldGray,
                       onEditingComplete: () {
-                        _feeRateController.text = _removeTrailingDot(_feeRateController.text);
+                        _feeRateController.text = _removeTrailingDecimalSeparator(_feeRateController.text);
                         FocusScope.of(context).unfocus();
                       },
                       height: 30,
                       padding: const EdgeInsets.only(left: 12, right: 2),
                       onChanged: (text) {
-                        final isTooLow = _viewModel.handleFeeRateChanged(text, (formattedText) {
-                          _feeRateController.text = formattedText;
+                        final normalizedText = _normalizeDecimalTextForParsing(text);
+                        final isTooLow = _viewModel.handleFeeRateChanged(normalizedText, (formattedText) {
+                          final displayText = _formatDecimalTextForDisplay(formattedText);
+                          _feeRateController.text = displayText;
                           _viewModel.setFeeRateText(formattedText);
                         });
                         if (isTooLow) {
@@ -1898,7 +1907,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
         final amountText =
             _viewModel.currentUnit.isBasedOnSatoshi
                 ? bip21Data.amount!.toString()
-                : BalanceFormatUtil.formatSatoshiToReadableBitcoin(bip21Data.amount!);
+                : UnitUtil.convertSatoshiToBitcoin(bip21Data.amount!).toString();
         _amountController.text = amountText;
         _viewModel.setAmountText(bip21Data.amount!, index);
       }
@@ -1936,7 +1945,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   void _onFeeRateTextUpdate(String text) {
-    _feeRateController.text = text;
+    _feeRateController.text = _formatDecimalTextForDisplay(text);
   }
 
   void _onAmountTextUpdate(String text) {
@@ -1992,7 +2001,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
     final focusNode = FocusNode();
     focusNode.addListener(
       () => setState(() {
-        _feeRateController.text = _removeTrailingDot(_feeRateController.text);
+        _feeRateController.text = _removeTrailingDecimalSeparator(_feeRateController.text);
         _amountController.text = _removeTrailingDot(_amountController.text);
 
         final isOwn = controller.text.length >= 26 && _viewModel.isOwnAddress(controller.text);
@@ -2050,7 +2059,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   void _clearFocus() {
-    _feeRateController.text = _removeTrailingDot(_feeRateController.text);
+    _feeRateController.text = _removeTrailingDecimalSeparator(_feeRateController.text);
     _amountController.text = _removeTrailingDot(_amountController.text);
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -2073,6 +2082,22 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
       return text.substring(0, text.length - 1);
     }
     return text;
+  }
+
+  String _removeTrailingDecimalSeparator(String text) {
+    final decimalSeparator = getNumberDecimalSeparator();
+    if (text.endsWith(decimalSeparator) || text.endsWith('.')) {
+      return text.substring(0, text.length - 1);
+    }
+    return text;
+  }
+
+  String _formatDecimalTextForDisplay(String text) {
+    return text.replaceAll('.', getNumberDecimalSeparator());
+  }
+
+  String _normalizeDecimalTextForParsing(String text) {
+    return text.replaceAll(getNumberDecimalSeparator(), '.').replaceAll(',', '.');
   }
 
   /// recipientList와 _addressControllerList 동기화
@@ -2132,13 +2157,31 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
 }
 
 class SingleDotInputFormatter extends TextInputFormatter {
+  final bool normalizeToDot;
+
+  const SingleDotInputFormatter({this.normalizeToDot = true});
+
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     final text = newValue.text;
-    // 소수점이 2개 이상이면 입력 취소
-    if ('.'.allMatches(text).length > 1) return oldValue;
+    final decimalSeparator = getNumberDecimalSeparator();
+    final groupingSeparator = getNumberGroupingSeparator();
+    if (_insertedText(oldValue, newValue).contains(groupingSeparator)) {
+      return oldValue;
+    }
 
-    return newValue;
+    final normalizedText = text.replaceAll(decimalSeparator, '.');
+    if ('.'.allMatches(normalizedText).length > 1) return oldValue;
+
+    return newValue.copyWith(text: normalizeToDot ? normalizedText : text);
+  }
+
+  String _insertedText(TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.length <= oldValue.text.length) return '';
+
+    final start = oldValue.selection.baseOffset.clamp(0, oldValue.text.length).toInt();
+    final end = (start + (newValue.text.length - oldValue.text.length)).clamp(0, newValue.text.length).toInt();
+    return newValue.text.substring(start, end);
   }
 }
 

@@ -7,7 +7,7 @@ import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
 import 'package:coconut_wallet/providers/view_model/home/wallet_home_edit_view_model.dart';
 import 'package:coconut_wallet/providers/wallet_provider.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/utils/text_field_filter_util.dart';
 import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
 import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
@@ -31,7 +31,8 @@ class WalletHomeEditScreen extends StatefulWidget {
   State<WalletHomeEditScreen> createState() => _WalletHomeEditScreenState();
 }
 
-class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with TickerProviderStateMixin {
+class _WalletHomeEditScreenState extends State<WalletHomeEditScreen>
+    with TickerProviderStateMixin {
   final TextEditingController _textEditingController = TextEditingController();
   late WalletHomeEditViewModel _viewModel;
   late final ScrollController _scrollController;
@@ -50,7 +51,9 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // 하단 버튼 사이즈 계산
       if (fixedBottomButtonKey.currentContext != null) {
-        final fixedBottomButtonRenderBox = fixedBottomButtonKey.currentContext?.findRenderObject() as RenderBox;
+        final fixedBottomButtonRenderBox =
+            fixedBottomButtonKey.currentContext?.findRenderObject()
+                as RenderBox;
         setState(() {
           _fixedBottomButtonSize = fixedBottomButtonRenderBox.size;
         });
@@ -62,12 +65,15 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
           _textEditingController.text = '0';
         } else if (_viewModel.tempFakeBalanceTotalBtc! % 1 == 0) {
           // 정수일 때
-          _textEditingController.text = _viewModel.tempFakeBalanceTotalBtc.toString().split('.')[0];
+          _textEditingController.text =
+              _viewModel.tempFakeBalanceTotalBtc.toString().split('.')[0];
         } else {
           // 아주 작은 소수일 때 e-8로 표시되는 경우가 있음 -> toStringAsFixed(8)로 8자리까지 표시 후 뒤에 0이 있으면 제거
-          _textEditingController.text = _viewModel.tempFakeBalanceTotalBtc!
-              .toStringAsFixed(8)
-              .replaceFirst(RegExp(r'\.?0+$'), '');
+          _textEditingController.text = _formatBtcTextForDisplay(
+            _viewModel.tempFakeBalanceTotalBtc!
+                .toStringAsFixed(8)
+                .replaceFirst(RegExp(r'\.?0+$'), ''),
+          );
         }
       }
 
@@ -90,7 +96,9 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
         _debounceTimer = Timer(const Duration(milliseconds: 300), () {
           if (!mounted) return;
 
-          final text = _textEditingController.text.replaceAll(',', '');
+          final text = normalizeDecimalNumberTextForParsing(
+            _textEditingController.text,
+          );
           final input = text.isEmpty ? null : double.tryParse(text);
           final error =
               (input != null && input > _viewModel.maximumAmount)
@@ -121,13 +129,20 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
   }
 
   WalletHomeEditViewModel _createViewModel() {
-    _viewModel = WalletHomeEditViewModel(context.read<WalletProvider>(), context.read<PreferenceProvider>());
+    _viewModel = WalletHomeEditViewModel(
+      context.read<WalletProvider>(),
+      context.read<PreferenceProvider>(),
+    );
     return _viewModel;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProxyProvider2<WalletProvider, PreferenceProvider, WalletHomeEditViewModel>(
+    return ChangeNotifierProxyProvider2<
+      WalletProvider,
+      PreferenceProvider,
+      WalletHomeEditViewModel
+    >(
       create: (context) => _createViewModel(),
       update: (context, walletProvider, preferenceProvider, previous) {
         previous ??= _createViewModel();
@@ -152,7 +167,8 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                     return CoconutPopup(
                       languageCode: context.read<PreferenceProvider>().language,
                       title: t.wallet_list.edit.finish,
-                      description: t.wallet_list.edit.unsaved_changes_confirm_exit,
+                      description:
+                          t.wallet_list.edit.unsaved_changes_confirm_exit,
                       leftButtonText: t.cancel,
                       rightButtonText: t.confirm,
                       onTapRight: () {
@@ -188,34 +204,62 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                         children: [
                           CoconutLayout.spacing_100h,
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 30,
+                            ),
                             child: SizedBox(
                               width: MediaQuery.sizeOf(context).width / 3 * 2,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: Alignment.centerLeft,
-                                child: Text(t.wallet_home_screen.edit.title, style: CoconutTypography.heading3_21_Bold),
+                                child: Text(
+                                  t.wallet_home_screen.edit.title,
+                                  style: CoconutTypography.heading3_21_Bold,
+                                ),
                               ),
                             ),
                           ),
-                          const Divider(height: 1, color: CoconutColors.gray700),
-                          if (context.read<WalletProvider>().walletItemList.isNotEmpty) ...[
+                          const Divider(
+                            height: 1,
+                            color: CoconutColors.gray700,
+                          ),
+                          if (context
+                              .read<WalletProvider>()
+                              .walletItemList
+                              .isNotEmpty) ...[
                             Consumer<WalletHomeEditViewModel>(
                               builder: (context, viewModel, child) {
                                 return Column(
                                   children: [
                                     SingleButton(
                                       isVerticalSubtitle: true,
-                                      title: t.wallet_home_screen.edit.hide_balance,
-                                      subtitle: t.wallet_home_screen.edit.hide_balance_on_home,
-                                      subtitleStyle: CoconutTypography.body3_12.setColor(CoconutColors.gray400),
-                                      customPadding: const EdgeInsets.fromLTRB(20, 16, 20, 10),
+                                      title:
+                                          t
+                                              .wallet_home_screen
+                                              .edit
+                                              .hide_balance,
+                                      subtitle:
+                                          t
+                                              .wallet_home_screen
+                                              .edit
+                                              .hide_balance_on_home,
+                                      subtitleStyle: CoconutTypography.body3_12
+                                          .setColor(CoconutColors.gray400),
+                                      customPadding: const EdgeInsets.fromLTRB(
+                                        20,
+                                        16,
+                                        20,
+                                        10,
+                                      ),
                                       onPressed: () async {
                                         if (_textFieldFocusNode.hasFocus) {
                                           FocusScope.of(context).unfocus();
                                           return;
                                         }
-                                        viewModel.setTempIsBalanceHidden(!viewModel.tempIsBalanceHidden);
+                                        viewModel.setTempIsBalanceHidden(
+                                          !viewModel.tempIsBalanceHidden,
+                                        );
                                       },
                                       backgroundColor: CoconutColors.black,
                                       rightElement: CoconutSwitch(
@@ -225,23 +269,43 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                         trackColor: CoconutColors.gray600,
                                         thumbColor: CoconutColors.gray800,
                                         onChanged: (value) {
-                                          viewModel.setTempIsBalanceHidden(value);
+                                          viewModel.setTempIsBalanceHidden(
+                                            value,
+                                          );
                                         },
                                       ),
                                     ),
                                     SingleButton(
                                       isVerticalSubtitle: true,
-                                      title: t.wallet_home_screen.edit.fake_balance.fake_balance_display,
-                                      subtitle: t.wallet_home_screen.edit.fake_balance.fake_balance_input_description,
-                                      subtitleStyle: CoconutTypography.body3_12.setColor(CoconutColors.gray400),
-                                      customPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                      title:
+                                          t
+                                              .wallet_home_screen
+                                              .edit
+                                              .fake_balance
+                                              .fake_balance_display,
+                                      subtitle:
+                                          t
+                                              .wallet_home_screen
+                                              .edit
+                                              .fake_balance
+                                              .fake_balance_input_description,
+                                      subtitleStyle: CoconutTypography.body3_12
+                                          .setColor(CoconutColors.gray400),
+                                      customPadding: const EdgeInsets.fromLTRB(
+                                        20,
+                                        10,
+                                        20,
+                                        10,
+                                      ),
                                       onPressed: () async {
                                         if (_textFieldFocusNode.hasFocus) {
                                           FocusScope.of(context).unfocus();
                                           return;
                                         }
 
-                                        viewModel.setTempFakeBalanceActive(!viewModel.tempIsFakeBalanceActive);
+                                        viewModel.setTempFakeBalanceActive(
+                                          !viewModel.tempIsFakeBalanceActive,
+                                        );
                                       },
                                       backgroundColor: Colors.transparent,
                                       rightElement: CoconutSwitch(
@@ -251,23 +315,41 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                         trackColor: CoconutColors.gray600,
                                         thumbColor: CoconutColors.gray800,
                                         onChanged: (value) {
-                                          viewModel.setTempFakeBalanceActive(value);
+                                          viewModel.setTempFakeBalanceActive(
+                                            value,
+                                          );
                                         },
                                       ),
                                     ),
                                     _buildDelayedFakeBalanceInput(),
                                     SingleButton(
                                       isVerticalSubtitle: true,
-                                      title: t.wallet_home_screen.edit.hide_fiat_price,
-                                      subtitle: t.wallet_home_screen.edit.hide_fiat_price_on_home,
-                                      subtitleStyle: CoconutTypography.body3_12.setColor(CoconutColors.gray400),
-                                      customPadding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
+                                      title:
+                                          t
+                                              .wallet_home_screen
+                                              .edit
+                                              .hide_fiat_price,
+                                      subtitle:
+                                          t
+                                              .wallet_home_screen
+                                              .edit
+                                              .hide_fiat_price_on_home,
+                                      subtitleStyle: CoconutTypography.body3_12
+                                          .setColor(CoconutColors.gray400),
+                                      customPadding: const EdgeInsets.fromLTRB(
+                                        20,
+                                        10,
+                                        20,
+                                        16,
+                                      ),
                                       onPressed: () async {
                                         if (_textFieldFocusNode.hasFocus) {
                                           FocusScope.of(context).unfocus();
                                           return;
                                         }
-                                        viewModel.setTempIsFiatBalanceHidden(!viewModel.tempIsFiatBalanceHidden);
+                                        viewModel.setTempIsFiatBalanceHidden(
+                                          !viewModel.tempIsFiatBalanceHidden,
+                                        );
                                       },
                                       backgroundColor: CoconutColors.black,
                                       rightElement: CoconutSwitch(
@@ -277,7 +359,9 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                         trackColor: CoconutColors.gray600,
                                         thumbColor: CoconutColors.gray800,
                                         onChanged: (value) {
-                                          viewModel.setTempIsFiatBalanceHidden(value);
+                                          viewModel.setTempIsFiatBalanceHidden(
+                                            value,
+                                          );
                                         },
                                       ),
                                     ),
@@ -285,7 +369,10 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                 );
                               },
                             ),
-                            const Divider(height: 1, color: CoconutColors.gray700),
+                            const Divider(
+                              height: 1,
+                              color: CoconutColors.gray700,
+                            ),
                           ],
                           CoconutLayout.spacing_500h,
                           _buildHomeWidgetSelector(),
@@ -308,17 +395,41 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                           isActive: _shouldEnableCompleteButton(),
                           onButtonClicked: () async {
                             FocusScope.of(context).unfocus();
-                            if (viewModel.tempIsFakeBalanceActive && _textEditingController.text.isEmpty) {
+                            if (viewModel.tempIsFakeBalanceActive &&
+                                _textEditingController.text.isEmpty) {
                               // 가짜 잔액을 활성화 했지만 금액을 입력하지 않았을 때 -> 0으로 설정할지 다시입력할지 물어봄
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return CoconutPopup(
-                                    languageCode: context.read<PreferenceProvider>().language,
-                                    title: t.wallet_home_screen.edit.alert.empty_fake_balance,
-                                    description: t.wallet_home_screen.edit.alert.empty_fake_balance_description,
-                                    leftButtonText: t.wallet_home_screen.edit.alert.enter_again,
-                                    rightButtonText: t.wallet_home_screen.edit.alert.set_to_0,
+                                    languageCode:
+                                        context
+                                            .read<PreferenceProvider>()
+                                            .language,
+                                    title:
+                                        t
+                                            .wallet_home_screen
+                                            .edit
+                                            .alert
+                                            .empty_fake_balance,
+                                    description:
+                                        t
+                                            .wallet_home_screen
+                                            .edit
+                                            .alert
+                                            .empty_fake_balance_description,
+                                    leftButtonText:
+                                        t
+                                            .wallet_home_screen
+                                            .edit
+                                            .alert
+                                            .enter_again,
+                                    rightButtonText:
+                                        t
+                                            .wallet_home_screen
+                                            .edit
+                                            .alert
+                                            .set_to_0,
                                     onTapRight: () async {
                                       viewModel.setTempFakeBalanceTotalBtc(0);
 
@@ -357,12 +468,17 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
   }
 
   bool _shouldEnableCompleteButton() {
-    final text = _textEditingController.text;
+    final text = normalizeDecimalNumberTextForParsing(
+      _textEditingController.text,
+    );
 
     final isToggleChanged =
-        _viewModel.tempIsFakeBalanceActive != _viewModel.isFakeBalanceActive || // 가짜잔액표시 변동
-        _viewModel.tempIsBalanceHidden != _viewModel.isBalanceHidden || // 잔액숨기기 변동
-        _viewModel.tempIsFiatBalanceHidden != _viewModel.isFiatBalanceHidden || // 법정화폐잔액숨기기 변동
+        _viewModel.tempIsFakeBalanceActive !=
+            _viewModel.isFakeBalanceActive || // 가짜잔액표시 변동
+        _viewModel.tempIsBalanceHidden !=
+            _viewModel.isBalanceHidden || // 잔액숨기기 변동
+        _viewModel.tempIsFiatBalanceHidden !=
+            _viewModel.isFiatBalanceHidden || // 법정화폐잔액숨기기 변동
         !_viewModel.tempHomeFeatures.every((tempFeature) {
           // 홈 화면 기능 변동
           final original = _viewModel.homeFeatures.firstWhere(
@@ -373,14 +489,14 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
         });
     if (_viewModel.tempIsFakeBalanceActive) {
       if (_viewModel.fakeBalanceTotalAmount == null) return true;
-      final expectedText = UnitUtil.convertSatoshiToBitcoin(
+      final expectedValue = UnitUtil.convertSatoshiToBitcoin(
         _viewModel.fakeBalanceTotalAmount!,
-      ).toStringAsFixed(8).replaceFirst(RegExp(r'\.?0*$'), '');
-      final isTextChanged = text != expectedText;
+      );
+      final parsed = text.isEmpty ? null : double.tryParse(text);
+      final isTextChanged = parsed != expectedValue;
       // 가짜 잔액 표시가 활성화 되더라도 입력값이 없으면 변동되지 않음
       if (!isTextChanged) return isToggleChanged;
 
-      final parsed = double.tryParse(text);
       if (parsed != 0 && _viewModel.inputError != FakeBalanceInputError.none) {
         return false;
       }
@@ -392,6 +508,10 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
   void _onComplete() async {
     if (_textEditingController.text.isEmpty) {}
     await _viewModel.onComplete();
+  }
+
+  String _formatBtcTextForDisplay(String text) {
+    return text.replaceAll('.', getNumberDecimalSeparator());
   }
 
   Widget _buildHomeWidgetSelector() {
@@ -438,7 +558,9 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                     int itemsPerRow = 3;
 
                     // 각 아이템의 너비 계산 (spacing과 패딩을 제외하고 가득 차도록 설정)
-                    double itemWidth = (constraints.maxWidth - spacing * (itemsPerRow - 1)) / itemsPerRow;
+                    double itemWidth =
+                        (constraints.maxWidth - spacing * (itemsPerRow - 1)) /
+                        itemsPerRow;
 
                     return Wrap(
                       spacing: spacing,
@@ -452,18 +574,25 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                 onPressed: () {
                                   FocusScope.of(context).unfocus();
                                   if (fixedWidgets.any(
-                                    (fixed) => fixed['homeFeatureTypeString'] == widget['homeFeatureTypeString'],
+                                    (fixed) =>
+                                        fixed['homeFeatureTypeString'] ==
+                                        widget['homeFeatureTypeString'],
                                   )) {
                                     // 고정 위젯인 경우 토글 불가
                                     CoconutToast.showToast(
                                       context: context,
-                                      text: t.wallet_home_screen.cannot_modify_fixed_widget,
+                                      text:
+                                          t
+                                              .wallet_home_screen
+                                              .cannot_modify_fixed_widget,
                                       isVisibleIcon: true,
                                     );
                                     return;
                                   }
                                   // homeFeatureTypeString을 통해 토글
-                                  _viewModel.toggleTempHomeFeatureEnabled(widget['homeFeatureTypeString'].toString());
+                                  _viewModel.toggleTempHomeFeatureEnabled(
+                                    widget['homeFeatureTypeString'].toString(),
+                                  );
                                 },
                                 defaultColor: CoconutColors.gray800,
                                 pressedColor: CoconutColors.gray750,
@@ -471,11 +600,14 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                   child: Container(
                                     height: 100,
                                     width: 100,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(14),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Stack(
                                             children: [
@@ -484,11 +616,19 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                                 child: FixedTextScale(
                                                   child: FittedBox(
                                                     fit: BoxFit.scaleDown,
-                                                    alignment: Alignment.centerLeft,
+                                                    alignment:
+                                                        Alignment.centerLeft,
                                                     child: Text(
-                                                      _getHomeFeatureLabel(widget['homeFeatureTypeString'].toString()),
+                                                      _getHomeFeatureLabel(
+                                                        widget['homeFeatureTypeString']
+                                                            .toString(),
+                                                      ),
                                                       maxLines: 2,
-                                                      style: CoconutTypography.body2_14.setColor(CoconutColors.white),
+                                                      style: CoconutTypography
+                                                          .body2_14
+                                                          .setColor(
+                                                            CoconutColors.white,
+                                                          ),
                                                     ),
                                                   ),
                                                 ),
@@ -496,18 +636,28 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                               Align(
                                                 alignment: Alignment.topRight,
                                                 child: AnimatedContainer(
-                                                  duration: const Duration(milliseconds: 100),
+                                                  duration: const Duration(
+                                                    milliseconds: 100,
+                                                  ),
                                                   width: 16,
                                                   height: 16,
                                                   decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color:
-                                                        (widget['isEnabled'] as bool)
-                                                            ? CoconutColors.white
-                                                            : CoconutColors.gray800,
+                                                        (widget['isEnabled']
+                                                                as bool)
+                                                            ? CoconutColors
+                                                                .white
+                                                            : CoconutColors
+                                                                .gray800,
                                                     border: Border.all(
-                                                      width: (widget['isEnabled'] as bool) ? 0 : 1.5,
-                                                      color: CoconutColors.gray600,
+                                                      width:
+                                                          (widget['isEnabled']
+                                                                  as bool)
+                                                              ? 0
+                                                              : 1.5,
+                                                      color:
+                                                          CoconutColors.gray600,
                                                     ),
                                                   ),
                                                   child: Center(
@@ -515,12 +665,16 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                                       'assets/svg/check.svg',
                                                       width: 6,
                                                       height: 6,
-                                                      colorFilter: ColorFilter.mode(
-                                                        (widget['isEnabled'] as bool)
-                                                            ? CoconutColors.gray800
-                                                            : CoconutColors.gray600,
-                                                        BlendMode.srcIn,
-                                                      ),
+                                                      colorFilter:
+                                                          ColorFilter.mode(
+                                                            (widget['isEnabled']
+                                                                    as bool)
+                                                                ? CoconutColors
+                                                                    .gray800
+                                                                : CoconutColors
+                                                                    .gray600,
+                                                            BlendMode.srcIn,
+                                                          ),
                                                     ),
                                                   ),
                                                 ),
@@ -528,7 +682,10 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                             ],
                                           ),
                                           const Spacer(),
-                                          SvgPicture.asset(widget['icon']!.toString(), width: 32),
+                                          SvgPicture.asset(
+                                            widget['icon']!.toString(),
+                                            width: 32,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -582,15 +739,21 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                 height: viewModel.tempIsFakeBalanceActive ? null : 0,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: CoconutTextField(
-                  textInputType: const TextInputType.numberWithOptions(decimal: true),
+                  textInputType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   textInputFormatter: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                     const BtcAmountInputFormatter(),
                   ],
                   placeholderText:
                       viewModel.tempFakeBalanceTotalBtc != null
                           ? ''
-                          : t.wallet_home_screen.edit.fake_balance.fake_balance_input_placeholder,
+                          : t
+                              .wallet_home_screen
+                              .edit
+                              .fake_balance
+                              .fake_balance_input_placeholder,
                   isLengthVisible: false,
                   controller: _textEditingController,
                   focusNode: _textFieldFocusNode,
@@ -602,7 +765,8 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                   cursorColor: CoconutColors.white,
                   maxLength: viewModel.maxInputLength,
                   errorText:
-                      _viewModel.inputError == FakeBalanceInputError.exceedsTotalSupply
+                      _viewModel.inputError ==
+                              FakeBalanceInputError.exceedsTotalSupply
                           ? '  ${t.wallet_home_screen.edit.fake_balance.fake_balance_input_exceeds_error}'
                           : '',
                   isError: _viewModel.inputError != FakeBalanceInputError.none,
@@ -612,7 +776,10 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
               CoconutLayout.spacing_400h,
             ],
           ),
-          crossFadeState: viewModel.tempIsFakeBalanceActive ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState:
+              viewModel.tempIsFakeBalanceActive
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
         );
       },
     );

@@ -5,6 +5,7 @@ import 'package:coconut_lib/coconut_lib.dart';
 import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/enums/utxo_merge_enums.dart';
+import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/extensions/widget_animation_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/utxo/utxo_state.dart';
@@ -16,12 +17,12 @@ import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
 import 'package:coconut_wallet/providers/wallet_provider.dart';
 import 'package:coconut_wallet/constants/dust_constants.dart';
 import 'package:coconut_wallet/screens/common/tag_select_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/send/refactor/send_screen.dart';
 import 'package:coconut_wallet/screens/wallet_detail/utxo_overview/utxo_bucket_card_row.dart';
 import 'package:coconut_wallet/utils/address_util.dart';
 import 'package:coconut_wallet/utils/address_scan_util.dart';
 import 'package:coconut_wallet/utils/colors_util.dart';
 import 'package:coconut_wallet/utils/datetime_util.dart';
+import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/utils/text_field_filter_util.dart';
 import 'package:coconut_wallet/utils/vibration_util.dart';
 import 'package:coconut_wallet/widgets/bottom_sheet/estimated_fee_bottom_sheet.dart';
@@ -806,11 +807,11 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
   String get _summaryAmountThresholdText {
     switch (_viewModel.currentAmountRange) {
       case UtxoAmountRange.below001:
-        return '0.01 BTC';
+        return '${_formatCustomAmountText('0.01')} BTC';
       case UtxoAmountRange.below0001:
-        return '0.001 BTC';
+        return '${_formatCustomAmountText('0.001')} BTC';
       case UtxoAmountRange.below00001:
-        return '0.0001 BTC';
+        return '${_formatCustomAmountText('0.0001')} BTC';
       case UtxoAmountRange.custom:
         final customAmount = _viewModel.customAmountRangeText ?? '';
         final formattedAmount = customAmount.isEmpty ? customAmount : '${_formatCustomAmountText(customAmount)} BTC';
@@ -967,11 +968,11 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
   String _amountRangeText(UtxoAmountRange range) {
     switch (range) {
       case UtxoAmountRange.below001:
-        return t.merge_utxos_screen.amount_range_bottomsheet.below_001;
+        return _localizedAmountRangeText(t.merge_utxos_screen.amount_range_bottomsheet.below_001, '0.01');
       case UtxoAmountRange.below0001:
-        return t.merge_utxos_screen.amount_range_bottomsheet.below_0001;
+        return _localizedAmountRangeText(t.merge_utxos_screen.amount_range_bottomsheet.below_0001, '0.001');
       case UtxoAmountRange.below00001:
-        return t.merge_utxos_screen.amount_range_bottomsheet.below_00001;
+        return _localizedAmountRangeText(t.merge_utxos_screen.amount_range_bottomsheet.below_00001, '0.0001');
       case UtxoAmountRange.custom:
         if (_viewModel.customAmountRangeText != null && _viewModel.customAmountRangeText!.isNotEmpty) {
           return '${_viewModel.isCustomAmountLessThan ? '${t.merge_utxos_screen.amount_range_bottomsheet.less_than} ' : ''}${_formatCustomAmountText(_viewModel.customAmountRangeText!)}${t.btc} ${_viewModel.isCustomAmountLessThan ? '' : ' ${t.merge_utxos_screen.amount_range_bottomsheet.or_less}'}';
@@ -981,12 +982,17 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
   }
 
   String _formatCustomAmountText(String value) {
-    final parts = value.split('.');
-    if (parts.length != 2) return value;
+    final normalizedValue = normalizeDecimalNumberTextForParsing(value);
+    final parts = normalizedValue.split('.');
 
-    final integerPart = parts.first;
+    final integerPart = parts.first.isEmpty ? '0' : parts.first;
+    final formattedIntegerPart = int.tryParse(integerPart)?.toThousandsSeparatedString() ?? integerPart;
+    if (parts.length != 2) return formattedIntegerPart;
+
     final decimalPart = parts.last;
-    if (decimalPart.isEmpty) return value;
+    if (decimalPart.isEmpty) {
+      return '$formattedIntegerPart${getNumberDecimalSeparator()}';
+    }
 
     final chunks = <String>[];
     for (var i = 0; i < decimalPart.length; i += 4) {
@@ -994,7 +1000,11 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
       chunks.add(decimalPart.substring(i, end));
     }
 
-    return '$integerPart.${chunks.join(' ')}';
+    return '$formattedIntegerPart${getNumberDecimalSeparator()}${chunks.join(' ')}';
+  }
+
+  String _localizedAmountRangeText(String text, String amount) {
+    return text.replaceFirst(amount, _formatCustomAmountText(amount));
   }
 
   String? _amountRangeDescription(UtxoAmountRange range) {

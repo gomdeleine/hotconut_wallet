@@ -88,7 +88,9 @@ extension _UtxoMergeScreenBottomSheetsExtension on _UtxoMergeScreenState {
                 _viewModel.hasCandidateUtxosForAmountRange(currentAmountRange)
             ? currentAmountRange
             : firstAvailableRecommendedRange;
-    final customAmountController = TextEditingController(text: _viewModel.customAmountRangeText ?? '');
+    final customAmountController = TextEditingController(
+      text: _viewModel.customAmountRangeText == null ? '' : _formatCustomAmountText(_viewModel.customAmountRangeText!),
+    );
     final customAmountFocusNode = FocusNode();
     var isCustomAmountLessThan = _viewModel.isCustomAmountLessThan;
 
@@ -115,7 +117,7 @@ extension _UtxoMergeScreenBottomSheetsExtension on _UtxoMergeScreenState {
         childBuilder:
             (scrollController) => StatefulBuilder(
               builder: (context, modalSetState) {
-                final customAmountText = customAmountController.text.trim();
+                final customAmountText = normalizeDecimalNumberTextForParsing(customAmountController.text.trim());
                 final customAmountValue = double.tryParse(customAmountText);
                 final hasCustomAmountInput =
                     customAmountText.isNotEmpty && customAmountValue != null && customAmountValue != 0;
@@ -149,12 +151,13 @@ extension _UtxoMergeScreenBottomSheetsExtension on _UtxoMergeScreenState {
                       return;
                     }
 
-                    if (customAmountController.text.trim().isEmpty) return;
+                    final customAmountText = normalizeDecimalNumberTextForParsing(customAmountController.text.trim());
+                    if (customAmountText.isEmpty) return;
                     Navigator.pop(
                       context,
                       _AmountRangeSelectionResult(
                         range: UtxoAmountRange.custom,
-                        customAmountText: customAmountController.text.trim(),
+                        customAmountText: customAmountText,
                         isLessThan: isCustomAmountLessThan,
                       ),
                     );
@@ -682,8 +685,7 @@ extension _UtxoMergeScreenBottomSheetsExtension on _UtxoMergeScreenState {
                       textInputType: const TextInputType.numberWithOptions(decimal: true),
                       isErrorTextMultiline: true,
                       textInputFormatter: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-                        SingleDotInputFormatter(),
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                         const BtcAmountInputFormatter(),
                       ],
                       placeholderText: '',

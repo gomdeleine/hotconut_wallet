@@ -18,6 +18,7 @@ import 'package:coconut_wallet/utils/bitcoin/transaction_util.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/fee_rate_mixin.dart';
+import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:coconut_wallet/model/wallet/wallet_address.dart';
@@ -428,7 +429,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   }
 
   void removeTrailingDotInFeeRate() {
-    feeRateController.text = removeTrailingDotInFeeRateText(feeRateController.text);
+    feeRateController.text = removeTrailingDotInFeeRateText(feeRateInput);
   }
 
   void setFeeRateFromRecommendation(double sats) {
@@ -438,7 +439,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
 
   Future<bool> refreshRecommendedFees() async {
     return fetchRecommendedFees(
-      currentFeeRateText: feeRateController.text,
+      currentFeeRateText: feeRateInput,
       onDefaultFeeRateSet: (text) => feeRateController.text = text,
     );
   }
@@ -459,7 +460,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   int candidateUtxoCountForCustomAmountText(String text, {required bool isLessThan}) {
     if (text.trim().isEmpty) return 0;
 
-    final btcAmount = double.tryParse(text.trim());
+    final btcAmount = double.tryParse(normalizeDecimalNumberTextForParsing(text.trim()));
     if (btcAmount == null || btcAmount == 0) return 0;
 
     final satsThreshold = UnitUtil.convertBitcoinToSatoshi(btcAmount);
@@ -478,7 +479,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
     );
   }
 
-  String get feeRateInput => feeRateController.text.trim();
+  String get feeRateInput => normalizeDecimalNumberTextForParsing(feeRateController.text.trim());
 
   bool get canPrepareMergeTransaction {
     return _currentStep == UtxoMergeStep.selectReceiveAddress &&
@@ -708,7 +709,9 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
       return null;
     }
     try {
-      return UnitUtil.convertBitcoinToSatoshi(double.parse(_customAmountRangeText!.trim()));
+      return UnitUtil.convertBitcoinToSatoshi(
+        double.parse(normalizeDecimalNumberTextForParsing(_customAmountRangeText!.trim())),
+      );
     } catch (_) {
       return null;
     }

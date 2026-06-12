@@ -16,7 +16,7 @@ class WalletHomeEditViewModel extends ChangeNotifier {
 
   late int minimumSatoshi;
   final int maximumAmount = 21000000;
-  final int maxInputLength = 17; // 21000000.00000000
+  final int maxInputLength = 19; // 21,000,000.00000000
 
   Map<int, dynamic> _fakeBalanceMap = {};
   int? _fakeBalanceTotalAmount;
@@ -45,7 +45,9 @@ class WalletHomeEditViewModel extends ChangeNotifier {
 
     _fakeBalanceTotalBtc =
         _preferenceProvider.fakeBalanceTotalAmount != null
-            ? UnitUtil.convertSatoshiToBitcoin(_preferenceProvider.fakeBalanceTotalAmount!)
+            ? UnitUtil.convertSatoshiToBitcoin(
+              _preferenceProvider.fakeBalanceTotalAmount!,
+            )
             : null;
 
     if (_fakeBalanceTotalBtc != null) {
@@ -63,8 +65,10 @@ class WalletHomeEditViewModel extends ChangeNotifier {
     _tempHomeFeatures =
         _preferenceProvider.homeFeatures
             .map(
-              (feature) =>
-                  HomeFeature(homeFeatureTypeString: feature.homeFeatureTypeString, isEnabled: feature.isEnabled),
+              (feature) => HomeFeature(
+                homeFeatureTypeString: feature.homeFeatureTypeString,
+                isEnabled: feature.isEnabled,
+              ),
             )
             .toList();
     _tempIsBalanceHidden = isBalanceHidden;
@@ -192,7 +196,9 @@ class WalletHomeEditViewModel extends ChangeNotifier {
   }
 
   void toggleTempHomeFeatureEnabled(String homeFeatureTypeString) {
-    final index = _tempHomeFeatures.indexWhere((element) => element.homeFeatureTypeString == homeFeatureTypeString);
+    final index = _tempHomeFeatures.indexWhere(
+      (element) => element.homeFeatureTypeString == homeFeatureTypeString,
+    );
     if (index != -1) {
       final feature = _tempHomeFeatures[index];
       _tempHomeFeatures[index] = HomeFeature(
@@ -239,7 +245,9 @@ class WalletHomeEditViewModel extends ChangeNotifier {
         debugPrint('[Wallet $i]Fake Balance: ${fakeBalanceMap[i]} BTC');
       }
       await _preferenceProvider.setFakeBalanceMap(fakeBalanceMap);
-      await _preferenceProvider.toggleFakeBalanceActivation(_tempIsFakeBalanceActive);
+      await _preferenceProvider.toggleFakeBalanceActivation(
+        _tempIsFakeBalanceActive,
+      );
       return;
     }
 
@@ -251,7 +259,10 @@ class WalletHomeEditViewModel extends ChangeNotifier {
     final random = Random();
     // 1. 각 지갑에 최소 1사토시 할당
     // 2. 남은 사토시를 랜덤 가중치로 분배
-    final List<int> weights = List.generate(walletCount, (_) => random.nextInt(100) + 1); // 1~100
+    final List<int> weights = List.generate(
+      walletCount,
+      (_) => random.nextInt(100) + 1,
+    ); // 1~100
     final int weightSum = weights.reduce((a, b) => a + b);
     final int remainingSats = (fakeSats - walletCount);
     final List<int> splits = [];
@@ -268,7 +279,9 @@ class WalletHomeEditViewModel extends ChangeNotifier {
     final Map<int, dynamic> fakeBalanceMap = {};
 
     if (_preferenceProvider.isFakeBalanceActive != _tempIsFakeBalanceActive) {
-      await _preferenceProvider.toggleFakeBalanceActivation(_tempIsFakeBalanceActive);
+      await _preferenceProvider.toggleFakeBalanceActivation(
+        _tempIsFakeBalanceActive,
+      );
     }
 
     await _preferenceProvider.setFakeBalanceTotalAmount(fakeSats);

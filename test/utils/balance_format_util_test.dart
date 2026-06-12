@@ -110,6 +110,16 @@ void main() {
       expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(-123456), '-0.0012 3456');
       expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(-12345678), '-0.1234 5678');
     });
+
+    test('satoshiToReadableBitcoin - locale에 맞는 구분자 사용', () {
+      expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(123456000, localeName: 'en_US'), '1.2345 6000');
+      expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(123456000, localeName: 'de_DE'), '1,2345 6000');
+      expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(100000000000, localeName: 'de_DE'), '1.000');
+      expect(
+        BalanceFormatUtil.formatSatoshiToReadableBitcoin(100000000000, forceEightDecimals: true, localeName: 'de_DE'),
+        '1.000,0000 0000',
+      );
+    });
   });
 
   group('BalanceFormatUtil.satoshiToReadableBitcoin', () {
@@ -218,6 +228,56 @@ void main() {
       expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(-1000), '-0.0000 1000');
       expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(-123456), '-0.0012 3456');
       expect(BalanceFormatUtil.formatSatoshiToReadableBitcoin(-12345678), '-0.1234 5678');
+    });
+  });
+
+  group('BalanceFormatUtil.parseBip21AmountTextToSats', () {
+    test('BTC 입력값을 locale의 소수/천단위 구분자 기준으로 파싱한다', () {
+      expect(
+        BalanceFormatUtil.parseBip21AmountTextToSats(
+          currentUnit: BitcoinUnit.btc,
+          inputText: '1,234.56',
+          localeName: 'en_US',
+        ),
+        123456000000,
+      );
+      expect(
+        BalanceFormatUtil.parseBip21AmountTextToSats(
+          currentUnit: BitcoinUnit.btc,
+          inputText: '1.234,56',
+          localeName: 'de_DE',
+        ),
+        123456000000,
+      );
+    });
+  });
+
+  group('BalanceFormatUtil.formatSatsToBip21InputText', () {
+    test('BTC 초기 표시값에 locale 구분자를 사용한다', () {
+      expect(
+        BalanceFormatUtil.formatSatsToBip21InputText(
+          currentUnit: BitcoinUnit.btc,
+          initialAmountSats: 123456000,
+          localeName: 'en_US',
+        ),
+        '1.23456',
+      );
+      expect(
+        BalanceFormatUtil.formatSatsToBip21InputText(
+          currentUnit: BitcoinUnit.btc,
+          initialAmountSats: 123456000,
+          localeName: 'de_DE',
+        ),
+        '1,23456',
+      );
+      expect(
+        BalanceFormatUtil.formatSatsToBip21InputText(
+          currentUnit: BitcoinUnit.btc,
+          initialAmountSats: 100000000000,
+          localeName: 'de_DE',
+        ),
+        '1.000',
+      );
     });
   });
 

@@ -24,6 +24,19 @@ void main() {
       expect(isSystemLanguageJapanese(), isA<bool>());
     });
 
+    test('normalizeNumberTextForParsing uses locale separators', () {
+      expect(normalizeNumberTextForParsing('1,234.56', localeName: 'en_US'), '1234.56');
+      expect(normalizeNumberTextForParsing('1.234,56', localeName: 'de_DE'), '1234.56');
+    });
+
+    test('normalizeDecimalNumberTextForParsing preserves decimal separator for decimal inputs', () {
+      expect(normalizeDecimalNumberTextForParsing('0,0001', localeName: 'en_US'), '0.0001');
+      expect(normalizeDecimalNumberTextForParsing('1,234', localeName: 'en_US'), '1234');
+      expect(normalizeDecimalNumberTextForParsing('1,2345', localeName: 'en_US'), '1.2345');
+      expect(normalizeDecimalNumberTextForParsing('1.234,56', localeName: 'de_DE'), '1234.56');
+      expect(normalizeDecimalNumberTextForParsing('1,234.56', localeName: 'en_US'), '1234.56');
+    });
+
     test('getSystemLanguageCode should return en for non-Korean locale', () {
       // 이 테스트는 로직을 검증하는 용도입니다.
       // 실제로는 window.locale이 필요하지만, 여기서는 함수가 올바른 값을 반환하는지 확인합니다.
