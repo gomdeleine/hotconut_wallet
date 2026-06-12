@@ -306,7 +306,11 @@ class _BroadcastingScreenState extends State<BroadcastingScreen> {
         }
       } catch (e) {
         vibrateMedium();
-        showAlertDialog(context: context, content: t.alert.error_tx.not_parsed(error: e));
+        showAlertDialog(
+          context: context,
+          content: t.alert.error_tx.not_parsed(error: e),
+          onClosed: () => Navigator.pop(context),
+        );
       }
 
       _setOverlayLoading(false);
