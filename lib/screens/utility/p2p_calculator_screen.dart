@@ -277,8 +277,12 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
     // "." 입력 시 "0."으로 자동 변환
     if (btcText == '.') {
       btcText = '0.';
+      final formattedText = _formatLocaleDecimalText('0.');
       _isUpdatingController = true;
-      _inputController.value = const TextEditingValue(text: '0.', selection: TextSelection.collapsed(offset: 2));
+      _inputController.value = TextEditingValue(
+        text: formattedText,
+        selection: TextSelection.collapsed(offset: formattedText.length),
+      );
       _isUpdatingController = false;
       _viewModel.setInputAmount(0);
       return;
@@ -332,11 +336,11 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
     final formattedInt = intVal.toThousandsSeparatedString();
 
     if (hasDotOnly) {
-      return '$formattedInt.';
+      return '$formattedInt${getNumberDecimalSeparator()}';
     } else if (decPart.isEmpty) {
       return formattedInt;
     } else {
-      return '$formattedInt.$decPart';
+      return '$formattedInt${getNumberDecimalSeparator()}$decPart';
     }
   }
 
@@ -572,9 +576,10 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
     if (!isBtcInput) {
       return value.replaceAll(RegExp(r'[^0-9]'), '');
     } else {
+      final normalizedValue = normalizeNumberTextForParsing(value);
       final buffer = StringBuffer();
       bool dotSeen = false;
-      for (final ch in value.split('')) {
+      for (final ch in normalizedValue.split('')) {
         if (ch == '.' && !dotSeen) {
           buffer.write('.');
           dotSeen = true;
@@ -1351,7 +1356,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
                             placeholderText: effectivePlaceholder,
                             textInputFormatter:
                                 postfix == t.btc
-                                    ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))]
+                                    ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))]
                                     : [FilteringTextInputFormatter.digitsOnly],
                             onChanged: _handleAmountInputChanged,
                             textInputType:
@@ -1631,7 +1636,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
       _viewModel.setPremiumRate(newPremium);
       _updateResultOnPremiumChange();
     } else if (_inputFocusNode.hasFocus) {
-      final currentText = _inputController.text.replaceAll(RegExp(r'[^0-9.]'), '');
+      final currentText = normalizeNumberTextForParsing(_inputController.text);
 
       if (_viewModel.inputAssetType == InputAssetType.fiat) {
         final currentValue = int.tryParse(currentText) ?? 0;
@@ -1668,10 +1673,10 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
       switch (_viewModel.fiatCode) {
         case FiatCode.KRW:
           return [
-            {'label': '+10,000', 'value': '10000'},
-            {'label': '+50,000', 'value': '50000'},
-            {'label': '+100,000', 'value': '100000'},
-            {'label': '+500,000', 'value': '500000'},
+            {'label': '+${10000.toThousandsSeparatedString()}', 'value': '10000'},
+            {'label': '+${50000.toThousandsSeparatedString()}', 'value': '50000'},
+            {'label': '+${100000.toThousandsSeparatedString()}', 'value': '100000'},
+            {'label': '+${500000.toThousandsSeparatedString()}', 'value': '500000'},
           ];
         case FiatCode.USD:
           return [
@@ -1682,27 +1687,27 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
           ];
         case FiatCode.JPY:
           return [
-            {'label': '+1,000', 'value': '1000'},
-            {'label': '+5,000', 'value': '5000'},
-            {'label': '+10,000', 'value': '10000'},
-            {'label': '+50,000', 'value': '50000'},
+            {'label': '+${1000.toThousandsSeparatedString()}', 'value': '1000'},
+            {'label': '+${5000.toThousandsSeparatedString()}', 'value': '5000'},
+            {'label': '+${10000.toThousandsSeparatedString()}', 'value': '10000'},
+            {'label': '+${50000.toThousandsSeparatedString()}', 'value': '50000'},
           ];
       }
     } else {
       // BTC/Sats 입력
       if (_viewModel.currentUnit.isBasedOnSatoshi) {
         return [
-          {'label': '+10,000', 'value': '10000'},
-          {'label': '+50,000', 'value': '50000'},
-          {'label': '+100,000', 'value': '100000'},
-          {'label': '+500,000', 'value': '500000'},
+          {'label': '+${10000.toThousandsSeparatedString()}', 'value': '10000'},
+          {'label': '+${50000.toThousandsSeparatedString()}', 'value': '50000'},
+          {'label': '+${100000.toThousandsSeparatedString()}', 'value': '100000'},
+          {'label': '+${500000.toThousandsSeparatedString()}', 'value': '500000'},
         ];
       } else {
         return [
-          {'label': '+0.0001', 'value': '0.0001'},
-          {'label': '+0.0005', 'value': '0.0005'},
-          {'label': '+0.001', 'value': '0.001'},
-          {'label': '+0.005', 'value': '0.005'},
+          {'label': '+${_formatLocaleDecimalText('0.0001')}', 'value': '0.0001'},
+          {'label': '+${_formatLocaleDecimalText('0.0005')}', 'value': '0.0005'},
+          {'label': '+${_formatLocaleDecimalText('0.001')}', 'value': '0.001'},
+          {'label': '+${_formatLocaleDecimalText('0.005')}', 'value': '0.005'},
         ];
       }
     }
