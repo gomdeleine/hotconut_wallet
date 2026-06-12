@@ -12,6 +12,7 @@ import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
 import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
 import 'package:coconut_wallet/providers/send_info_provider.dart';
 import 'package:coconut_wallet/utils/fee_rate_mixin.dart';
+import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/providers/wallet_provider.dart';
 import 'package:coconut_wallet/repository/realm/address_repository.dart';
 import 'package:coconut_wallet/utils/logger.dart';
@@ -356,7 +357,7 @@ class UtxoSplitViewModel extends ChangeNotifier with FeeRateMixin {
   }
 
   double get feeRate {
-    final feeRateText = feeRateController.text;
+    final feeRateText = normalizeDecimalNumberTextForParsing(feeRateController.text);
     return double.tryParse(feeRateText) ?? 0.0;
   }
 
@@ -501,7 +502,7 @@ class UtxoSplitViewModel extends ChangeNotifier with FeeRateMixin {
   // --- Network ---
   Future<bool> refreshRecommendedFees() async {
     return await fetchRecommendedFees(
-      currentFeeRateText: feeRateController.text,
+      currentFeeRateText: normalizeDecimalNumberTextForParsing(feeRateController.text),
       onDefaultFeeRateSet: (text) {
         feeRateController.text = text;
         _splitBuilder.feeRate = double.parse(text);
@@ -814,7 +815,9 @@ class UtxoSplitViewModel extends ChangeNotifier with FeeRateMixin {
   }
 
   void removeTrailingDotInFeeRate() {
-    feeRateController.text = removeTrailingDotInFeeRateText(feeRateController.text);
+    feeRateController.text = removeTrailingDotInFeeRateText(
+      normalizeDecimalNumberTextForParsing(feeRateController.text),
+    );
   }
 
   void restoreFeeRateIfZero() {

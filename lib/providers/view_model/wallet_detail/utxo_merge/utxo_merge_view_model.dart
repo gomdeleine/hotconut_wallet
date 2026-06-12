@@ -429,7 +429,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   }
 
   void removeTrailingDotInFeeRate() {
-    feeRateController.text = removeTrailingDotInFeeRateText(feeRateController.text);
+    feeRateController.text = removeTrailingDotInFeeRateText(feeRateInput);
   }
 
   void setFeeRateFromRecommendation(double sats) {
@@ -439,7 +439,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
 
   Future<bool> refreshRecommendedFees() async {
     return fetchRecommendedFees(
-      currentFeeRateText: feeRateController.text,
+      currentFeeRateText: feeRateInput,
       onDefaultFeeRateSet: (text) => feeRateController.text = text,
     );
   }
@@ -479,7 +479,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
     );
   }
 
-  String get feeRateInput => feeRateController.text.trim();
+  String get feeRateInput => normalizeDecimalNumberTextForParsing(feeRateController.text.trim());
 
   bool get canPrepareMergeTransaction {
     return _currentStep == UtxoMergeStep.selectReceiveAddress &&
