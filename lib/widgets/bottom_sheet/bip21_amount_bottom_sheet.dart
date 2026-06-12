@@ -1,8 +1,8 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
+import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/utils/text_field_filter_util.dart';
 import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
 import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
@@ -45,10 +45,14 @@ class Bip21AmountBottomSheet extends StatefulWidget {
 class _Bip21AmountBottomSheetState extends State<Bip21AmountBottomSheet> {
   final TextEditingController _amountController = TextEditingController();
   final FocusNode _amountFocusNode = FocusNode();
+  late final String _localeName;
   late final String _initialAmountText;
 
   int? get _amountInSats {
-    final rawText = _amountController.text.trim().replaceAll(',', '');
+    final rawText =
+        widget.currentUnit.isBtcUnit
+            ? normalizeNumberTextForParsing(_amountController.text, localeName: _localeName)
+            : _amountController.text.trim().replaceAll(RegExp(r'[^0-9]'), '');
     if (rawText.isEmpty) return null;
 
     final amount = double.tryParse(rawText);
@@ -61,6 +65,7 @@ class _Bip21AmountBottomSheetState extends State<Bip21AmountBottomSheet> {
   @override
   void initState() {
     super.initState();
+    _localeName = getNumberFormatLocaleName();
     _initialAmountText = _buildInitialAmountText();
     _amountController.text = _initialAmountText;
     _amountController.addListener(_onFieldChanged);
@@ -68,29 +73,11 @@ class _Bip21AmountBottomSheetState extends State<Bip21AmountBottomSheet> {
   }
 
   String _buildInitialAmountText() {
-    final initialAmountSats = widget.initialAmountSats;
-    if (initialAmountSats == null) return '';
-
-    if (widget.currentUnit.isBtcUnit) {
-      return _formatInitialBtcAmountText(initialAmountSats);
-    }
-
-    return initialAmountSats.toThousandsSeparatedString();
-  }
-
-  String _formatInitialBtcAmountText(int amountSats) {
-    final rawBtcText = UnitUtil.convertSatoshiToBitcoinString(amountSats);
-    final normalizedBtcText = rawBtcText.replaceFirst(RegExp(r'0+$'), '').replaceFirst(RegExp(r'\.$'), '');
-
-    final parts = normalizedBtcText.split('.');
-    final integerPart = parts[0].isEmpty ? '0' : parts[0];
-    final formattedIntegerPart = int.parse(integerPart).toThousandsSeparatedString();
-
-    if (parts.length == 1) {
-      return formattedIntegerPart;
-    }
-
-    return '$formattedIntegerPart.${parts[1]}';
+    return BalanceFormatUtil.formatSatsToBip21InputText(
+      currentUnit: widget.currentUnit,
+      initialAmountSats: widget.initialAmountSats,
+      localeName: _localeName,
+    );
   }
 
   @override
@@ -150,14 +137,10 @@ class _Bip21AmountBottomSheetState extends State<Bip21AmountBottomSheet> {
 
   List<TextInputFormatter> _buildInputFormatters() {
     if (widget.currentUnit.isBtcUnit) {
-      return [
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
-        SingleDotInputFormatter(),
-        const BtcAmountInputFormatter(),
-      ];
+      return [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')), BtcAmountInputFormatter(localeName: _localeName)];
     }
 
-    return [FilteringTextInputFormatter.digitsOnly, const SatoshiAmountInputFormatter()];
+    return [FilteringTextInputFormatter.digitsOnly, SatoshiAmountInputFormatter(localeName: _localeName)];
   }
 
   @override
@@ -205,16 +188,5 @@ class _Bip21AmountBottomSheetState extends State<Bip21AmountBottomSheet> {
         ],
       ),
     );
-  }
-}
-
-class SingleDotInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if ('.'.allMatches(newValue.text).length > 1) {
-      return oldValue;
-    }
-
-    return newValue;
   }
 }

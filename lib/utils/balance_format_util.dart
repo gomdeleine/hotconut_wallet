@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
+import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:decimal/decimal.dart';
 
 class UnitUtil {
@@ -22,7 +23,8 @@ class UnitUtil {
 class BalanceFormatUtil {
   /// 사용자 친화적 형식의 비트코인 잔액 보이기
   /// 예) 1 satoshi -> 0.0000 0001
-  static String formatSatoshiToReadableBitcoin(int satoshi, {bool forceEightDecimals = false}) {
+  static String formatSatoshiToReadableBitcoin(int satoshi, {bool forceEightDecimals = false, String? localeName}) {
+    final decimalSeparator = getNumberDecimalSeparator(localeName: localeName);
     double toBitcoin = UnitUtil.convertSatoshiToBitcoin(satoshi);
 
     String bitcoinString;
@@ -40,7 +42,8 @@ class BalanceFormatUtil {
     String integerPart = parts[0];
     String decimalPart = parts.length > 1 ? parts[1] : '';
 
-    final integerPartFormatted = integerPart == '-0' ? '-0' : int.parse(integerPart).toThousandsSeparatedString();
+    final integerPartFormatted =
+        integerPart == '-0' ? '-0' : int.parse(integerPart).toThousandsSeparatedString(localeName: localeName);
 
     String decimalPartGrouped = '';
     if (decimalPart.isNotEmpty) {
@@ -57,50 +60,64 @@ class BalanceFormatUtil {
       return '0';
     }
 
-    return decimalPartGrouped.isNotEmpty ? '$integerPartFormatted.$decimalPartGrouped' : integerPartFormatted;
+    return decimalPartGrouped.isNotEmpty
+        ? '$integerPartFormatted$decimalSeparator$decimalPartGrouped'
+        : integerPartFormatted;
   }
 
   /// BIP21/입력용 BTC 텍스트 포맷팅
   ///
   /// - 항상 소수부는 최대 8자리까지 표현
   /// - 소수부: trailing zero 제거
-  /// - 정수부: 천단위 콤마
-  static String formatSatoshiToBtcInputText(int satoshi) {
+  /// - 정수부: locale 천단위 구분자
+  static String formatSatoshiToBtcInputText(int satoshi, {String? localeName}) {
+    final decimalSeparator = getNumberDecimalSeparator(localeName: localeName);
     final rawBtcText = UnitUtil.convertSatoshiToBitcoinString(satoshi); // 8자리 고정 문자열
     final normalizedBtcText = rawBtcText.replaceFirst(RegExp(r'0+$'), '').replaceFirst(RegExp(r'\.$'), '');
 
     final parts = normalizedBtcText.split('.');
     final integerPart = parts[0].isEmpty ? '0' : parts[0];
-    final formattedIntegerPart = int.parse(integerPart).toThousandsSeparatedString();
+    final formattedIntegerPart = int.parse(integerPart).toThousandsSeparatedString(localeName: localeName);
 
     if (parts.length == 1) {
       return formattedIntegerPart;
     }
 
-    return '$formattedIntegerPart.${parts[1]}';
+    return '$formattedIntegerPart$decimalSeparator${parts[1]}';
   }
 
   /// BIP21에서 사용되는 초기 입력 텍스트(표시 형식 포함)
-  static String formatSatsToBip21InputText({required BitcoinUnit currentUnit, required int? initialAmountSats}) {
+  static String formatSatsToBip21InputText({
+    required BitcoinUnit currentUnit,
+    required int? initialAmountSats,
+    String? localeName,
+  }) {
     if (initialAmountSats == null) return '';
 
     if (currentUnit.isBtcUnit) {
-      return formatSatoshiToBtcInputText(initialAmountSats);
+      return formatSatoshiToBtcInputText(initialAmountSats, localeName: localeName);
     }
 
-    return initialAmountSats.toThousandsSeparatedString();
+    return initialAmountSats.toThousandsSeparatedString(localeName: localeName);
   }
 
   /// BIP21 입력 문자열(회계 표기로 `,` 포함)을 sats(int)로 변환
-  static int? parseBip21AmountTextToSats({required BitcoinUnit currentUnit, required String inputText}) {
-    final rawText = inputText.trim().replaceAll(',', '');
-    if (rawText.isEmpty) return null;
-
+  static int? parseBip21AmountTextToSats({
+    required BitcoinUnit currentUnit,
+    required String inputText,
+    String? localeName,
+  }) {
     if (currentUnit.isBtcUnit) {
+      final rawText = normalizeNumberTextForParsing(inputText, localeName: localeName);
+      if (rawText.isEmpty) return null;
+
       final amount = double.tryParse(rawText);
       if (amount == null) return null;
       return currentUnit.toSatoshi(amount);
     }
+
+    final rawText = inputText.trim().replaceAll(RegExp(r'[^0-9]'), '');
+    if (rawText.isEmpty) return null;
 
     return int.tryParse(rawText);
   }

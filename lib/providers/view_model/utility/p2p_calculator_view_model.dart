@@ -207,15 +207,15 @@ class P2PCalculatorViewModel extends ChangeNotifier {
     if (_inputAssetType == InputAssetType.fiat) {
       switch (_fiatCode) {
         case FiatCode.KRW:
-          return '50,000';
+          return 50000.toThousandsSeparatedString();
         case FiatCode.USD:
           return '50';
         case FiatCode.JPY:
-          return '5,000';
+          return 5000.toThousandsSeparatedString();
       }
     } else {
       if (_currentUnit.isBasedOnSatoshi) {
-        return '50,000';
+        return 50000.toThousandsSeparatedString();
       } else {
         return '0.0005';
       }
