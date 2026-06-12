@@ -5,6 +5,7 @@ import 'package:coconut_lib/coconut_lib.dart';
 import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/enums/utxo_merge_enums.dart';
+import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/extensions/widget_animation_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/utxo/utxo_state.dart';
@@ -16,7 +17,6 @@ import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
 import 'package:coconut_wallet/providers/wallet_provider.dart';
 import 'package:coconut_wallet/constants/dust_constants.dart';
 import 'package:coconut_wallet/screens/common/tag_select_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/send/refactor/send_screen.dart';
 import 'package:coconut_wallet/screens/wallet_detail/utxo_overview/utxo_bucket_card_row.dart';
 import 'package:coconut_wallet/utils/address_util.dart';
 import 'package:coconut_wallet/utils/address_scan_util.dart';
@@ -56,12 +56,9 @@ class UtxoMergeScreen extends StatefulWidget {
   State<UtxoMergeScreen> createState() => _UtxoMergeScreenState();
 }
 
-class _UtxoMergeScreenState extends State<UtxoMergeScreen>
-    with SingleTickerProviderStateMixin {
+class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProviderStateMixin {
   static const Duration _headerAnimationDuration = Duration(milliseconds: 800);
-  static const Duration _optionPickerAnimationDuration = Duration(
-    milliseconds: 600,
-  );
+  static const Duration _optionPickerAnimationDuration = Duration(milliseconds: 600);
   static const Duration _newestPickerRevealDelay = Duration(milliseconds: 1500);
   static const Duration _autoOpenBottomSheetDelay = Duration(milliseconds: 0);
 
@@ -84,10 +81,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
   @override
   void initState() {
     super.initState();
-    _receiveAddressSummaryLottieController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
+    _receiveAddressSummaryLottieController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _viewModel = UtxoMergeViewModel(
       widget.id,
       context.read<UtxoRepository>(),
@@ -239,11 +233,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
   Widget _buildMergeContent(BuildContext context) {
     return Selector<
       UtxoMergeViewModel,
-      ({
-        bool hasUnexpectedError,
-        bool isMergeButtonVisible,
-        UtxoMergeStep currentStep,
-      })
+      ({bool hasUnexpectedError, bool isMergeButtonVisible, UtxoMergeStep currentStep})
     >(
       selector:
           (context, viewModel) => (
@@ -255,10 +245,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
         _scheduleHeaderAnimation(selector.currentStep);
         _scheduleOptionPickerAnimation(selector.currentStep);
         return SizedBox(
-          height:
-              MediaQuery.sizeOf(context).height -
-              MediaQuery.paddingOf(context).top -
-              kToolbarHeight,
+          height: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).top - kToolbarHeight,
           child: Stack(
             children: [
               SingleChildScrollView(
@@ -267,17 +254,12 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
                     16,
                     selector.hasUnexpectedError
                         ? 100
-                        : (selector.currentStep ==
-                                UtxoMergeStep.selectReceiveAddress
-                            ? 8
-                            : 32),
+                        : (selector.currentStep == UtxoMergeStep.selectReceiveAddress ? 8 : 32),
                     16,
                     selector.isMergeButtonVisible ? 160 : 16,
                   ),
                   child: MediaQuery(
-                    data: MediaQuery.of(
-                      context,
-                    ).copyWith(textScaler: const TextScaler.linear(1.0)),
+                    data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -302,10 +284,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
 
   Widget _buildUnexpectedErrorTooltip() {
     return Selector<UtxoMergeViewModel, ({bool hasUnexpectedError})>(
-      selector:
-          (context, viewModel) => (
-            hasUnexpectedError: viewModel.hasUnexpectedError,
-          ),
+      selector: (context, viewModel) => (hasUnexpectedError: viewModel.hasUnexpectedError),
       builder: (context, selector, child) {
         return Positioned(
           top: 16,
@@ -315,14 +294,11 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
             duration: const Duration(milliseconds: 300),
             switchInCurve: Curves.easeOut,
             switchOutCurve: Curves.easeIn,
-            transitionBuilder:
-                (child, animation) =>
-                    FadeTransition(opacity: animation, child: child),
+            transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
             child: ErrorTooltip(
               key: const ValueKey('unexpected-error-tooltip'),
               isShown: selector.hasUnexpectedError,
-              errorMessage:
-                  '${t.errors.unexpected}\n${_viewModel.unexpectedErrorMessage}',
+              errorMessage: '${t.errors.unexpected}\n${_viewModel.unexpectedErrorMessage}',
             ),
           ),
         );
@@ -345,8 +321,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
             isMergeButtonVisible: viewModel.isMergeButtonVisible,
             isMergeButtonEnabled: viewModel.isMergeButtonEnabled,
             summaryState: viewModel.mergeState,
-            mergeRecommendationLevelAndInfo:
-                viewModel.mergeRecommendationLevelAndInfo,
+            mergeRecommendationLevelAndInfo: viewModel.mergeRecommendationLevelAndInfo,
           ),
       builder: (context, ctaState, child) {
         if (!ctaState.isMergeButtonVisible) {
@@ -390,8 +365,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
       case MergeState.ready:
         if (mergeRecommendationLevelAndInfo != null) {
           message = mergeRecommendationLevelAndInfo.message;
-          color = switch (mergeRecommendationLevelAndInfo
-              .mergeRecommendationLevel) {
+          color = switch (mergeRecommendationLevelAndInfo.mergeRecommendationLevel) {
             MergeRecommendationLevel.discouraged => CoconutColors.hotPink,
             MergeRecommendationLevel.neutral => CoconutColors.yellow,
             MergeRecommendationLevel.recommended => CoconutColors.white,
@@ -408,14 +382,8 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
     }
 
     return MediaQuery(
-      data: MediaQuery.of(
-        context,
-      ).copyWith(textScaler: const TextScaler.linear(1.0)),
-      child: Text(
-        message,
-        style: CoconutTypography.body3_12.setColor(color),
-        textAlign: TextAlign.center,
-      ),
+      data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
+      child: Text(message, style: CoconutTypography.body3_12.setColor(color), textAlign: TextAlign.center),
     );
   }
 
@@ -434,9 +402,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
       Navigator.pushNamed(
         context,
         '/send-confirm',
-        arguments: {
-          "currentUnit": context.read<PreferenceProvider>().currentUnit,
-        },
+        arguments: {"currentUnit": context.read<PreferenceProvider>().currentUnit},
       );
     } finally {
       if (mounted && context.loaderOverlay.visible) {
@@ -511,24 +477,14 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildTransactionSummaryCard(),
-          Selector<
-            UtxoMergeViewModel,
-            ({bool hasDustUtxosInInputs, UtxoMergeMethod currentMethod})
-          >(
-            selector:
-                (_, vm) => (
-                  hasDustUtxosInInputs: vm.hasDustUtxosInInputs,
-                  currentMethod: vm.currentMethod,
-                ),
+          Selector<UtxoMergeViewModel, ({bool hasDustUtxosInInputs, UtxoMergeMethod currentMethod})>(
+            selector: (_, vm) => (hasDustUtxosInInputs: vm.hasDustUtxosInInputs, currentMethod: vm.currentMethod),
             builder: (context, value, _) {
-              if (!value.hasDustUtxosInInputs ||
-                  value.currentMethod == UtxoMergeMethod.smallAmounts) {
+              if (!value.hasDustUtxosInInputs || value.currentMethod == UtxoMergeMethod.smallAmounts) {
                 return const SizedBox.shrink();
               }
 
-              return Column(
-                children: [const SizedBox(height: 12), _buildDustWarningRow()],
-              );
+              return Column(children: [const SizedBox(height: 12), _buildDustWarningRow()]);
             },
           ),
           const SizedBox(height: 12),
@@ -575,12 +531,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
   Widget _buildTransactionSummaryCard() {
     return Selector<
       UtxoMergeViewModel,
-      ({
-        UtxoMergeMethod method,
-        MergeState mergeState,
-        String selectedUtxosTotalAmountText,
-        int selectedUtxoCount,
-      })
+      ({UtxoMergeMethod method, MergeState mergeState, String selectedUtxosTotalAmountText, int selectedUtxoCount})
     >(
       selector:
           (_, vm) => (
@@ -593,8 +544,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
         final isPreparing = selector.mergeState == MergeState.preparing;
         final isReady = selector.mergeState == MergeState.ready;
         final isFailed = selector.mergeState == MergeState.failed;
-        final isInputOne =
-            selector.mergeState == MergeState.notEnoughSelectedUtxo;
+        final isInputOne = selector.mergeState == MergeState.notEnoughSelectedUtxo;
         final summaryContent = _buildReceiveAddressSummaryContent(
           method: selector.method,
           selectedUtxoCount: selector.selectedUtxoCount,
@@ -608,17 +558,13 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
           cardKey: const ValueKey('merge-transaction-summary-card'),
           lottieController: _receiveAddressSummaryLottieController,
           onLottieLoaded: (composition) {
-            _receiveAddressSummaryLottieController.duration =
-                composition.duration;
+            _receiveAddressSummaryLottieController.duration = composition.duration;
             if (_displayedHeaderStep == UtxoMergeStep.selectReceiveAddress) {
               if (isReady || isFailed || isInputOne) {
                 _receiveAddressSummaryLottieController.value = 1;
-              } else if (isPreparing &&
-                  !_receiveAddressSummaryLottieController.isAnimating) {
+              } else if (isPreparing && !_receiveAddressSummaryLottieController.isAnimating) {
                 _receiveAddressSummaryLottieController.repeat(
-                  period:
-                      _receiveAddressSummaryLottieController.duration ??
-                      composition.duration,
+                  period: _receiveAddressSummaryLottieController.duration ?? composition.duration,
                 );
               } else if (!isPreparing) {
                 _receiveAddressSummaryLottieController.reset();
@@ -667,10 +613,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
                               'assets/svg/check.svg',
                               width: 12,
                               height: 12,
-                              colorFilter: const ColorFilter.mode(
-                                CoconutColors.white,
-                                BlendMode.srcIn,
-                              ),
+                              colorFilter: const ColorFilter.mode(CoconutColors.white, BlendMode.srcIn),
                             ),
                           )
                           : null,
@@ -678,9 +621,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
                 const SizedBox(width: 8),
                 Text(
                   t.merge_utxos_screen.exclude_dust,
-                  style: CoconutTypography.body3_12.setColor(
-                    CoconutColors.white,
-                  ),
+                  style: CoconutTypography.body3_12.setColor(CoconutColors.white),
                 ),
               ],
             ),
@@ -717,19 +658,13 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
                           'assets/svg/check.svg',
                           width: 14,
                           height: 14,
-                          colorFilter: const ColorFilter.mode(
-                            CoconutColors.white,
-                            BlendMode.srcIn,
-                          ),
+                          colorFilter: const ColorFilter.mode(CoconutColors.white, BlendMode.srcIn),
                         ),
                       )
                       : null,
             ),
             const SizedBox(width: 8),
-            Text(
-              t.merge_utxos_screen.exclude_dust,
-              style: CoconutTypography.body3_12.setColor(CoconutColors.white),
-            ),
+            Text(t.merge_utxos_screen.exclude_dust, style: CoconutTypography.body3_12.setColor(CoconutColors.white)),
           ],
         ),
       ),
@@ -767,9 +702,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
               );
 
       return content.fadeInAnimation(
-        key: ValueKey(
-          'receive-address-summary-text-fade-${_viewModel.receiveAddressSummaryAnimationNonce}',
-        ),
+        key: ValueKey('receive-address-summary-text-fade-${_viewModel.receiveAddressSummaryAnimationNonce}'),
         duration: const Duration(milliseconds: 260),
       );
     }
@@ -791,15 +724,9 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
       text: TextSpan(
         style: CoconutTypography.body1_16_Bold.setColor(CoconutColors.white),
         children: [
-          _buildSelectableSummaryHeadlineSpan(
-            _getSummaryCardHeadlineText(method, selectedUtxoCount),
-          ),
+          _buildSelectableSummaryHeadlineSpan(_getSummaryCardHeadlineText(method, selectedUtxoCount)),
           const TextSpan(text: ','),
-          TextSpan(
-            text: t.merge_utxos_screen.summary_card_total(
-              amount: selectedUtxosTotalAmountText,
-            ),
-          ),
+          TextSpan(text: t.merge_utxos_screen.summary_card_total(amount: selectedUtxosTotalAmountText)),
           TextSpan(text: _summaryCardDestinationText),
         ],
       ),
@@ -816,15 +743,9 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
       text: TextSpan(
         style: CoconutTypography.body1_16_Bold.setColor(CoconutColors.white),
         children: [
-          _buildSelectableSummaryHeadlineSpan(
-            _getSummaryCardHeadlineText(method, selectedUtxoCount),
-          ),
+          _buildSelectableSummaryHeadlineSpan(_getSummaryCardHeadlineText(method, selectedUtxoCount)),
           const TextSpan(text: ','),
-          TextSpan(
-            text: t.merge_utxos_screen.summary_card_total(
-              amount: selectedUtxosTotalAmountText,
-            ),
-          ),
+          TextSpan(text: t.merge_utxos_screen.summary_card_total(amount: selectedUtxosTotalAmountText)),
           TextSpan(text: _summaryCardDestinationText),
         ],
       ),
@@ -836,10 +757,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
       text: text,
       style: TextStyle(
         decoration: TextDecoration.underline,
-        color:
-            _isAmountTextHighlighted
-                ? CoconutColors.gray350
-                : CoconutColors.white,
+        color: _isAmountTextHighlighted ? CoconutColors.gray350 : CoconutColors.white,
       ),
       recognizer:
           TapGestureRecognizer()
@@ -872,21 +790,17 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
   String get _summaryCardDestinationText {
     if (_viewModel.isDirectInputReceiveAddressWarning) {
       return t.merge_utxos_screen.summary_card_destination(
-        destination:
-            t.merge_utxos_screen.summary_card_to_unowned_address_destination,
+        destination: t.merge_utxos_screen.summary_card_to_unowned_address_destination,
       );
     }
     final walletName = _viewModel.selectedReceiveAddressWalletName;
     if (walletName != null && walletName.isNotEmpty) {
       return t.merge_utxos_screen.summary_card_destination(
-        destination: t.merge_utxos_screen.summary_card_to_wallet_destination(
-          wallet_name: walletName,
-        ),
+        destination: t.merge_utxos_screen.summary_card_to_wallet_destination(wallet_name: walletName),
       );
     }
     return t.merge_utxos_screen.summary_card_destination(
-      destination:
-          t.merge_utxos_screen.summary_card_to_selected_address_destination,
+      destination: t.merge_utxos_screen.summary_card_to_selected_address_destination,
     );
   }
 
@@ -900,10 +814,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
         return '${_formatCustomAmountText('0.0001')} BTC';
       case UtxoAmountRange.custom:
         final customAmount = _viewModel.customAmountRangeText ?? '';
-        final formattedAmount =
-            customAmount.isEmpty
-                ? customAmount
-                : '${_formatCustomAmountText(customAmount)} BTC';
+        final formattedAmount = customAmount.isEmpty ? customAmount : '${_formatCustomAmountText(customAmount)} BTC';
         return formattedAmount;
     }
   }
@@ -912,16 +823,10 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
     switch (method) {
       case UtxoMergeMethod.smallAmounts:
         return _viewModel.isCustomAmountLessThan
-            ? t.merge_utxos_screen.summary_card_headline_under(
-              amount: _summaryAmountThresholdText,
-            )
-            : t.merge_utxos_screen.summary_card_headline_or_less(
-              amount: _summaryAmountThresholdText,
-            );
+            ? t.merge_utxos_screen.summary_card_headline_under(amount: _summaryAmountThresholdText)
+            : t.merge_utxos_screen.summary_card_headline_or_less(amount: _summaryAmountThresholdText);
       case UtxoMergeMethod.sameTag:
-        return t.merge_utxos_screen.selected_tag_title(
-          name: _viewModel.effectiveSelectedTagName ?? '',
-        );
+        return t.merge_utxos_screen.selected_tag_title(name: _viewModel.effectiveSelectedTagName ?? '');
       case UtxoMergeMethod.sameAddress:
         return t.merge_utxos_screen.reused_address;
     }
@@ -939,28 +844,19 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
           Container(
             width: 132,
             height: 16,
-            decoration: BoxDecoration(
-              color: CoconutColors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
+            decoration: BoxDecoration(color: CoconutColors.white, borderRadius: BorderRadius.circular(4)),
           ),
           const SizedBox(height: 6),
           Container(
             width: 120,
             height: 16,
-            decoration: BoxDecoration(
-              color: CoconutColors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
+            decoration: BoxDecoration(color: CoconutColors.white, borderRadius: BorderRadius.circular(4)),
           ),
           const SizedBox(height: 6),
           Container(
             width: 168,
             height: 16,
-            decoration: BoxDecoration(
-              color: CoconutColors.white,
-              borderRadius: BorderRadius.circular(4),
-            ),
+            decoration: BoxDecoration(color: CoconutColors.white, borderRadius: BorderRadius.circular(4)),
           ),
         ],
       ),
@@ -982,9 +878,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
       case UtxoMergeMethod.sameAddress:
         return t.merge_utxos_screen.reused_address;
       case UtxoMergeMethod.sameTag:
-        return t.merge_utxos_screen.selected_tag_title(
-          name: _viewModel.effectiveSelectedTagName ?? '',
-        );
+        return t.merge_utxos_screen.selected_tag_title(name: _viewModel.effectiveSelectedTagName ?? '');
     }
   }
 
@@ -997,13 +891,8 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
 
     final reusedAddresses = _viewModel.reusedAddressesInWallet;
     final isEditingNotifier = ValueNotifier(false);
-    final initialSelectedUtxoIds =
-        _viewModel.selectedUtxosForCurrentMethod
-            .map((utxo) => utxo.utxoId)
-            .toSet();
-    final draftSelectedUtxoIdsNotifier = ValueNotifier<Set<String>>(
-      initialSelectedUtxoIds,
-    );
+    final initialSelectedUtxoIds = _viewModel.selectedUtxosForCurrentMethod.map((utxo) => utxo.utxoId).toSet();
+    final draftSelectedUtxoIdsNotifier = ValueNotifier<Set<String>>(initialSelectedUtxoIds);
     final method = _viewModel.currentMethod;
 
     try {
@@ -1023,15 +912,11 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
               mergeMethod: method,
               amountRangeText: _currentAmountRangeText,
               selectedTagInlineWidgets:
-                  method == UtxoMergeMethod.sameTag
-                      ? _buildSelectedTagInlineWidgets(context)
-                      : const [],
+                  method == UtxoMergeMethod.sameTag ? _buildSelectedTagInlineWidgets(context) : const [],
               isEditingListenable: isEditingNotifier,
               initialSelectedUtxoIds: initialSelectedUtxoIds,
               onSelectionChanged: (selectedUtxoIds) {
-                draftSelectedUtxoIdsNotifier.value = Set<String>.from(
-                  selectedUtxoIds,
-                );
+                draftSelectedUtxoIdsNotifier.value = Set<String>.from(selectedUtxoIds);
               },
               addressType: _viewModel.addressType,
             ),
@@ -1040,20 +925,14 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
             valueListenable: isEditingNotifier,
             builder:
                 (context, isEditing, _) => MediaQuery(
-                  data: MediaQuery.of(
-                    context,
-                  ).copyWith(textScaler: const TextScaler.linear(1.0)),
+                  data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                   child: CoconutUnderlinedButton(
                     text: isEditing ? t.done : t.edit,
                     onTap: () {
                       if (isEditing) {
-                        final committedSelectedUtxoIds = Set<String>.from(
-                          draftSelectedUtxoIdsNotifier.value,
-                        );
+                        final committedSelectedUtxoIds = Set<String>.from(draftSelectedUtxoIdsNotifier.value);
                         setState(() {
-                          _viewModel.commitEditedSelectedUtxoIds(
-                            committedSelectedUtxoIds,
-                          );
+                          _viewModel.commitEditedSelectedUtxoIds(committedSelectedUtxoIds);
                         });
                         unawaited(_viewModel.prepareMergeTransaction());
                       }
@@ -1075,10 +954,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
   String? _getCurrentMethodText(UtxoMergeMethod? method) {
     switch (method) {
       case UtxoMergeMethod.smallAmounts:
-        return t
-            .merge_utxos_screen
-            .merge_method_bottomsheet
-            .merge_small_amounts;
+        return t.merge_utxos_screen.merge_method_bottomsheet.merge_small_amounts;
       case UtxoMergeMethod.sameTag:
         return t.merge_utxos_screen.merge_method_bottomsheet.merge_same_tag;
       case UtxoMergeMethod.sameAddress:
@@ -1088,19 +964,17 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
     }
   }
 
-  String get _currentAmountRangeText =>
-      _amountRangeText(_viewModel.currentAmountRange);
+  String get _currentAmountRangeText => _amountRangeText(_viewModel.currentAmountRange);
   String _amountRangeText(UtxoAmountRange range) {
     switch (range) {
       case UtxoAmountRange.below001:
-        return t.merge_utxos_screen.amount_range_bottomsheet.below_001;
+        return _localizedAmountRangeText(t.merge_utxos_screen.amount_range_bottomsheet.below_001, '0.01');
       case UtxoAmountRange.below0001:
-        return t.merge_utxos_screen.amount_range_bottomsheet.below_0001;
+        return _localizedAmountRangeText(t.merge_utxos_screen.amount_range_bottomsheet.below_0001, '0.001');
       case UtxoAmountRange.below00001:
-        return t.merge_utxos_screen.amount_range_bottomsheet.below_00001;
+        return _localizedAmountRangeText(t.merge_utxos_screen.amount_range_bottomsheet.below_00001, '0.0001');
       case UtxoAmountRange.custom:
-        if (_viewModel.customAmountRangeText != null &&
-            _viewModel.customAmountRangeText!.isNotEmpty) {
+        if (_viewModel.customAmountRangeText != null && _viewModel.customAmountRangeText!.isNotEmpty) {
           return '${_viewModel.isCustomAmountLessThan ? '${t.merge_utxos_screen.amount_range_bottomsheet.less_than} ' : ''}${_formatCustomAmountText(_viewModel.customAmountRangeText!)}${t.btc} ${_viewModel.isCustomAmountLessThan ? '' : ' ${t.merge_utxos_screen.amount_range_bottomsheet.or_less}'}';
         }
         return t.merge_utxos_screen.amount_range_bottomsheet.custom;
@@ -1108,12 +982,17 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
   }
 
   String _formatCustomAmountText(String value) {
-    final parts = value.split('.');
-    if (parts.length != 2) return value;
+    final normalizedValue = normalizeDecimalNumberTextForParsing(value);
+    final parts = normalizedValue.split('.');
 
-    final integerPart = parts.first;
+    final integerPart = parts.first.isEmpty ? '0' : parts.first;
+    final formattedIntegerPart = int.tryParse(integerPart)?.toThousandsSeparatedString() ?? integerPart;
+    if (parts.length != 2) return formattedIntegerPart;
+
     final decimalPart = parts.last;
-    if (decimalPart.isEmpty) return value;
+    if (decimalPart.isEmpty) {
+      return '$formattedIntegerPart${getNumberDecimalSeparator()}';
+    }
 
     final chunks = <String>[];
     for (var i = 0; i < decimalPart.length; i += 4) {
@@ -1121,26 +1000,21 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
       chunks.add(decimalPart.substring(i, end));
     }
 
-    return '$integerPart${getNumberDecimalSeparator()}${chunks.join(' ')}';
+    return '$formattedIntegerPart${getNumberDecimalSeparator()}${chunks.join(' ')}';
+  }
+
+  String _localizedAmountRangeText(String text, String amount) {
+    return text.replaceFirst(amount, _formatCustomAmountText(amount));
   }
 
   String? _amountRangeDescription(UtxoAmountRange range) {
     switch (range) {
       case UtxoAmountRange.below001:
-        return t
-            .merge_utxos_screen
-            .amount_range_bottomsheet
-            .below_001_description;
+        return t.merge_utxos_screen.amount_range_bottomsheet.below_001_description;
       case UtxoAmountRange.below0001:
-        return t
-            .merge_utxos_screen
-            .amount_range_bottomsheet
-            .below_0001_description;
+        return t.merge_utxos_screen.amount_range_bottomsheet.below_0001_description;
       case UtxoAmountRange.below00001:
-        return t
-            .merge_utxos_screen
-            .amount_range_bottomsheet
-            .below_00001_description;
+        return t.merge_utxos_screen.amount_range_bottomsheet.below_00001_description;
       case UtxoAmountRange.custom:
         return null;
     }
@@ -1152,20 +1026,14 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
         _visibleOptionPickerSteps.indexed.map(((int, UtxoMergeStep) entry) {
           final index = entry.$1;
           final step = entry.$2;
-          final picker = _buildStepOptionPicker(
-            context,
-            step,
-            _viewModel.currentMethod,
-          );
+          final picker = _buildStepOptionPicker(context, step, _viewModel.currentMethod);
           final isNewest = step == _displayedOptionPickerStep && index == 0;
 
           if (isNewest) {
             return Padding(
               padding: const EdgeInsets.only(bottom: gapBetweenWidgets),
               child: picker.slideUpAnimation(
-                key: ValueKey(
-                  'merge-picker-in-${step.name}-$_optionPickerAnimationNonce',
-                ),
+                key: ValueKey('merge-picker-in-${step.name}-$_optionPickerAnimationNonce'),
                 duration: _optionPickerAnimationDuration,
                 delay: _newestPickerRevealDelay,
                 offset: const Offset(0, 24),
@@ -1176,20 +1044,12 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
             );
           }
 
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: index == 0 ? 0 : gapBetweenWidgets,
-            ),
-            child: picker,
-          );
+          return Padding(padding: EdgeInsets.only(bottom: index == 0 ? 0 : gapBetweenWidgets), child: picker);
         }).toList();
 
     if (_viewModel.currentStep == UtxoMergeStep.selectReceiveAddress) {
       pickerWidgets.add(
-        Padding(
-          padding: const EdgeInsets.only(bottom: gapBetweenWidgets),
-          child: _buildEstimatedFeeOptionPicker(),
-        ),
+        Padding(padding: const EdgeInsets.only(bottom: gapBetweenWidgets), child: _buildEstimatedFeeOptionPicker()),
       );
     }
 
@@ -1201,49 +1061,27 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
     );
   }
 
-  Widget _buildStepOptionPicker(
-    BuildContext context,
-    UtxoMergeStep step,
-    UtxoMergeMethod? mergeMethod,
-  ) {
+  Widget _buildStepOptionPicker(BuildContext context, UtxoMergeStep step, UtxoMergeMethod? mergeMethod) {
     return switch (step) {
       UtxoMergeStep.selectMergeMethod => CoconutOptionPicker(
         text: _getCurrentMethodText(mergeMethod),
-        label:
-            _viewModel.currentStep == UtxoMergeStep.selectMergeMethod
-                ? null
-                : t.merge_utxos_screen.merge_method,
+        label: _viewModel.currentStep == UtxoMergeStep.selectMergeMethod ? null : t.merge_utxos_screen.merge_method,
         onTap: _showMergeOptionBottomSheet,
       ),
       UtxoMergeStep.selectAmountRange => CoconutOptionPicker(
         text: _currentAmountRangeText,
-        label:
-            _viewModel.currentStep == UtxoMergeStep.selectAmountRange
-                ? null
-                : t.merge_utxos_screen.amount_range,
+        label: _viewModel.currentStep == UtxoMergeStep.selectAmountRange ? null : t.merge_utxos_screen.amount_range,
         onTap: _showAmountRangeBottomSheet,
         coconutOptionStateEnum:
             _viewModel.hasDustUtxosInInputs && !_viewModel.excludeDustUtxos
                 ? CoconutOptionStateEnum.warning
                 : CoconutOptionStateEnum.normal,
-        guideText:
-            _viewModel.hasDustUtxosInInputs
-                ? t.merge_utxos_screen.dust_warning
-                : null,
-        subWidget:
-            _viewModel.hasDustUtxosInInputs
-                ? _buildDustWarningToggleCompact()
-                : null,
+        guideText: _viewModel.hasDustUtxosInInputs ? t.merge_utxos_screen.dust_warning : null,
+        subWidget: _viewModel.hasDustUtxosInInputs ? _buildDustWarningToggleCompact() : null,
       ),
       UtxoMergeStep.selectTag => CoconutOptionPicker(
-        text:
-            _viewModel.effectiveSelectedTagName == null
-                ? t.merge_utxos_screen.select_tag
-                : '',
-        label:
-            _viewModel.currentStep == UtxoMergeStep.selectTag
-                ? null
-                : t.merge_utxos_screen.selected_tag,
+        text: _viewModel.effectiveSelectedTagName == null ? t.merge_utxos_screen.select_tag : '',
+        label: _viewModel.currentStep == UtxoMergeStep.selectTag ? null : t.merge_utxos_screen.selected_tag,
         onTap: _showTagSelectBottomSheet,
         inlineWidgets: _buildSelectedTagInlineWidgets(context),
         inlineSpacing: 0,
@@ -1259,10 +1097,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
                 : CoconutOptionStateEnum.normal,
         guideText:
             _viewModel.isDirectInputReceiveAddressWarning
-                ? t
-                    .merge_utxos_screen
-                    .receive_address_bottomsheet
-                    .not_your_owned_wallet
+                ? t.merge_utxos_screen.receive_address_bottomsheet.not_your_owned_wallet
                 : null,
       ),
       _ => const SizedBox.shrink(),
@@ -1271,33 +1106,20 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
 
   Widget _buildReceiveAddressOptionText() {
     final address = _viewModel.selectedReceiveAddress ?? '';
-    final baseStyle = CoconutTypography.body1_16_Number.setColor(
-      CoconutColors.white,
-    );
-    final boldStyle = CoconutTypography.body1_16_NumberBold.setColor(
-      CoconutColors.white,
-    );
+    final baseStyle = CoconutTypography.body1_16_Number.setColor(CoconutColors.white);
+    final boldStyle = CoconutTypography.body1_16_NumberBold.setColor(CoconutColors.white);
 
-    return _buildHighlightedSegwitAddressText(
-      address: address,
-      baseStyle: baseStyle,
-      highlightedStyle: boldStyle,
-    );
+    return _buildHighlightedSegwitAddressText(address: address, baseStyle: baseStyle, highlightedStyle: boldStyle);
   }
 
   Widget _buildEstimatedFeeOptionPicker() {
-    return Selector<
-      UtxoMergeViewModel,
-      ({bool isFeeRateInputEmpty, String estimatedFeeText, bool isFeeTooHigh})
-    >(
+    return Selector<UtxoMergeViewModel, ({bool isFeeRateInputEmpty, String estimatedFeeText, bool isFeeTooHigh})>(
       selector: (_, vm) {
         final exception = vm.preparedMergeTransactionBuildResult?.exception;
         return (
           isFeeRateInputEmpty: vm.feeRateInput.isEmpty,
           estimatedFeeText: vm.estimatedFeeText,
-          isFeeTooHigh:
-              exception is InsufficientBalanceException ||
-              exception is SendAmountTooLowException,
+          isFeeTooHigh: exception is InsufficientBalanceException || exception is SendAmountTooLowException,
         );
       },
       builder: (context, selector, _) {
@@ -1309,17 +1131,10 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
                   ? t.merge_utxos_screen.fee_rate_input_placeholder
                   : selector.estimatedFeeText,
           label: t.estimated_fee,
-          textColor:
-              shouldShowFeeRatePlaceholder
-                  ? CoconutColors.gray500
-                  : CoconutColors.white,
+          textColor: shouldShowFeeRatePlaceholder ? CoconutColors.gray500 : CoconutColors.white,
           onTap: _showEstimatedFeeBottomSheet,
-          coconutOptionStateEnum:
-              isFeeTooHigh
-                  ? CoconutOptionStateEnum.error
-                  : CoconutOptionStateEnum.normal,
-          guideText:
-              isFeeTooHigh ? t.merge_utxos_screen.exception.fee_too_high : null,
+          coconutOptionStateEnum: isFeeTooHigh ? CoconutOptionStateEnum.error : CoconutOptionStateEnum.normal,
+          guideText: isFeeTooHigh ? t.merge_utxos_screen.exception.fee_too_high : null,
         );
       },
     );
@@ -1346,8 +1161,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen>
         FocusScope.of(context).unfocus();
         Navigator.pop(context);
       },
-      recommendedFeeFetchStatusGetter:
-          () => _viewModel.recommendedFeeFetchStatus,
+      recommendedFeeFetchStatusGetter: () => _viewModel.recommendedFeeFetchStatus,
       feeInfosGetter: () => _viewModel.feeInfos,
       refreshRecommendedFees: _viewModel.refreshRecommendedFees,
       onFeeRateSelected: (sats) {
