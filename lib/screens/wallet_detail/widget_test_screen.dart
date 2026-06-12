@@ -57,7 +57,13 @@ class _WidgetTestScreenState extends State<WidgetTestScreen> {
           _buildSectionTitle('Segmented Control'),
           CoconutLayout.spacing_200h,
           CoconutSegmentedControl(
-            labels: [
+            isSelected: [_currentSegmentIndex == 0, _currentSegmentIndex == 1],
+            onPressed: (index) {
+              setState(() {
+                _currentSegmentIndex = index;
+              });
+            },
+            children: [
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -83,12 +89,6 @@ class _WidgetTestScreenState extends State<WidgetTestScreen> {
                 ],
               ),
             ],
-            isSelected: [_currentSegmentIndex == 0, _currentSegmentIndex == 1],
-            onPressed: (index) {
-              setState(() {
-                _currentSegmentIndex = index;
-              });
-            },
           ),
           CoconutLayout.spacing_400h,
           const Divider(color: CoconutColors.gray800, height: 40),

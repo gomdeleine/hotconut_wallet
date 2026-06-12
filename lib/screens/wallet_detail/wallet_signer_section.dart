@@ -60,7 +60,11 @@ class WalletSignerSection extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: CoconutSegmentedControl(
-                labels: [
+                isSelected: [effectiveIndex == 0, effectiveIndex == 1],
+                onPressed: (index) {
+                  viewModel.updateTaprootSpendType(index);
+                },
+                children: [
                   _buildSegmentLabel(
                     t.wallet_signer_section.segmented_control.parent_key,
                     effectiveIndex == 0
@@ -76,10 +80,6 @@ class WalletSignerSection extends StatelessWidget {
                     effectiveIndex == 1,
                   ),
                 ],
-                isSelected: [effectiveIndex == 0, effectiveIndex == 1],
-                onPressed: (index) {
-                  viewModel.updateTaprootSpendType(index);
-                },
               ),
             ),
           ],
