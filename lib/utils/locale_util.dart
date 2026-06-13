@@ -120,3 +120,51 @@ bool isSystemLanguageKorean() {
 bool isSystemLanguageJapanese() {
   return getSystemLanguageCode() == 'jp';
 }
+
+/// 앱 언어 코드를 intl 로케일 코드로 매핑
+const Map<String, String> _appLanguageToIntlLocale = {'kr': 'ko', 'en': 'en', 'jp': 'ja', 'es': 'es'};
+
+/// 앱 설정 언어 기반 소수점 구분자 반환 (기본값: '.')
+String getDecimalSeparatorForAppLanguage(String appLanguageCode) {
+  final intlLocale = _appLanguageToIntlLocale[appLanguageCode] ?? 'en';
+  return getNumberDecimalSeparator(localeName: intlLocale);
+}
+
+/// 앱 설정 언어 기반 천 단위/소수점 구분자를 사용하여 BigInt 포맷팅
+/// 예: value=BigInt.parse('10000000001'), decimalPlaces=8 → '1,000.00000001' (trailing zeros 제거)
+String formatBigIntWithAppLanguageLocale(BigInt value, int decimalPlaces, String appLanguageCode) {
+  final intlLocale = _appLanguageToIntlLocale[appLanguageCode] ?? 'en';
+  final decimalSep = getNumberDecimalSeparator(localeName: intlLocale);
+  final groupSep = getNumberGroupingSeparator(localeName: intlLocale);
+
+  // 음수 처리
+  final isNegative = value.isNegative;
+  final absValue = value.abs().toString().padLeft(decimalPlaces + 1, '0');
+
+  // 정수부/소수부 분리
+  final integerLen = absValue.length - decimalPlaces;
+  final integerPart = absValue.substring(0, integerLen);
+  var fractionalPart = absValue.substring(integerLen).replaceAll(RegExp(r'0+$'), '');
+
+  // 천 단위 구분자 추가
+  final formattedInteger = _addGroupingSeparators(integerPart, groupSep);
+
+  // 결과 조합
+  final result = fractionalPart.isEmpty ? formattedInteger : '$formattedInteger$decimalSep$fractionalPart';
+
+  return isNegative ? '-$result' : result;
+}
+
+/// 문자열에 천 단위 구분자 추가
+String _addGroupingSeparators(String integerPart, String groupSep) {
+  if (integerPart.length <= 3) return integerPart;
+
+  final buffer = StringBuffer();
+  for (var i = 0; i < integerPart.length; i++) {
+    if (i > 0 && (integerPart.length - i) % 3 == 0) {
+      buffer.write(groupSep);
+    }
+    buffer.write(integerPart[i]);
+  }
+  return buffer.toString();
+}
