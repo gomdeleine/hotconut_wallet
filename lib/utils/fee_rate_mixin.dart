@@ -1,7 +1,7 @@
 import 'package:coconut_wallet/enums/transaction_enums.dart';
 import 'package:coconut_wallet/model/send/fee_info.dart';
 import 'package:coconut_wallet/services/fee_service.dart';
-import 'package:coconut_wallet/utils/text_field_filter_util.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:flutter/foundation.dart';
 
 enum RecommendedFeeFetchStatus { fetching, succeed, failed }

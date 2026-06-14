@@ -4,9 +4,8 @@ import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
-import 'package:coconut_wallet/utils/text_field_filter_util.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /// [Bip21AmountBottomSheet]에서 사용되는 결과 DTO
 class Bip21AmountBottomSheetResult {
@@ -22,6 +21,8 @@ class Bip21AmountBottomSheet {
     required BuildContext context,
     required BitcoinUnit currentUnit,
     required int? initialAmountSats,
+    String decimalSeparator = '.',
+    String groupingSeparator = ',',
   }) {
     final localeName = getNumberFormatLocaleName();
     final initialText = BalanceFormatUtil.formatSatsToBip21InputText(
@@ -40,8 +41,8 @@ class Bip21AmountBottomSheet {
       collapsedHeight: 240,
       textInputFormatters:
           currentUnit.isBtcUnit
-              ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')), BtcAmountInputFormatter(localeName: localeName)]
-              : [FilteringTextInputFormatter.digitsOnly, SatoshiAmountInputFormatter(localeName: localeName)],
+              ? [BtcAmountInputFormatter(decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)]
+              : [SatoshiAmountInputFormatter(groupingSeparator: groupingSeparator)],
       completeEnabledWhen: (current, original) => current != original,
       focusOnlyWhenOriginalNotEmpty: false,
       prefix:

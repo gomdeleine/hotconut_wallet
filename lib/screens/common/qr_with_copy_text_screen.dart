@@ -228,6 +228,8 @@ class _QrWithCopyTextScreenState extends State<QrWithCopyTextScreen> {
               context: context,
               currentUnit: currentUnit,
               initialAmountSats: _amountInSats,
+              decimalSeparator: context.read<PreferenceProvider>().decimalSeparator,
+              groupingSeparator: context.read<PreferenceProvider>().groupingSeparator,
             );
             if (!mounted || result == null || !result.didEdit) return;
             setState(() {
