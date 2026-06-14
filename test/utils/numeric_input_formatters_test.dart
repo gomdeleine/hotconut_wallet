@@ -1,3 +1,4 @@
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,10 +7,8 @@ import 'package:intl/intl.dart';
 void main() {
   group('BtcAmountInputFormatter', () {
     TextEditingValue format(String text, {String decimalSeparator = '.', String groupingSeparator = ','}) {
-      final formatter = BtcAmountInputFormatter(
-        decimalSeparator: decimalSeparator,
-        groupingSeparator: groupingSeparator,
-      );
+      NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
+      final formatter = const BtcAmountInputFormatter();
       return formatter.formatEditUpdate(
         const TextEditingValue(),
         TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length)),
@@ -18,10 +17,8 @@ void main() {
 
     // 실제 키 입력을 한 글자씩 시뮬레이션: 이전 상태에서 다음 상태로 연속 호출
     List<String> typeSequence(List<String> inputs, {String decimalSeparator = '.', String groupingSeparator = ','}) {
-      final formatter = BtcAmountInputFormatter(
-        decimalSeparator: decimalSeparator,
-        groupingSeparator: groupingSeparator,
-      );
+      NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
+      const formatter = BtcAmountInputFormatter();
       var current = const TextEditingValue();
       final results = <String>[];
       for (final input in inputs) {
@@ -130,10 +127,11 @@ void main() {
     });
 
     test('CASE1: decimalSep=dot, 쉼표 입력 시 소수점 없으면 마침표로 변환', () {
+      NumberFormatConfig.instance.update('en');
       // 소수점 없는 상태에서 쉼표 → 마침표 변환
       expect(format(',').text, '0.');
 
-      const formatter = BtcAmountInputFormatter(decimalSeparator: '.', groupingSeparator: ',');
+      const formatter = BtcAmountInputFormatter();
       // '1,000' 상태에서 쉼표 추가 → 소수점으로 변환 (소수점 없으므로)
       const before = TextEditingValue(text: '1,000', selection: TextSelection.collapsed(offset: 5));
       const adding = TextEditingValue(text: '1,000,', selection: TextSelection.collapsed(offset: 6));
@@ -146,10 +144,11 @@ void main() {
     });
 
     test('CASE2: decimalSep=comma, 마침표 입력 시 소수점 없으면 쉼표로 변환', () {
+      NumberFormatConfig.instance.update('es');
       // 소수점 없는 상태에서 마침표 → 쉼표 변환
       expect(format('.', decimalSeparator: ',', groupingSeparator: '.').text, '0,');
 
-      const formatter = BtcAmountInputFormatter(decimalSeparator: ',', groupingSeparator: '.');
+      const formatter = BtcAmountInputFormatter();
       // '1.000' 상태에서 마침표 추가 → 소수점으로 변환 (소수점 없으므로)
       const before = TextEditingValue(text: '1.000', selection: TextSelection.collapsed(offset: 5));
       const adding = TextEditingValue(text: '1.000.', selection: TextSelection.collapsed(offset: 6));
@@ -162,16 +161,18 @@ void main() {
     });
 
     test('rejects multiple decimal separators', () {
+      NumberFormatConfig.instance.update('en');
       const oldValue = TextEditingValue(text: '0.1', selection: TextSelection.collapsed(offset: 3));
       const newValue = TextEditingValue(text: '0.1.', selection: TextSelection.collapsed(offset: 4));
-      const formatter = BtcAmountInputFormatter(decimalSeparator: '.', groupingSeparator: ',');
+      const formatter = BtcAmountInputFormatter();
       expect(formatter.formatEditUpdate(oldValue, newValue), oldValue);
     });
   });
 
   group('SatoshiAmountInputFormatter', () {
     test('keeps cursor at the end when locale grouping separator is dot', () {
-      const formatter = SatoshiAmountInputFormatter(groupingSeparator: '.');
+      NumberFormatConfig.instance.update('es');
+      const formatter = SatoshiAmountInputFormatter();
       const oldValue = TextEditingValue(text: '123', selection: TextSelection.collapsed(offset: 3));
       const newValue = TextEditingValue(text: '1234', selection: TextSelection.collapsed(offset: 4));
 

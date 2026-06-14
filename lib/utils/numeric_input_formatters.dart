@@ -1,3 +1,4 @@
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:flutter/services.dart';
 
 String filterNumericInput(String input, {required int decimalPlaces, int integerPlaces = -1}) {
@@ -38,39 +39,36 @@ class BtcAmountInputFormatter extends TextInputFormatter {
   static const double maxBtc = 21_000_000;
 
   final int decimalPlaces;
-  final String decimalSeparator;
-  final String groupingSeparator;
 
-  const BtcAmountInputFormatter({this.decimalPlaces = 8, this.decimalSeparator = '.', this.groupingSeparator = ','});
+  const BtcAmountInputFormatter({this.decimalPlaces = 8});
 
   // decimalSeparator와 반대 구분자
-  String get _altSeparator => decimalSeparator == '.' ? ',' : '.';
+  String get _altSeparator => NumberFormatConfig.instance.decimalSeparator == '.' ? ',' : '.';
 
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final decimalSep = NumberFormatConfig.instance.decimalSeparator;
+    final groupingSep = NumberFormatConfig.instance.groupingSeparator;
     final inserted = _insertedText(oldValue, newValue);
     if (inserted.isNotEmpty) {
       if (!RegExp(r'^[0-9.,]+$').hasMatch(inserted)) return oldValue;
 
       // 반대 구분자 입력: 소수점이 아직 없는 경우에만 소수점으로 변환, 있으면 거부
       if (inserted == _altSeparator) {
-        final alreadyHasDecimal = oldValue.text.contains(decimalSeparator);
+        final alreadyHasDecimal = oldValue.text.contains(decimalSep);
         if (alreadyHasDecimal) return oldValue;
         // 소수점으로 대체
-        final newText = newValue.text.substring(0, newValue.text.length - 1) + decimalSeparator;
+        final newText = newValue.text.substring(0, newValue.text.length - 1) + decimalSep;
         final next = TextEditingValue(text: newText, selection: TextSelection.collapsed(offset: newText.length));
         return formatEditUpdate(oldValue, next);
       }
 
       // groupingSeparator 직접 입력은 거부
-      if (inserted == groupingSeparator) return oldValue;
+      if (inserted == groupingSep) return oldValue;
     }
 
     // groupingSeparator를 먼저 제거한 뒤 마침표/쉼표를 모두 .으로 통일
-    final text = newValue.text
-        .replaceAll(groupingSeparator, '')
-        .replaceAll(',', '.')
-        .replaceAll(RegExp(r'[^0-9.]'), '');
+    final text = newValue.text.replaceAll(groupingSep, '').replaceAll(',', '.').replaceAll(RegExp(r'[^0-9.]'), '');
     if (text.isEmpty) return newValue;
 
     final parts = text.split('.');
@@ -82,17 +80,13 @@ class BtcAmountInputFormatter extends TextInputFormatter {
     final btc = double.tryParse(text);
     if (btc != null && btc > maxBtc) return oldValue;
 
-    final formattedText = _formatBtcText(
-      text,
-      decimalSeparator: decimalSeparator,
-      groupingSeparator: groupingSeparator,
-    );
+    final formattedText = _formatBtcText(text, decimalSeparator: decimalSep, groupingSeparator: groupingSep);
     final offset = _calculateSelectionOffset(
       originalText: newValue.text,
       formattedText: formattedText,
       baseOffset: newValue.selection.baseOffset,
-      decimalSeparator: decimalSeparator,
-      groupingSeparator: groupingSeparator,
+      decimalSeparator: decimalSep,
+      groupingSeparator: groupingSep,
     );
     return TextEditingValue(text: formattedText, selection: TextSelection.collapsed(offset: offset));
   }
@@ -101,9 +95,7 @@ class BtcAmountInputFormatter extends TextInputFormatter {
 class SatoshiAmountInputFormatter extends TextInputFormatter {
   static const int maxSats = 2_100_000_000_000_000;
 
-  final String groupingSeparator;
-
-  const SatoshiAmountInputFormatter({this.groupingSeparator = ','});
+  const SatoshiAmountInputFormatter();
 
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
@@ -113,12 +105,15 @@ class SatoshiAmountInputFormatter extends TextInputFormatter {
     final sats = int.tryParse(text);
     if (sats != null && sats > maxSats) return oldValue;
 
-    final formattedText = _formatIntWithGroupingSeparator(int.parse(text), groupingSeparator);
+    final formattedText = formatIntWithGroupingSeparator(
+      int.parse(text),
+      NumberFormatConfig.instance.groupingSeparator,
+    );
     final offset = _calculateSelectionOffset(
       originalText: newValue.text,
       formattedText: formattedText,
       baseOffset: newValue.selection.baseOffset,
-      groupingSeparator: groupingSeparator,
+      groupingSeparator: NumberFormatConfig.instance.groupingSeparator,
     );
     return TextEditingValue(text: formattedText, selection: TextSelection.collapsed(offset: offset));
   }
@@ -137,7 +132,7 @@ String _formatBtcText(String text, {required String decimalSeparator, required S
 
   final parts = text.replaceAll(',', '.').split('.');
   final integerPart = parts[0].isEmpty ? '0' : parts[0];
-  final formattedIntegerPart = _formatIntWithGroupingSeparator(int.parse(integerPart), groupingSeparator);
+  final formattedIntegerPart = formatIntWithGroupingSeparator(int.parse(integerPart), groupingSeparator);
 
   if (parts.length == 1) {
     return formattedIntegerPart;
@@ -146,7 +141,7 @@ String _formatBtcText(String text, {required String decimalSeparator, required S
   return '$formattedIntegerPart$decimalSeparator${parts[1]}';
 }
 
-String _formatIntWithGroupingSeparator(int value, String groupingSeparator) {
+String formatIntWithGroupingSeparator(int value, String groupingSeparator) {
   final str = value.toString();
   final buffer = StringBuffer();
   for (var i = 0; i < str.length; i++) {

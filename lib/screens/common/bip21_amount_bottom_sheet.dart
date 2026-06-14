@@ -1,4 +1,5 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
@@ -21,14 +22,10 @@ class Bip21AmountBottomSheet {
     required BuildContext context,
     required BitcoinUnit currentUnit,
     required int? initialAmountSats,
-    String decimalSeparator = '.',
-    String groupingSeparator = ',',
   }) {
-    final localeName = getNumberFormatLocaleName();
     final initialText = BalanceFormatUtil.formatSatsToBip21InputText(
       currentUnit: currentUnit,
       initialAmountSats: initialAmountSats,
-      localeName: localeName,
     );
 
     return SingleTextFieldBottomSheet.showWithResult<Bip21AmountBottomSheetResult>(
@@ -40,9 +37,7 @@ class Bip21AmountBottomSheet {
       visibleTextLimit: false,
       collapsedHeight: 240,
       textInputFormatters:
-          currentUnit.isBtcUnit
-              ? [BtcAmountInputFormatter(decimalSeparator: decimalSeparator, groupingSeparator: groupingSeparator)]
-              : [SatoshiAmountInputFormatter(groupingSeparator: groupingSeparator)],
+          currentUnit.isBtcUnit ? [const BtcAmountInputFormatter()] : [const SatoshiAmountInputFormatter()],
       completeEnabledWhen: (current, original) => current != original,
       focusOnlyWhenOriginalNotEmpty: false,
       prefix:
@@ -57,11 +52,7 @@ class Bip21AmountBottomSheet {
               ? Text(currentUnit.symbol, style: CoconutTypography.body2_14_Bold)
               : null,
       resultBuilder: (currentText, originalText) {
-        final sats = BalanceFormatUtil.parseBip21AmountTextToSats(
-          currentUnit: currentUnit,
-          inputText: currentText,
-          localeName: localeName,
-        );
+        final sats = BalanceFormatUtil.parseAmountTextToSats(currentUnit: currentUnit, inputText: currentText);
         return Bip21AmountBottomSheetResult(didEdit: currentText != originalText, amountInSats: sats);
       },
     );

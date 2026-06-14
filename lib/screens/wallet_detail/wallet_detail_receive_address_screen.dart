@@ -131,8 +131,6 @@ class _ReceiveAddressScreenState extends State<ReceiveAddressScreen> {
                       context: context,
                       currentUnit: preferenceProvider.currentUnit,
                       initialAmountSats: _enteredReceiveAmountSats,
-                      decimalSeparator: preferenceProvider.decimalSeparator,
-                      groupingSeparator: preferenceProvider.groupingSeparator,
                     );
                     if (!mounted || result == null || !result.didEdit) return;
                     setState(() {

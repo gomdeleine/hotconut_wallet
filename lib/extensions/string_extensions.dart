@@ -31,7 +31,7 @@ extension StringFormatting on String {
         String formattedInt = formatter.format(int.parse(integerPart));
         return '$formattedInt${formatter.symbols.DECIMAL_SEP}$decimalPart';
       } else {
-        return int.parse(this).toThousandsSeparatedString(localeName: effectiveLocale);
+        return int.parse(this).toThousandsSeparatedString();
       }
     } catch (e) {
       return this;
