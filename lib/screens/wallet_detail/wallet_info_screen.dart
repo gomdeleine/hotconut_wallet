@@ -12,10 +12,10 @@ import 'package:coconut_wallet/providers/wallet_provider.dart';
 import 'package:coconut_wallet/screens/common/pin_check_screen.dart';
 import 'package:coconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
 import 'package:coconut_wallet/screens/home/wallet_add_mfp_input_bottom_sheet.dart';
+import 'package:coconut_wallet/screens/wallet_detail/wallet_signer_section.dart';
 import 'package:coconut_wallet/utils/vibration_util.dart';
 import 'package:coconut_wallet/widgets/button/button_group.dart';
 import 'package:coconut_wallet/widgets/button/single_button.dart';
-import 'package:coconut_wallet/widgets/card/multisig_signer_card.dart';
 import 'package:coconut_wallet/widgets/card/wallet_info_item_card.dart';
 import 'package:coconut_wallet/widgets/custom_loading_overlay.dart';
 import 'package:coconut_wallet/widgets/dialog.dart';
@@ -94,7 +94,6 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                                 _removeTooltip();
                                 return;
                               }
-                              _removeTooltip();
 
                               Future.delayed(const Duration(milliseconds: 50), () {
                                 setState(() {
@@ -121,28 +120,7 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                             onNameChanged: (updatedName) => viewModel.updateWalletName(updatedName),
                           ),
                         ),
-                        if (widget.walletType == WalletType.multiSignature) ...{
-                          Container(
-                            margin: const EdgeInsets.only(top: 8, bottom: 32),
-                            child: ListView.separated(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
-                              itemCount: viewModel.multisigTotalSignerCount,
-                              separatorBuilder: (context, index) => const SizedBox(height: 8),
-                              itemBuilder: (context, index) {
-                                return MultisigSignerCard(
-                                  index: index,
-                                  signer: viewModel.getSigner(index),
-                                  masterFingerprint: viewModel.getSignerMasterFingerprint(index),
-                                  derivationPath: viewModel.getSignerBsms(index).derivationPath,
-                                );
-                              },
-                            ),
-                          ),
-                        } else ...{
-                          CoconutLayout.spacing_800h,
-                        },
+                        WalletSignerSection(walletType: widget.walletType),
                         _WalletInfoStatsSection(
                           walletId: widget.id,
                           transactionCount: viewModel.transactionCount,
@@ -164,7 +142,7 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                                   Navigator.pushNamed(context, '/address-list', arguments: {'id': widget.id});
                                 },
                               ),
-                              if (widget.walletType == WalletType.singleSignature) ...{
+                              if (widget.walletType == WalletType.singleSignature) ...[
                                 SingleButton(
                                   enableShrinkAnim: true,
                                   title: t.wallet_info_screen.view_xpub,
@@ -177,11 +155,11 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                                     );
                                   },
                                 ),
-                              },
-                              if (widget.walletType == WalletType.taproot) ...{
+                              ],
+                              if (widget.walletType == WalletType.taproot) ...[
                                 SingleButton(enableShrinkAnim: true, title: 'TODO: 구현', onPressed: () async {}),
-                              },
-                              if (widget.walletType == WalletType.multiSignature) ...{
+                              ],
+                              if (widget.walletType == WalletType.multiSignature) ...[
                                 SingleButton(
                                   enableShrinkAnim: true,
                                   title: t.wallet_info_screen.view_wallet_backup_data,
@@ -195,7 +173,7 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                                     );
                                   },
                                 ),
-                              },
+                              ],
                               SingleButton(
                                 enableShrinkAnim: true,
                                 title: t.tag_manage_label,

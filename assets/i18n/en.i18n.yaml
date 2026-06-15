@@ -721,6 +721,14 @@ wallet_info_screen:
       select: "Select"
   error:
     delete: "Failed to delete wallet"
+wallet_signer_section:
+  title: "Signing Method"
+  segmented_control:
+    parent_key: "With Parent Key"
+    child_key: "With Child Key"
+    currently_using: "Currently using"
+    default_path: "Default path"
+    inheritance_path: "Inheritance path"
 
 transaction_fee_bumping_screen:
   rbf: "RBF"
@@ -1133,3 +1141,22 @@ long_pressed_menu:
   go_to_home_screen_settings: "Go to Home Screen Settings"
   hide_home_widget_title: "Hide '${widgetName}' widget on the home screen?"
   hide_home_widget_description: "You can show it again later by going to the 'Home Screen Settings' menu in the top right menu button."
+
+taproot:
+  parent: "Parent Wallet"
+  role_description_card:
+    signer: "signer"
+    co_signer: "co-signer"
+    heir: "heir"
+    single_parent_description: "I am the signer of this wallet.\nI can use this wallet normally."
+    multi_parent_description: "I am a co-signer of this wallet.\nAssets can be used by signing with other co-signers."
+    child_description: "I am an heir of this wallet.\nAssets can be used after a set point in time."
+  participant_card:
+    me: "Me"
+    co_signer: "Co-signer"
+    beneficiary: "Conditional Signer"
+    signer: "Signer"
+    locktime_after: "After ${dateTime}"
+  setup_summary_card:
+    signer_configuration: "Signer Configuration"
+    inheritance_condition: "Inheritance Condition"

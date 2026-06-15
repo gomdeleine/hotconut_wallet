@@ -725,6 +725,14 @@ wallet_info_screen:
       select: "선택"
   error:
     delete: "지갑 삭제 실패"
+wallet_signer_section:
+  title: "서명 방식"
+  segmented_control:
+    parent_key: "부모 키로"
+    child_key: "자식 키로"
+    currently_using: "현재 사용 중"
+    default_path: "기본 경로"
+    inheritance_path: "상속 경로"
 
 transaction_fee_bumping_screen:
   rbf: "RBF"
@@ -1139,3 +1147,22 @@ long_pressed_menu:
   go_to_home_screen_settings: "홈 화면 설정으로 이동"
   hide_home_widget_title: "홈 화면에서 '${widgetName}' 위젯을 숨기시겠어요?"
   hide_home_widget_description: "나중에 우측 상단 메뉴 버튼 > '홈 화면 설정' 메뉴에서 다시 표시할 수 있어요."
+
+taproot:
+  parent: "부모 지갑"
+  role_description_card:
+    signer: "서명자"
+    co_signer: "공동 서명자"
+    heir: "상속자"
+    single_parent_description: "나는 이 지갑의 서명자예요.\n평소에 이 지갑을 사용할 수 있어요."
+    multi_parent_description: "나는 이 지갑의 공동 서명자예요.\n다른 공동 서명자와 함께 서명해야 자산을 사용할 수 있어요."
+    child_description: "나는 이 지갑의 상속자예요.\n정해진 시점이 지나면 자산을 사용할 수 있어요."
+  participant_card:
+    me: "나"
+    co_signer: "공동 서명자"
+    beneficiary: "조건부 서명자"
+    signer: "서명자"
+    locktime_after: "${dateTime} 이후"
+  setup_summary_card:
+    signer_configuration: "서명자 구성"
+    inheritance_condition: "상속 조건"

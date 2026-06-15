@@ -93,6 +93,7 @@ class _WalletInfoItemCardState extends State<WalletInfoItemCard> {
 
   void _updateFromWalletItem() {
     walletItem = widget.walletItem;
+    signers = null;
     if (walletItem is MultisigWalletListItem) {
       /// 멀티 시그
       MultisigWalletListItem multiWallet = walletItem as MultisigWalletListItem;
@@ -144,16 +145,19 @@ class _WalletInfoItemCardState extends State<WalletInfoItemCard> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: taproot 지갑 일 때도 제어해줘야함
-    bool isMultisig = widget.walletItem.walletType == WalletType.multiSignature;
+    final taprootStyle = TaprootCardStyle.from(widget.walletItem);
+    final List<Color>? gradientColors =
+        signers != null ? ColorUtil.getGradientColors(signers!) : taprootStyle?.iconGradientColors;
+    final bool hasGradient = gradientColors != null;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24), // defaultRadius로 통일하면 border 넓이가 균일해보이지 않음
-        border: isMultisig ? null : Border.all(color: CoconutColors.gray700, width: 1),
+        border: hasGradient ? null : Border.all(color: CoconutColors.gray700, width: 1),
         gradient:
-            isMultisig
+            hasGradient
                 ? LinearGradient(
-                  colors: ColorUtil.getGradientColors(signers!),
+                  colors: gradientColors,
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   transform: const GradientRotation(math.pi / 10),
@@ -161,10 +165,10 @@ class _WalletInfoItemCardState extends State<WalletInfoItemCard> {
                 : null,
       ),
       child: Container(
-        margin: isMultisig ? const EdgeInsets.all(2) : null, // 멀티시그의 경우 border 대신
+        margin: hasGradient ? const EdgeInsets.all(2) : null,
         padding: const EdgeInsets.all(20),
         decoration:
-            isMultisig
+            hasGradient
                 ? BoxDecoration(
                   color: CoconutColors.black,
                   borderRadius: BorderRadius.circular(22), // defaultRadius로 통일하면 border 넓이가 균일해보이지 않음
