@@ -169,6 +169,120 @@ void main() {
     });
   });
 
+  group('FeeRateInputFormatter', () {
+    TextEditingValue format(String text, {String decimalSeparator = '.'}) {
+      NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
+      const formatter = FeeRateInputFormatter();
+      return formatter.formatEditUpdate(
+        const TextEditingValue(),
+        TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length)),
+      );
+    }
+
+    List<String> typeSequence(List<String> inputs, {String decimalSeparator = '.'}) {
+      NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
+      const formatter = FeeRateInputFormatter();
+      var current = const TextEditingValue();
+      final results = <String>[];
+      for (final input in inputs) {
+        TextEditingValue next;
+        if (input == '<') {
+          if (current.text.isEmpty) {
+            next = current;
+          } else {
+            final newText = current.text.substring(0, current.text.length - 1);
+            next = TextEditingValue(text: newText, selection: TextSelection.collapsed(offset: newText.length));
+          }
+        } else {
+          final newText = current.text + input;
+          next = TextEditingValue(text: newText, selection: TextSelection.collapsed(offset: newText.length));
+        }
+        current = formatter.formatEditUpdate(current, next);
+        results.add(current.text);
+      }
+      return results;
+    }
+
+    test('숫자 입력 (en, decimalSep=.)', () {
+      expect(format('1').text, '1');
+      expect(format('21').text, '21');
+      expect(format('1000').text, '1000');
+    });
+
+    test('소수점 입력 (en, decimalSep=.)', () {
+      expect(format('1.5').text, '1.5');
+      expect(format('21.00').text, '21.00');
+      expect(format('0.1').text, '0.1');
+    });
+
+    test('소수점 입력 (de, decimalSep=,)', () {
+      expect(format('1,5', decimalSeparator: ',').text, '1,5');
+      expect(format('21,00', decimalSeparator: ',').text, '21,00');
+    });
+
+    test('대체 구분자로 소수점 입력 — altSep을 decimalSep으로 변환 (en)', () {
+      // en에서 ','는 altSep → '.'으로 변환
+      expect(format('1,5').text, '1.5');
+    });
+
+    test('대체 구분자로 소수점 입력 — altSep을 decimalSep으로 변환 (de)', () {
+      // de에서 '.'는 altSep → ','으로 변환
+      expect(format('1.5', decimalSeparator: ',').text, '1,5');
+    });
+
+    test('소수점 중복 입력 거부', () {
+      NumberFormatConfig.instance.update('en');
+      const formatter = FeeRateInputFormatter();
+      const before = TextEditingValue(text: '1.5', selection: TextSelection.collapsed(offset: 3));
+      const addingDot = TextEditingValue(text: '1.5.', selection: TextSelection.collapsed(offset: 4));
+      expect(formatter.formatEditUpdate(before, addingDot), before);
+    });
+
+    test('소수 3자리 이상 거부', () {
+      NumberFormatConfig.instance.update('en');
+      const formatter = FeeRateInputFormatter();
+      const before = TextEditingValue(text: '1.12', selection: TextSelection.collapsed(offset: 4));
+      const addingDigit = TextEditingValue(text: '1.123', selection: TextSelection.collapsed(offset: 5));
+      expect(formatter.formatEditUpdate(before, addingDigit), before);
+    });
+
+    test('천단위 구분자 없음 — 큰 정수 그대로 유지', () {
+      expect(format('100000').text, '100000');
+      expect(format('99999999').text, '99999999'); // 8자리
+    });
+
+    test('정수 9자리 이상 거부', () {
+      NumberFormatConfig.instance.update('en');
+      const formatter = FeeRateInputFormatter();
+      const before = TextEditingValue(text: '99999999', selection: TextSelection.collapsed(offset: 8));
+      const addingDigit = TextEditingValue(text: '999999999', selection: TextSelection.collapsed(offset: 9));
+      expect(formatter.formatEditUpdate(before, addingDigit), before);
+    });
+
+    test('연속 입력 — 소수점 포함 (en)', () {
+      final seq = typeSequence(['1', '2', '.', '5', '<', '<']);
+      expect(seq, ['1', '12', '12.', '12.5', '12.', '12']);
+    });
+
+    test('연속 입력 — altSep 입력 시 소수점으로 변환 (en)', () {
+      final seq = typeSequence(['1', '2', ',', '5']);
+      expect(seq, ['1', '12', '12.', '12.5']);
+    });
+
+    test('연속 입력 — altSep 입력 시 소수점으로 변환 (de)', () {
+      final seq = typeSequence(['1', '2', '.', '5'], decimalSeparator: ',');
+      expect(seq, ['1', '12', '12,', '12,5']);
+    });
+
+    test('숫자가 아닌 문자 입력 거부', () {
+      NumberFormatConfig.instance.update('en');
+      const formatter = FeeRateInputFormatter();
+      const before = TextEditingValue(text: '1', selection: TextSelection.collapsed(offset: 1));
+      const addingAlpha = TextEditingValue(text: '1a', selection: TextSelection.collapsed(offset: 2));
+      expect(formatter.formatEditUpdate(before, addingAlpha), before);
+    });
+  });
+
   group('SatoshiAmountInputFormatter', () {
     test('keeps cursor at the end when locale grouping separator is dot', () {
       NumberFormatConfig.instance.update('es');

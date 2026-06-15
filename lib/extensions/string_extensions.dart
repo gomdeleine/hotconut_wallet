@@ -1,5 +1,6 @@
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:intl/intl.dart';
 
 extension StringCheck on String {
@@ -36,5 +37,25 @@ extension StringFormatting on String {
     } catch (e) {
       return this;
     }
+  }
+}
+
+extension SafeNumberParsing on String {
+  /// 로케일에 맞는 숫자 문자열을 안전하게 double로 파싱합니다.
+  /// 쉼표/점 소수점 구분자 문제를 자동으로 처리합니다.
+  double? toDoubleSafe() {
+    return double.tryParse(normalizeNumTextForNumParsing(this));
+  }
+
+  /// 로케일에 맞는 숫자 문자열을 안전하게 num으로 파싱합니다.
+  /// 쉼표/점 소수점 구분자 문제를 자동으로 처리합니다.
+  num? toNumSafe() {
+    return num.tryParse(normalizeNumTextForNumParsing(this));
+  }
+
+  /// 로케일에 맞는 숫자 문자열을 안전하게 int로 파싱합니다.
+  /// 쉼표/점 소수점 구분자 문제를 자동으로 처리합니다.
+  int? toIntSafe() {
+    return int.tryParse(normalizeNumTextForNumParsing(this));
   }
 }

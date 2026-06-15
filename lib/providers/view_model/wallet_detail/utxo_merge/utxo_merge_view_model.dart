@@ -17,8 +17,8 @@ import 'package:coconut_wallet/utils/address_util.dart';
 import 'package:coconut_wallet/utils/bitcoin/transaction_util.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/utils/fee_rate_mixin.dart';
-import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:coconut_wallet/model/wallet/wallet_address.dart';
@@ -422,10 +422,9 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
     notifyListeners();
   }
 
+  // TODO: 반환 값 의미 불명확
   bool onFeeRateChanged(String text) {
-    return handleFeeRateChanged(text, (formattedText) {
-      feeRateController.text = formattedText;
-    });
+    return handleFeeRateChanged(text, (_) {});
   }
 
   void removeTrailingDotInFeeRate() {
@@ -433,14 +432,15 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   }
 
   void setFeeRateFromRecommendation(double sats) {
-    feeRateController.text = sats.toStringAsFixed(1);
+    feeRateController.text = sats.toStringAsFixed(1).replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
     notifyListeners();
   }
 
   Future<bool> refreshRecommendedFees() async {
     return fetchRecommendedFees(
       currentFeeRateText: feeRateInput,
-      onDefaultFeeRateSet: (text) => feeRateController.text = text,
+      onDefaultFeeRateSet:
+          (text) => feeRateController.text = text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator),
     );
   }
 
@@ -460,7 +460,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   int candidateUtxoCountForCustomAmountText(String text, {required bool isLessThan}) {
     if (text.trim().isEmpty) return 0;
 
-    final btcAmount = double.tryParse(normalizeDecimalNumberTextForParsing(text.trim()));
+    final btcAmount = double.tryParse(text.trim());
     if (btcAmount == null || btcAmount == 0) return 0;
 
     final satsThreshold = UnitUtil.convertBitcoinToSatoshi(btcAmount);
@@ -479,7 +479,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
     );
   }
 
-  String get feeRateInput => normalizeDecimalNumberTextForParsing(feeRateController.text.trim());
+  String get feeRateInput => feeRateController.text.trim();
 
   bool get canPrepareMergeTransaction {
     return _currentStep == UtxoMergeStep.selectReceiveAddress &&
@@ -633,7 +633,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   MergeTransactionInputSnapshot? get mergeTransactionInputSnapshot {
     final selectedReceiveAddress = _selectedReceiveAddress;
     final selectedUtxos = selectedUtxosForCurrentMethod;
-    final inputFeeRate = double.tryParse(feeRateInput);
+    final inputFeeRate = double.tryParse(normalizeNumTextForNumParsing(feeRateInput));
 
     if (_currentStep != UtxoMergeStep.selectReceiveAddress ||
         selectedReceiveAddress.isEmpty ||
@@ -709,9 +709,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
       return null;
     }
     try {
-      return UnitUtil.convertBitcoinToSatoshi(
-        double.parse(normalizeDecimalNumberTextForParsing(_customAmountRangeText!.trim())),
-      );
+      return UnitUtil.convertBitcoinToSatoshi(double.parse(_customAmountRangeText!.trim()));
     } catch (_) {
       return null;
     }

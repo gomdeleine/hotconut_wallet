@@ -17,7 +17,7 @@ import 'package:coconut_wallet/screens/home/wallet_home_screen.dart';
 import 'package:coconut_wallet/screens/send/refactor/select_wallet_bottom_sheet.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/clipboard_copy_util.dart';
-import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/utils/vibration_util.dart';
 import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
 import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
@@ -335,12 +335,13 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
     final intVal = int.tryParse(rawIntPart) ?? 0;
     final formattedInt = intVal.toThousandsSeparatedString();
 
+    final decimalSep = NumberFormatConfig.instance.decimalSeparator;
     if (hasDotOnly) {
-      return '$formattedInt${getNumberDecimalSeparator()}';
+      return '$formattedInt$decimalSep';
     } else if (decPart.isEmpty) {
       return formattedInt;
     } else {
-      return '$formattedInt${getNumberDecimalSeparator()}$decPart';
+      return '$formattedInt$decimalSep$decPart';
     }
   }
 
@@ -576,7 +577,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
     if (!isBtcInput) {
       return value.replaceAll(RegExp(r'[^0-9]'), '');
     } else {
-      final normalizedValue = normalizeNumberTextForParsing(value);
+      final normalizedValue = normalizeNumTextForNumParsing(value);
       final buffer = StringBuffer();
       bool dotSeen = false;
       for (final ch in normalizedValue.split('')) {
@@ -600,11 +601,11 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
   }
 
   String _formatLocaleDecimalText(String text) {
-    return text.replaceAll('.', getNumberDecimalSeparator());
+    return text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
   }
 
   String _normalizeLocaleDecimalText(String text) {
-    return text.replaceAll(',', '.');
+    return text.replaceAll(NumberFormatConfig.instance.decimalSeparator, '.');
   }
 
   double _parsePremiumRate() {
@@ -621,7 +622,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
       return integerText;
     }
 
-    return '$integerText${getNumberDecimalSeparator()}$decimalText';
+    return '$integerText${NumberFormatConfig.instance.decimalSeparator}$decimalText';
   }
 
   void _onShowTransactionBill() {
@@ -1636,7 +1637,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
       _viewModel.setPremiumRate(newPremium);
       _updateResultOnPremiumChange();
     } else if (_inputFocusNode.hasFocus) {
-      final currentText = normalizeNumberTextForParsing(_inputController.text);
+      final currentText = normalizeNumTextForNumParsing(_inputController.text);
 
       if (_viewModel.inputAssetType == InputAssetType.fiat) {
         final currentValue = int.tryParse(currentText) ?? 0;

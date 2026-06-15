@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
+import 'package:coconut_wallet/extensions/string_extensions.dart';
 import 'package:decimal/decimal.dart';
 
 class UnitUtil {
@@ -21,6 +22,30 @@ class UnitUtil {
 }
 
 class BalanceFormatUtil {
+  /// `.` 기준 BTC 문자열을 로케일 포맷으로 변환
+  /// - 정수부: 천단위 구분자 삽입
+  /// - 소수부: 4자리씩 공백 구분 (패딩 없음)
+  /// - 소수점: 로케일 구분자로 교체
+  static String formatBtcStringForDisplay(String btcString) {
+    final parts = btcString.split('.');
+    final integerPart = parts.first;
+    final integerPartFormatted =
+        integerPart == '-0' ? '-0' : (int.tryParse(integerPart)?.toThousandsSeparatedString() ?? integerPart);
+
+    if (parts.length != 2) return integerPartFormatted;
+
+    final decimalPart = parts.last;
+    if (decimalPart.isEmpty) {
+      return '$integerPartFormatted${NumberFormatConfig.instance.decimalSeparator}';
+    }
+
+    final chunks = <String>[];
+    for (var i = 0; i < decimalPart.length; i += 4) {
+      chunks.add(decimalPart.substring(i, (i + 4).clamp(0, decimalPart.length)));
+    }
+    return '$integerPartFormatted${NumberFormatConfig.instance.decimalSeparator}${chunks.join(' ')}';
+  }
+
   /// 사용자 친화적 형식의 비트코인 잔액 보이기
   /// 예) 1 satoshi -> 0.0000 0001
   static String formatSatoshiToReadableBitcoin(int satoshi, {bool forceEightDecimals = false}) {
@@ -36,31 +61,16 @@ class BalanceFormatUtil {
       }
     }
 
-    // Split the integer and decimal parts
-    List<String> parts = bitcoinString.split('.');
-    String integerPart = parts[0];
-    String decimalPart = parts.length > 1 ? parts[1] : '';
+    if (bitcoinString == '0') return '0';
 
-    final integerPartFormatted = integerPart == '-0' ? '-0' : int.parse(integerPart).toThousandsSeparatedString();
-
-    String decimalPartGrouped = '';
-    if (decimalPart.isNotEmpty) {
-      if (decimalPart.length <= 4) {
-        decimalPartGrouped = decimalPart;
-      } else {
-        decimalPart = decimalPart.padRight(8, '0');
-        // Group the decimal part into blocks of 4 digits
-        decimalPartGrouped = RegExp(r'.{1,4}').allMatches(decimalPart).map((match) => match.group(0)).join(' ');
-      }
+    // 소수부가 4자리 초과인 경우 8자리로 패딩 후 포맷
+    final parts = bitcoinString.split('.');
+    final decimalPart = parts.length > 1 ? parts[1] : '';
+    if (decimalPart.length > 4) {
+      bitcoinString = '${parts[0]}.${decimalPart.padRight(8, '0')}';
     }
 
-    if (integerPartFormatted == '0' && decimalPartGrouped == '') {
-      return '0';
-    }
-
-    return decimalPartGrouped.isNotEmpty
-        ? '$integerPartFormatted${NumberFormatConfig.instance.decimalSeparator}$decimalPartGrouped'
-        : integerPartFormatted;
+    return formatBtcStringForDisplay(bitcoinString);
   }
 
   /// BIP21/입력용 BTC 텍스트 포맷팅
@@ -97,21 +107,12 @@ class BalanceFormatUtil {
   /// 포맷된 금액 문자열(회계 표기 포함)을 sats(int)로 변환
   static int? parseAmountTextToSats({required BitcoinUnit currentUnit, required String inputText}) {
     if (currentUnit.isBtcUnit) {
-      final rawText = inputText
-          .trim()
-          .replaceAll(NumberFormatConfig.instance.groupingSeparator, '')
-          .replaceAll(NumberFormatConfig.instance.decimalSeparator, '.');
-      if (rawText.isEmpty) return null;
-
-      final amount = double.tryParse(rawText);
+      final amount = inputText.toDoubleSafe();
       if (amount == null) return null;
       return currentUnit.toSatoshi(amount);
     }
 
-    final rawText = inputText.trim().replaceAll(RegExp(r'[^0-9]'), '');
-    if (rawText.isEmpty) return null;
-
-    return int.tryParse(rawText);
+    return inputText.toIntSafe();
   }
 }
 

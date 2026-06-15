@@ -92,6 +92,40 @@ class BtcAmountInputFormatter extends TextInputFormatter {
   }
 }
 
+class FeeRateInputFormatter extends TextInputFormatter {
+  const FeeRateInputFormatter();
+
+  String get _decimalSep => NumberFormatConfig.instance.decimalSeparator;
+  String get _altSep => _decimalSep == '.' ? ',' : '.';
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final inserted = _insertedText(oldValue, newValue);
+    if (inserted.isNotEmpty) {
+      if (!RegExp(r'^[0-9.,]+$').hasMatch(inserted)) return oldValue;
+
+      if (inserted == _altSep) {
+        if (oldValue.text.contains(_decimalSep)) return oldValue;
+        final newText = newValue.text.substring(0, newValue.text.length - 1) + _decimalSep;
+        final next = TextEditingValue(text: newText, selection: TextSelection.collapsed(offset: newText.length));
+        return formatEditUpdate(oldValue, next);
+      }
+    }
+
+    final normalized = newValue.text.replaceAll(',', '.').replaceAll(RegExp(r'[^0-9.]'), '');
+    if (normalized.isEmpty) return newValue;
+    // 소수점 이하 3자리 이상 거부
+    final parts = normalized.split('.');
+    if (parts.length > 2) return oldValue;
+    // 정수 9자리 이상 거부
+    if (parts[0].length > 8) return oldValue;
+    if (parts.length == 2 && parts[1].length > 2) return oldValue;
+
+    final formatted = parts.length == 2 ? '${parts[0]}$_decimalSep${parts[1]}' : parts[0];
+    return TextEditingValue(text: formatted, selection: TextSelection.collapsed(offset: formatted.length));
+  }
+}
+
 class SatoshiAmountInputFormatter extends TextInputFormatter {
   static const int maxSats = 2_100_000_000_000_000;
 

@@ -1,6 +1,6 @@
 import 'package:coconut_wallet/config/number_format_config.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('LocaleUtil Tests', () {
@@ -23,19 +23,6 @@ void main() {
       // 실제 시스템에서 테스트해야 합니다.
       // 이 테스트는 기본 동작을 확인하는 용도입니다.
       expect(isSystemLanguageJapanese(), isA<bool>());
-    });
-
-    test('normalizeNumberTextForParsing uses locale separators', () {
-      expect(normalizeNumberTextForParsing('1,234.56', localeName: 'en_US'), '1234.56');
-      expect(normalizeNumberTextForParsing('1.234,56', localeName: 'de_DE'), '1234.56');
-    });
-
-    test('normalizeDecimalNumberTextForParsing preserves decimal separator for decimal inputs', () {
-      expect(normalizeDecimalNumberTextForParsing('0,0001', localeName: 'en_US'), '0.0001');
-      expect(normalizeDecimalNumberTextForParsing('1,234', localeName: 'en_US'), '1234');
-      expect(normalizeDecimalNumberTextForParsing('1,2345', localeName: 'en_US'), '1.2345');
-      expect(normalizeDecimalNumberTextForParsing('1.234,56', localeName: 'de_DE'), '1234.56');
-      expect(normalizeDecimalNumberTextForParsing('1,234.56', localeName: 'en_US'), '1234.56');
     });
 
     test('getSystemLanguageCode should return en for non-Korean locale', () {

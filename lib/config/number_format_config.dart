@@ -9,12 +9,12 @@ class NumberFormatConfig {
 
   static final NumberFormatConfig instance = NumberFormatConfig._();
 
-  String decimalSeparator = '.';
-  String groupingSeparator = ',';
+  String decimalSeparator = ',';
+  String groupingSeparator = '.';
 
   void update(String appLanguageCode) {
-    decimalSeparator = getDecimalSeparatorForAppLanguage(appLanguageCode);
-    groupingSeparator = getGroupingSeparatorForAppLanguage(appLanguageCode);
+    // decimalSeparator = getDecimalSeparatorForAppLanguage(appLanguageCode);
+    // groupingSeparator = getGroupingSeparatorForAppLanguage(appLanguageCode);
   }
 }
 
@@ -31,6 +31,13 @@ String getDecimalSeparatorForAppLanguage(String appLanguageCode) {
 String getGroupingSeparatorForAppLanguage(String appLanguageCode) {
   final intlLocale = _appLanguageToIntlLocale[appLanguageCode] ?? 'en';
   return getNumberGroupingSeparator(localeName: intlLocale);
+}
+
+String normalizeNumTextForNumParsing(String text) {
+  final groupingSeparator = NumberFormatConfig.instance.groupingSeparator;
+  final decimalSeparator = NumberFormatConfig.instance.decimalSeparator;
+
+  return text.trim().replaceAll(groupingSeparator, '').replaceAll(decimalSeparator, '.');
 }
 
 /// 앱 설정 언어 기반 천 단위/소수점 구분자를 사용하여 BigInt 포맷팅
