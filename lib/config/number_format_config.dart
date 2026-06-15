@@ -9,12 +9,12 @@ class NumberFormatConfig {
 
   static final NumberFormatConfig instance = NumberFormatConfig._();
 
-  String decimalSeparator = ',';
-  String groupingSeparator = '.';
+  String decimalSeparator = '.';
+  String groupingSeparator = ',';
 
   void update(String appLanguageCode) {
-    // decimalSeparator = getDecimalSeparatorForAppLanguage(appLanguageCode);
-    // groupingSeparator = getGroupingSeparatorForAppLanguage(appLanguageCode);
+    decimalSeparator = getDecimalSeparatorForAppLanguage(appLanguageCode);
+    groupingSeparator = getGroupingSeparatorForAppLanguage(appLanguageCode);
   }
 }
 
