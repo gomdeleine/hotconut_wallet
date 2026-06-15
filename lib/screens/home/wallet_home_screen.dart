@@ -14,8 +14,6 @@ import 'package:coconut_wallet/model/wallet/balance.dart';
 import 'package:coconut_wallet/model/wallet/transaction_record.dart';
 import 'package:coconut_wallet/screens/home/analysis_period_bottom_sheet.dart';
 import 'package:coconut_wallet/screens/send/refactor/utxo_selection_screen.dart';
-//TODO: 아래 임포트는 테스트용으로 임시로 추가한 것. 추후 제거 필요
-import 'package:coconut_wallet/screens/wallet_detail/widget_test_screen.dart';
 import 'package:coconut_wallet/utils/transaction_util.dart';
 import 'package:coconut_wallet/providers/connectivity_provider.dart';
 import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
@@ -374,8 +372,6 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
             child: const SettingsScreen(),
             heightRatio: 0.9,
           ),
-      // TODO: 추후 제거
-      'widget_test': () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WidgetTestScreen())),
     };
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -1941,7 +1937,6 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
                     CoconutPulldownMenuItem(title: t.utility.p2p_calculator.calculator),
                     CoconutPulldownMenuItem(title: t.mnemonic_wordlist),
                     CoconutPulldownMenuItem(title: t.tutorial),
-                    CoconutPulldownMenuItem(title: 'Widget Test'),
                   ],
                 ),
                 CoconutPulldownMenuItem(title: t.home_screen_settings),
@@ -1965,7 +1960,7 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
   int _getThickDividerIndex(bool showGlossary) {
     // 테스트넷/메인넷 공통: 임시저장(0) + 용어집(1) + P2P계산기(2) + 니모닉(3) + 튜토리얼(4) → 그룹 끝 인덱스 4
     // 테스트넷/메인넷 공통 (용어집 없음): 임시저장(0) + P2P계산기(1) + 니모닉(2) + 튜토리얼(3) → 그룹 끝 인덱스 3
-    return showGlossary ? 5 : 4;
+    return showGlossary ? 4 : 3;
   }
 
   /// 드롭다운 선택 처리 (selectedText 기반)
@@ -1986,7 +1981,6 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
     if (selectedText == t.tutorial) return 'tutorial';
     if (selectedText == t.home_screen_settings) return 'home_screen_settings';
     if (selectedText == t.app_settings) return 'app_settings';
-    if (selectedText == 'Widget Test') return 'widget_test';
     return '';
   }
 
