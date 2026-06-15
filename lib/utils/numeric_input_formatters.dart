@@ -92,8 +92,11 @@ class BtcAmountInputFormatter extends TextInputFormatter {
   }
 }
 
-class FeeRateInputFormatter extends TextInputFormatter {
-  const FeeRateInputFormatter();
+class RateInputFormatter extends TextInputFormatter {
+  final int integerPlaces; // 정수부 자리수
+  final int decimalPlaces; // 소수부 자리수
+
+  const RateInputFormatter({this.integerPlaces = 8, this.decimalPlaces = 2});
 
   String get _decimalSep => NumberFormatConfig.instance.decimalSeparator;
   String get _altSep => _decimalSep == '.' ? ',' : '.';
@@ -118,14 +121,16 @@ class FeeRateInputFormatter extends TextInputFormatter {
     if (normalized.startsWith('.')) {
       normalized = '0$normalized';
     }
-    // 소수점 이하 3자리 이상 거부
     final parts = normalized.split('.');
     if (parts.length > 2) return oldValue;
-    // 정수 9자리 이상 거부
-    if (parts[0].length > 8) return oldValue;
-    if (parts.length == 2 && parts[1].length > 2) return oldValue;
+    final integerPart = parts[0].replaceFirst(RegExp(r'^0+(?=\d)'), '');
+    final decimalPart = parts.length == 2 ? parts[1] : null;
+    if (integerPart.length > integerPlaces) return oldValue;
+    if (decimalPart != null && decimalPart.length > decimalPlaces) {
+      return oldValue;
+    }
 
-    final formatted = parts.length == 2 ? '${parts[0]}$_decimalSep${parts[1]}' : parts[0];
+    final formatted = decimalPart != null ? '$integerPart$_decimalSep$decimalPart' : integerPart;
     return TextEditingValue(text: formatted, selection: TextSelection.collapsed(offset: formatted.length));
   }
 }
@@ -166,7 +171,8 @@ String _formatBtcText(String text, {required String decimalSeparator, required S
   if (text == '.' || text == ',') return '0$decimalSeparator';
 
   final parts = text.replaceAll(',', '.').split('.');
-  final integerPart = parts[0].isEmpty ? '0' : parts[0];
+  final rawIntegerPart = parts[0].isEmpty ? '0' : parts[0];
+  final integerPart = rawIntegerPart.replaceFirst(RegExp(r'^0+(?=\d)'), '');
   final formattedIntegerPart = formatIntWithGroupingSeparator(integerPart, groupingSeparator);
 
   if (parts.length == 1) {

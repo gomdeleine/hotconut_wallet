@@ -8,7 +8,7 @@ void main() {
   group('BtcAmountInputFormatter', () {
     TextEditingValue format(String text, {String decimalSeparator = '.', String groupingSeparator = ','}) {
       NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
-      final formatter = const BtcAmountInputFormatter();
+      const formatter = BtcAmountInputFormatter();
       return formatter.formatEditUpdate(
         const TextEditingValue(),
         TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length)),
@@ -167,12 +167,19 @@ void main() {
       const formatter = BtcAmountInputFormatter();
       expect(formatter.formatEditUpdate(oldValue, newValue), oldValue);
     });
+
+    test('정수부의 불필요한 leading zero를 제거한다', () {
+      expect(format('01').text, '1');
+      expect(format('001.2').text, '1.2');
+      expect(format('0.5').text, '0.5');
+      expect(format('00.5').text, '0.5');
+    });
   });
 
   group('FeeRateInputFormatter', () {
     TextEditingValue format(String text, {String decimalSeparator = '.'}) {
       NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
-      const formatter = FeeRateInputFormatter();
+      const formatter = RateInputFormatter();
       return formatter.formatEditUpdate(
         const TextEditingValue(),
         TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length)),
@@ -181,7 +188,7 @@ void main() {
 
     List<String> typeSequence(List<String> inputs, {String decimalSeparator = '.'}) {
       NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
-      const formatter = FeeRateInputFormatter();
+      const formatter = RateInputFormatter();
       var current = const TextEditingValue();
       final results = <String>[];
       for (final input in inputs) {
@@ -232,7 +239,7 @@ void main() {
 
     test('소수점 중복 입력 거부', () {
       NumberFormatConfig.instance.update('en');
-      const formatter = FeeRateInputFormatter();
+      const formatter = RateInputFormatter();
       const before = TextEditingValue(text: '1.5', selection: TextSelection.collapsed(offset: 3));
       const addingDot = TextEditingValue(text: '1.5.', selection: TextSelection.collapsed(offset: 4));
       expect(formatter.formatEditUpdate(before, addingDot), before);
@@ -240,7 +247,7 @@ void main() {
 
     test('소수 3자리 이상 거부', () {
       NumberFormatConfig.instance.update('en');
-      const formatter = FeeRateInputFormatter();
+      const formatter = RateInputFormatter();
       const before = TextEditingValue(text: '1.12', selection: TextSelection.collapsed(offset: 4));
       const addingDigit = TextEditingValue(text: '1.123', selection: TextSelection.collapsed(offset: 5));
       expect(formatter.formatEditUpdate(before, addingDigit), before);
@@ -253,10 +260,33 @@ void main() {
 
     test('정수 9자리 이상 거부', () {
       NumberFormatConfig.instance.update('en');
-      const formatter = FeeRateInputFormatter();
+      const formatter = RateInputFormatter();
       const before = TextEditingValue(text: '99999999', selection: TextSelection.collapsed(offset: 8));
       const addingDigit = TextEditingValue(text: '999999999', selection: TextSelection.collapsed(offset: 9));
       expect(formatter.formatEditUpdate(before, addingDigit), before);
+    });
+
+    test('정수부의 불필요한 leading zero를 제거한다', () {
+      expect(format('01').text, '1');
+      expect(format('001.2').text, '1.2');
+      expect(format('0.5').text, '0.5');
+      expect(format('00.5').text, '0.5');
+    });
+
+    test('정수부/소수부 최대 자리수를 지정할 수 있다', () {
+      NumberFormatConfig.instance.update('en');
+      const formatter = RateInputFormatter(integerPlaces: 2, decimalPlaces: 1);
+
+      const valid = TextEditingValue(text: '99.9', selection: TextSelection.collapsed(offset: 4));
+      expect(formatter.formatEditUpdate(const TextEditingValue(), valid).text, '99.9');
+
+      const integerBefore = TextEditingValue(text: '99', selection: TextSelection.collapsed(offset: 2));
+      const integerExceeded = TextEditingValue(text: '999', selection: TextSelection.collapsed(offset: 3));
+      expect(formatter.formatEditUpdate(integerBefore, integerExceeded), integerBefore);
+
+      const decimalBefore = TextEditingValue(text: '99.9', selection: TextSelection.collapsed(offset: 4));
+      const decimalExceeded = TextEditingValue(text: '99.99', selection: TextSelection.collapsed(offset: 5));
+      expect(formatter.formatEditUpdate(decimalBefore, decimalExceeded), decimalBefore);
     });
 
     test('연속 입력 — 소수점 포함 (en)', () {
@@ -276,7 +306,7 @@ void main() {
 
     test('숫자가 아닌 문자 입력 거부', () {
       NumberFormatConfig.instance.update('en');
-      const formatter = FeeRateInputFormatter();
+      const formatter = RateInputFormatter();
       const before = TextEditingValue(text: '1', selection: TextSelection.collapsed(offset: 1));
       const addingAlpha = TextEditingValue(text: '1a', selection: TextSelection.collapsed(offset: 2));
       expect(formatter.formatEditUpdate(before, addingAlpha), before);

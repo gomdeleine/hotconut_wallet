@@ -248,6 +248,8 @@ void main() {
         BalanceFormatUtil.parseAmountTextToSats(currentUnit: BitcoinUnit.btc, inputText: '1.234,56'),
         123456000000,
       );
+      expect(BalanceFormatUtil.parseAmountTextToSats(currentUnit: BitcoinUnit.btc, inputText: '0,001'), 100000);
+      expect(BalanceFormatUtil.parseAmountTextToSats(currentUnit: BitcoinUnit.btc, inputText: '0,005'), 500000);
     });
   });
 
