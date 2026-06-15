@@ -39,10 +39,6 @@ class WalletSignerSection extends StatelessWidget {
     }
 
     if (walletType == WalletType.taproot) {
-      final hasKeyPath = viewModel.hasTaprootKeyPath;
-      final hasScriptPath = viewModel.hasTaprootScriptPath;
-      final hasBothKeys = hasKeyPath && hasScriptPath;
-
       final effectiveIndex = viewModel.taprootSpendTypeIndex;
 
       return Column(
@@ -56,7 +52,7 @@ class WalletSignerSection extends StatelessWidget {
             ),
           ),
           CoconutLayout.spacing_200h,
-          if (hasBothKeys) ...[
+          if (viewModel.canSpendBothPaths) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: CoconutSegmentedControl(

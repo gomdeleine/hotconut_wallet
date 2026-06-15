@@ -106,25 +106,21 @@ class WalletInfoViewModel extends ChangeNotifier {
   Balance get walletBalance => _walletProvider.getWalletBalance(_walletId);
 
   bool get hasTaprootKeyPath =>
-      _walletItemBase is TaprootWalletListItem &&
-      (_walletItemBase as TaprootWalletListItem).keyPathSeedInfos.isNotEmpty;
+      _walletItemBase is TaprootWalletListItem && (_walletItemBase as TaprootWalletListItem).canSpendViaKeyPath;
 
   bool get hasTaprootScriptPath =>
-      _walletItemBase is TaprootWalletListItem &&
-      (_walletItemBase as TaprootWalletListItem).scriptPathSeedInfos.isNotEmpty;
+      _walletItemBase is TaprootWalletListItem && (_walletItemBase as TaprootWalletListItem).canSpendViaScriptPath;
+
+  bool get canSpendBothPaths =>
+      _walletItemBase is TaprootWalletListItem && (_walletItemBase as TaprootWalletListItem).canSpendBothPaths;
 
   bool get hasSingleTaprootParent {
-    final item = _walletItemBase;
-    if (item is! TaprootWalletListItem) return false;
+    if (_walletItemBase is! TaprootWalletListItem) return false;
 
-    final descriptor = item.descriptor;
-    final trStart = descriptor.indexOf('tr(');
-    if (trStart == -1) return false;
+    final taprootWallet = _walletItemBase.walletBase;
+    if (taprootWallet is! TaprootWallet) return false;
 
-    final keyPathEndIndex = _findKeyPathEndIndex(descriptor, trStart);
-    final matches = RegExp(r'\[([0-9a-fA-F]{8})([^\]]+)\]([a-zA-Z0-9]+)').allMatches(descriptor);
-
-    return matches.where((m) => m.start < keyPathEndIndex).length == 1;
+    return taprootWallet.keyStoreList.length == 1;
   }
 
   List<TaprootParticipantCard> getTaprootParticipants(int currentSegmentIndex) {
