@@ -112,8 +112,12 @@ class FeeRateInputFormatter extends TextInputFormatter {
       }
     }
 
-    final normalized = newValue.text.replaceAll(',', '.').replaceAll(RegExp(r'[^0-9.]'), '');
+    var normalized = newValue.text.replaceAll(',', '.').replaceAll(RegExp(r'[^0-9.]'), '');
     if (normalized.isEmpty) return newValue;
+    // 맨 앞에 소수점이 오면 0.으로 변환
+    if (normalized.startsWith('.')) {
+      normalized = '0$normalized';
+    }
     // 소수점 이하 3자리 이상 거부
     final parts = normalized.split('.');
     if (parts.length > 2) return oldValue;
@@ -139,10 +143,7 @@ class SatoshiAmountInputFormatter extends TextInputFormatter {
     final sats = int.tryParse(text);
     if (sats != null && sats > maxSats) return oldValue;
 
-    final formattedText = formatIntWithGroupingSeparator(
-      int.parse(text),
-      NumberFormatConfig.instance.groupingSeparator,
-    );
+    final formattedText = formatIntWithGroupingSeparator(text, NumberFormatConfig.instance.groupingSeparator);
     final offset = _calculateSelectionOffset(
       originalText: newValue.text,
       formattedText: formattedText,
@@ -166,7 +167,7 @@ String _formatBtcText(String text, {required String decimalSeparator, required S
 
   final parts = text.replaceAll(',', '.').split('.');
   final integerPart = parts[0].isEmpty ? '0' : parts[0];
-  final formattedIntegerPart = formatIntWithGroupingSeparator(int.parse(integerPart), groupingSeparator);
+  final formattedIntegerPart = formatIntWithGroupingSeparator(integerPart, groupingSeparator);
 
   if (parts.length == 1) {
     return formattedIntegerPart;
@@ -175,14 +176,13 @@ String _formatBtcText(String text, {required String decimalSeparator, required S
   return '$formattedIntegerPart$decimalSeparator${parts[1]}';
 }
 
-String formatIntWithGroupingSeparator(int value, String groupingSeparator) {
-  final str = value.toString();
+String formatIntWithGroupingSeparator(String integer, String groupingSeparator) {
   final buffer = StringBuffer();
-  for (var i = 0; i < str.length; i++) {
-    if (i > 0 && (str.length - i) % 3 == 0) {
+  for (var i = 0; i < integer.length; i++) {
+    if (i > 0 && (integer.length - i) % 3 == 0) {
       buffer.write(groupingSeparator);
     }
-    buffer.write(str[i]);
+    buffer.write(integer[i]);
   }
   return buffer.toString();
 }
