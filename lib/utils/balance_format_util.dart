@@ -22,30 +22,6 @@ class UnitUtil {
 }
 
 class BalanceFormatUtil {
-  /// `.` 기준 BTC 문자열을 로케일 포맷으로 변환
-  /// - 정수부: 천단위 구분자 삽입
-  /// - 소수부: 4자리씩 공백 구분 (패딩 없음)
-  /// - 소수점: 로케일 구분자로 교체
-  static String formatBtcStringForDisplay(String btcString) {
-    final parts = btcString.split('.');
-    final integerPart = parts.first;
-    final integerPartFormatted =
-        integerPart == '-0' ? '-0' : (int.tryParse(integerPart)?.toThousandsSeparatedString() ?? integerPart);
-
-    if (parts.length != 2) return integerPartFormatted;
-
-    final decimalPart = parts.last;
-    if (decimalPart.isEmpty) {
-      return '$integerPartFormatted${NumberFormatConfig.instance.decimalSeparator}';
-    }
-
-    final chunks = <String>[];
-    for (var i = 0; i < decimalPart.length; i += 4) {
-      chunks.add(decimalPart.substring(i, (i + 4).clamp(0, decimalPart.length)));
-    }
-    return '$integerPartFormatted${NumberFormatConfig.instance.decimalSeparator}${chunks.join(' ')}';
-  }
-
   /// 사용자 친화적 형식의 비트코인 잔액 보이기
   /// 예) 1 satoshi -> 0.0000 0001
   static String formatSatoshiToReadableBitcoin(int satoshi, {bool forceEightDecimals = false}) {
@@ -70,7 +46,7 @@ class BalanceFormatUtil {
       bitcoinString = '${parts[0]}.${decimalPart.padRight(8, '0')}';
     }
 
-    return formatBtcStringForDisplay(bitcoinString);
+    return bitcoinString.toBtcDisplayString();
   }
 
   /// BIP21/입력용 BTC 텍스트 포맷팅

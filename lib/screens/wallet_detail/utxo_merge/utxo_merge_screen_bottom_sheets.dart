@@ -89,10 +89,7 @@ extension _UtxoMergeScreenBottomSheetsExtension on _UtxoMergeScreenState {
             ? currentAmountRange
             : firstAvailableRecommendedRange;
     final customAmountController = TextEditingController(
-      text:
-          _viewModel.customAmountRangeText == null
-              ? ''
-              : BalanceFormatUtil.formatBtcStringForDisplay(_viewModel.customAmountRangeText!),
+      text: _viewModel.customAmountRangeText == null ? '' : _viewModel.customAmountRangeText!.toBtcDisplayString(),
     );
     final customAmountFocusNode = FocusNode();
     var isCustomAmountLessThan = _viewModel.isCustomAmountLessThan;

@@ -23,10 +23,10 @@ extension StringFormatting on String {
         String integerPart = parts[0];
         String decimalPart = parts.length > 1 ? parts[1] : '';
 
-        String formattedIntegerPart = formatIntWithGroupingSeparator(
-          integerPart,
-          NumberFormatConfig.instance.groupingSeparator,
-        );
+        String formattedIntegerPart =
+            integerPart == '-0'
+                ? '-0'
+                : formatIntWithGroupingSeparator(integerPart, NumberFormatConfig.instance.groupingSeparator);
 
         // 소수점 4자리가 넘어가는 경우 4자리씩 띄워서 처리 (옵션)
         if (groupDecimalDigits && decimalPart.length > 4) {

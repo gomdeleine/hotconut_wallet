@@ -5,7 +5,7 @@ import 'package:coconut_lib/coconut_lib.dart';
 import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/enums/utxo_merge_enums.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
+import 'package:coconut_wallet/extensions/string_extensions.dart';
 import 'package:coconut_wallet/extensions/widget_animation_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/utxo/utxo_state.dart';
@@ -807,15 +807,14 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
   String get _summaryAmountThresholdText {
     switch (_viewModel.currentAmountRange) {
       case UtxoAmountRange.below001:
-        return '${BalanceFormatUtil.formatBtcStringForDisplay('0.01')} BTC';
+        return '${'0.01'.toBtcDisplayString()} BTC';
       case UtxoAmountRange.below0001:
-        return '${BalanceFormatUtil.formatBtcStringForDisplay('0.001')} BTC';
+        return '${'0.001'.toBtcDisplayString()} BTC';
       case UtxoAmountRange.below00001:
-        return '${BalanceFormatUtil.formatBtcStringForDisplay('0.0001')} BTC';
+        return '${'0.0001'.toBtcDisplayString()} BTC';
       case UtxoAmountRange.custom:
         final customAmount = _viewModel.customAmountRangeText ?? '';
-        final formattedAmount =
-            customAmount.isEmpty ? customAmount : '${BalanceFormatUtil.formatBtcStringForDisplay(customAmount)} BTC';
+        final formattedAmount = customAmount.isEmpty ? customAmount : '${customAmount.toBtcDisplayString()} BTC';
         return formattedAmount;
     }
   }
@@ -976,14 +975,14 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
         return _localizedAmountRangeText(t.merge_utxos_screen.amount_range_bottomsheet.below_00001, '0.0001');
       case UtxoAmountRange.custom:
         if (_viewModel.customAmountRangeText != null && _viewModel.customAmountRangeText!.isNotEmpty) {
-          return '${_viewModel.isCustomAmountLessThan ? '${t.merge_utxos_screen.amount_range_bottomsheet.less_than} ' : ''}${BalanceFormatUtil.formatBtcStringForDisplay(_viewModel.customAmountRangeText!)}${t.btc} ${_viewModel.isCustomAmountLessThan ? '' : ' ${t.merge_utxos_screen.amount_range_bottomsheet.or_less}'}';
+          return '${_viewModel.isCustomAmountLessThan ? '${t.merge_utxos_screen.amount_range_bottomsheet.less_than} ' : ''}${_viewModel.customAmountRangeText!.toBtcDisplayString()}${t.btc} ${_viewModel.isCustomAmountLessThan ? '' : ' ${t.merge_utxos_screen.amount_range_bottomsheet.or_less}'}';
         }
         return t.merge_utxos_screen.amount_range_bottomsheet.custom;
     }
   }
 
   String _localizedAmountRangeText(String text, String amount) {
-    return text.replaceFirst(amount, BalanceFormatUtil.formatBtcStringForDisplay(amount));
+    return text.replaceFirst(amount, amount.toBtcDisplayString());
   }
 
   String? _amountRangeDescription(UtxoAmountRange range) {
