@@ -6,6 +6,7 @@ import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_wallet/app_guard.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
+import 'package:coconut_wallet/extensions/string_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/providers/connectivity_provider.dart';
 import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
@@ -18,6 +19,7 @@ import 'package:coconut_wallet/screens/send/refactor/select_wallet_bottom_sheet.
 import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/clipboard_copy_util.dart';
 import 'package:coconut_wallet/config/number_format_config.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:coconut_wallet/utils/vibration_util.dart';
 import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
 import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
@@ -170,55 +172,12 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
     }
 
     _premiumController.text = _formatLocaleDecimalText(text);
-    _viewModel.setPremiumRate(double.tryParse(text) ?? 0);
+    _viewModel.setPremiumRate(text.toDoubleSafe() ?? 0);
   }
 
   void _handlePremiumInputChanged(String value) {
-    var text = _normalizeLocaleDecimalText(value);
-
-    if (text == '.') {
-      final formattedText = _formatLocaleDecimalText('0.');
-      _premiumController.value = TextEditingValue(
-        text: formattedText,
-        selection: TextSelection.collapsed(offset: formattedText.length),
-      );
-      return;
-    }
-
-    final regex = RegExp(r'^\d{0,2}(\.\d{0,1})?$');
-    if (!regex.hasMatch(text)) {
-      final prevText = _formatLocaleDecimalText(_viewModel.premiumRate.toStringAsFixed(1));
-      _premiumController.value = TextEditingValue(
-        text: prevText,
-        selection: TextSelection.collapsed(offset: prevText.length),
-      );
-      return;
-    }
-
-    if (text.contains('.')) {
-      final parts = text.split('.');
-      final intPart = parts[0];
-      final decPart = parts[1];
-      if (intPart.length >= 2 && intPart.startsWith('0')) {
-        final cleaned = intPart.replaceFirst(RegExp(r'^0+'), '');
-        text = '${cleaned.isEmpty ? '0' : cleaned}.$decPart';
-      }
-    } else {
-      if (text.length >= 2 && text.startsWith('0')) {
-        final cleaned = text.replaceFirst(RegExp(r'^0+'), '');
-        text = cleaned.isEmpty ? '0' : cleaned;
-      }
-    }
-
-    final formattedText = _formatLocaleDecimalText(text);
-    if (formattedText != _premiumController.text) {
-      _premiumController.value = TextEditingValue(
-        text: formattedText,
-        selection: TextSelection.collapsed(offset: formattedText.length),
-      );
-    }
-
-    _viewModel.setPremiumRate(double.tryParse(text) ?? 0);
+    final text = _normalizeLocaleDecimalText(value);
+    _viewModel.setPremiumRate(text.toDoubleSafe() ?? 0);
     _updateResultOnPremiumChange();
   }
 
@@ -239,19 +198,21 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
       return;
     }
 
+    final shouldUpdateController = value != _inputController.text;
+
     if (_viewModel.inputAssetType == InputAssetType.fiat) {
       _processFiatInput(sanitized);
     } else if (_viewModel.currentUnit.isBasedOnSatoshi) {
       _processSatsInput(sanitized);
     } else {
-      _processBtcInput(sanitized);
+      _processBtcInput(sanitized, shouldUpdateController: shouldUpdateController);
     }
 
     setState(() {});
   }
 
   void _processFiatInput(String sanitized) {
-    var value = int.tryParse(sanitized) ?? 0;
+    var value = sanitized.toIntSafe() ?? 0;
 
     if (_viewModel.btcPrice != null && _viewModel.btcPrice! > 0) {
       final btcFromFiat = value / _viewModel.btcPrice!;
@@ -271,48 +232,22 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
     _isUpdatingController = false;
   }
 
-  void _processBtcInput(String sanitized) {
-    var btcText = sanitized;
+  void _processBtcInput(String sanitized, {required bool shouldUpdateController}) {
+    var btcText = filterNumericInput(sanitized, decimalPlaces: 8);
+    var sats =
+        BalanceFormatUtil.parseAmountTextToSats(
+          currentUnit: _viewModel.currentUnit,
+          inputText: _formatLocaleDecimalText(btcText),
+        ) ??
+        0;
 
-    // "." 입력 시 "0."으로 자동 변환
-    if (btcText == '.') {
-      btcText = '0.';
-      final formattedText = _formatLocaleDecimalText('0.');
-      _isUpdatingController = true;
-      _inputController.value = TextEditingValue(
-        text: formattedText,
-        selection: TextSelection.collapsed(offset: formattedText.length),
-      );
-      _isUpdatingController = false;
-      _viewModel.setInputAmount(0);
-      return;
+    if (sats > _maxSats) {
+      sats = _maxSats;
+      btcText = _maxBtc.toInt().toString();
     }
 
-    // 소수점 이하 8자리 제한
-    if (btcText.contains('.')) {
-      final parts = btcText.split('.');
-      var decPart = parts.length > 1 ? parts[1] : '';
-      if (decPart.length > 8) {
-        decPart = decPart.substring(0, 8);
-        btcText = '${parts[0]}.$decPart';
-      }
-    }
-
-    var btc = double.tryParse(btcText) ?? 0;
-
-    // 최대값 체크
-    if (btc > _maxBtc) {
-      btc = _maxBtc;
-      final formatted = _maxBtc.toInt().toThousandsSeparatedString();
-      _isUpdatingController = true;
-      _inputController.value = TextEditingValue(
-        text: formatted,
-        selection: TextSelection.collapsed(offset: formatted.length),
-      );
-      _isUpdatingController = false;
-      btcText = _maxBtc.toStringAsFixed(0);
-    } else {
-      final formatted = _formatBtcWithCommas(btcText);
+    if (shouldUpdateController) {
+      final formatted = _formatBtcInputText(btcText);
       _isUpdatingController = true;
       _inputController.value = TextEditingValue(
         text: formatted,
@@ -321,32 +256,21 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
       _isUpdatingController = false;
     }
 
-    // Sats로 변환
-    final sats = (btc * 100000000).round();
     _viewModel.setInputAmount(sats);
   }
 
-  /// BTC 입력값에 천 단위 구분자 추가 (소수부는 그대로 유지)
-  String _formatBtcWithCommas(String btcText) {
-    final parts = btcText.split('.');
-    final rawIntPart = parts[0].isEmpty ? '0' : parts[0];
-    final hasDotOnly = parts.length == 2 && parts[1].isEmpty;
-    final decPart = parts.length > 1 ? parts[1] : '';
-    final intVal = int.tryParse(rawIntPart) ?? 0;
-    final formattedInt = intVal.toThousandsSeparatedString();
-
-    final decimalSep = NumberFormatConfig.instance.decimalSeparator;
-    if (hasDotOnly) {
-      return '$formattedInt$decimalSep';
-    } else if (decPart.isEmpty) {
-      return formattedInt;
-    } else {
-      return '$formattedInt$decimalSep$decPart';
-    }
+  String _formatBtcInputText(String btcText) {
+    final displayText = _formatLocaleDecimalText(btcText);
+    return const BtcAmountInputFormatter()
+        .formatEditUpdate(
+          const TextEditingValue(),
+          TextEditingValue(text: displayText, selection: TextSelection.collapsed(offset: displayText.length)),
+        )
+        .text;
   }
 
   void _processSatsInput(String sanitized) {
-    var sats = int.tryParse(sanitized) ?? 0;
+    var sats = sanitized.toIntSafe() ?? 0;
 
     if (sats > _maxSats) {
       sats = _maxSats;
@@ -609,13 +533,13 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
   }
 
   double _parsePremiumRate() {
-    return double.tryParse(_normalizeLocaleDecimalText(_premiumController.text)) ?? 0;
+    return _premiumController.text.toDoubleSafe() ?? 0;
   }
 
   String _formatPremiumAmount(double amount) {
     final fixedText = amount.toStringAsFixed(2);
     final parts = fixedText.split('.');
-    final integerText = int.parse(parts[0]).toThousandsSeparatedString();
+    final integerText = (parts[0].toIntSafe() ?? 0).toThousandsSeparatedString();
     final decimalText = parts.length > 1 ? parts[1] : '';
 
     if (decimalText == '00') {
@@ -1357,7 +1281,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
                             placeholderText: effectivePlaceholder,
                             textInputFormatter:
                                 postfix == t.btc
-                                    ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))]
+                                    ? [const BtcAmountInputFormatter()]
                                     : [FilteringTextInputFormatter.digitsOnly],
                             onChanged: _handleAmountInputChanged,
                             textInputType:
@@ -1439,7 +1363,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
                   height: 22,
                   textInputAction: TextInputAction.done,
                   textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                  textInputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                  textInputFormatter: const [RateInputFormatter(integerPlaces: 2, decimalPlaces: 1)],
                   onChanged: _handlePremiumInputChanged,
                   textAlign: TextAlign.end,
                   isVisibleBorder: false,
@@ -1631,26 +1555,30 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
   void _onToolbarButtonPressed(String value) {
     if (_premiumFocusNode.hasFocus) {
       final currentPremium = _parsePremiumRate();
-      final addValue = double.tryParse(value) ?? 0;
+      final addValue = _formatLocaleDecimalText(value).toDoubleSafe() ?? 0;
       final newPremium = (currentPremium + addValue).clamp(0.0, 99.9);
       _premiumController.text = _formatLocaleDecimalText(newPremium.toStringAsFixed(1));
       _viewModel.setPremiumRate(newPremium);
       _updateResultOnPremiumChange();
     } else if (_inputFocusNode.hasFocus) {
-      final currentText = normalizeNumTextForNumParsing(_inputController.text);
-
       if (_viewModel.inputAssetType == InputAssetType.fiat) {
-        final currentValue = int.tryParse(currentText) ?? 0;
-        final addValue = int.tryParse(value) ?? 0;
+        final currentValue = _inputController.text.toIntSafe() ?? 0;
+        final addValue = value.toIntSafe() ?? 0;
         _handleAmountInputChanged((currentValue + addValue).toString());
       } else if (_viewModel.currentUnit.isBasedOnSatoshi) {
-        final currentValue = int.tryParse(currentText) ?? 0;
-        final addValue = int.tryParse(value) ?? 0;
+        final currentValue = _inputController.text.toIntSafe() ?? 0;
+        final addValue = value.toIntSafe() ?? 0;
         _handleAmountInputChanged((currentValue + addValue).toString());
       } else {
-        final currentValue = double.tryParse(currentText) ?? 0;
-        final addValue = double.tryParse(value) ?? 0;
-        _handleAmountInputChanged((currentValue + addValue).toString());
+        final currentSats = _viewModel.inputAmount ?? 0;
+        final addSats =
+            BalanceFormatUtil.parseAmountTextToSats(
+              currentUnit: _viewModel.currentUnit,
+              inputText: _formatLocaleDecimalText(value),
+            ) ??
+            0;
+        final nextSats = (currentSats + addSats).clamp(0, _maxSats).toInt();
+        _handleAmountInputChanged(BalanceFormatUtil.formatSatoshiToBtcInputText(nextSats));
       }
     }
   }

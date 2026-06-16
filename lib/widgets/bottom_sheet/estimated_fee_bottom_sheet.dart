@@ -182,7 +182,7 @@ class _EstimatedFeeBottomSheetState extends State<EstimatedFeeBottomSheet> {
                     child: CoconutTextField(
                       textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                       textInputAction: TextInputAction.done,
-                      textInputFormatter: const [FeeRateInputFormatter()],
+                      textInputFormatter: const [RateInputFormatter()],
                       enableInteractiveSelection: false,
                       textAlign: TextAlign.end,
                       controller: feeRateController,

@@ -520,7 +520,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
                     focusNode: _feeTextFieldFocusNode,
                     cursorColor: CoconutColors.white,
                     textInputType: const TextInputType.numberWithOptions(decimal: true),
-                    textInputFormatter: const [FeeRateInputFormatter()],
+                    textInputFormatter: const [RateInputFormatter()],
                     errorColor: CoconutColors.hotPink,
                     activeColor: CoconutColors.white,
                     backgroundColor: CoconutColors.white.withValues(alpha: 0.15),
