@@ -1046,7 +1046,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                     data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                     child: CoconutTextField(
                       textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                      textInputFormatter: const [FeeRateInputFormatter()],
+                      textInputFormatter: const [RateInputFormatter()],
                       enableInteractiveSelection: false,
                       textAlign: TextAlign.end,
                       controller: _feeRateController,

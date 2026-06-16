@@ -181,7 +181,7 @@ void main() {
     });
   });
 
-  group('FeeRateInputFormatter', () {
+  group('RateInputFormatter', () {
     TextEditingValue format(String text, {String decimalSeparator = '.'}) {
       NumberFormatConfig.instance.update(decimalSeparator == ',' ? 'es' : 'en');
       const formatter = RateInputFormatter();
