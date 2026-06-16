@@ -1,3 +1,4 @@
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/core/exceptions/cpfp_creation/cpfp_creation_exception.dart';
 import 'package:coconut_wallet/core/exceptions/rbf_creation/rbf_creation_exception.dart';
 import 'package:coconut_wallet/core/transaction/fee_bumping/cpfp_builder.dart';
@@ -534,6 +535,6 @@ class FeeBumpingViewModel extends ChangeNotifier {
 
     final parts = value.toStringAsFixed(2).split('.');
     final integerPart = int.parse(parts[0]).toThousandsSeparatedString();
-    return '$integerPart${getNumberDecimalSeparator()}${parts[1]}';
+    return '$integerPart${NumberFormatConfig.instance.decimalSeparator}${parts[1]}';
   }
 }

@@ -1,4 +1,5 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/enums/wallet_enums.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
@@ -406,6 +407,6 @@ class _TransactionDraftCardState extends State<TransactionDraftCard> with Single
   }
 
   String _formatFeeRateForDisplay(double feeRate) {
-    return feeRate.toString().replaceAll('.', getNumberDecimalSeparator());
+    return feeRate.toString().replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
   }
 }

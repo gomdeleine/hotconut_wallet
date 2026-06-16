@@ -80,12 +80,6 @@ class PreferenceProvider extends ChangeNotifier {
   bool get isJapanese => _language == "jp";
   bool get isSpanish => _language == "es";
 
-  /// 앱 설정 언어 기반 소수점 구분자
-  String get decimalSeparator => getDecimalSeparatorForAppLanguage(_language);
-
-  /// 앱 설정 언어 기반 천 단위 구분자
-  String get groupingSeparator => getGroupingSeparatorForAppLanguage(_language);
-
   /// 선택된 통화
   late FiatCode _selectedFiat;
   FiatCode get selectedFiat => _selectedFiat;

@@ -1,4 +1,5 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/core/exceptions/rbf_creation/rbf_creation_exception.dart';
 import 'package:coconut_wallet/enums/transaction_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
@@ -355,7 +356,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
   }
 
   String _normalizeDecimalTextForParsing(String text) {
-    return text.replaceAll(getNumberDecimalSeparator(), '.').replaceAll(',', '.');
+    return text.replaceAll(NumberFormatConfig.instance.decimalSeparator, '.').replaceAll(',', '.');
   }
 
   double _parseFeeRateText(String text) {

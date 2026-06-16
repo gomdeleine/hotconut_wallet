@@ -45,31 +45,6 @@ void main() {
       expect(isKorean, isA<bool>());
     });
 
-    // 앱 언어 코드 기반 소수점 구분자 테스트
-    group('getDecimalSeparatorForAppLanguage', () {
-      test('should return . for kr (Korean)', () {
-        expect(getDecimalSeparatorForAppLanguage('kr'), '.');
-      });
-
-      test('should return . for en (English)', () {
-        expect(getDecimalSeparatorForAppLanguage('en'), '.');
-      });
-
-      test('should return . for jp (Japanese)', () {
-        expect(getDecimalSeparatorForAppLanguage('jp'), '.');
-      });
-
-      test('should return , for es (Spanish)', () {
-        expect(getDecimalSeparatorForAppLanguage('es'), ',');
-      });
-
-      test('should return default . for unknown language code', () {
-        expect(getDecimalSeparatorForAppLanguage('fr'), '.');
-        expect(getDecimalSeparatorForAppLanguage('de'), '.');
-        expect(getDecimalSeparatorForAppLanguage(''), '.');
-      });
-    });
-
     // 앱 언어 코드 기반 BigInt 포맷팅 테스트
     group('formatBigIntWithAppLanguageLocale', () {
       test('should format with dot decimal separator for kr (Korean)', () {

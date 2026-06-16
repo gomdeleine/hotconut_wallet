@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/enums/transaction_enums.dart';
 import 'package:coconut_wallet/extensions/num_extensions.dart';
@@ -954,7 +955,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> with 
         decimalPlaces == null
             ? (value % 1 == 0 ? value.toInt().toString() : value.toString())
             : value.toStringAsFixed(decimalPlaces);
-    return text.replaceAll('.', getNumberDecimalSeparator());
+    return text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
   }
 
   void _showDialogListener() {

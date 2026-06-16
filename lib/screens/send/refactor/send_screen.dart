@@ -2103,7 +2103,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   String _normalizeDecimalTextForParsing(String text) {
-    return text.replaceAll(getNumberDecimalSeparator(), '.').replaceAll(',', '.');
+    return text.replaceAll(NumberFormatConfig.instance.decimalSeparator, '.').replaceAll(',', '.');
   }
 
   /// recipientList와 _addressControllerList 동기화
@@ -2159,35 +2159,6 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
     }
 
     setState(() {});
-  }
-}
-
-class SingleDotInputFormatter extends TextInputFormatter {
-  final bool normalizeToDot;
-
-  const SingleDotInputFormatter({this.normalizeToDot = true});
-
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text;
-    final decimalSeparator = getNumberDecimalSeparator();
-    final groupingSeparator = getNumberGroupingSeparator();
-    if (_insertedText(oldValue, newValue).contains(groupingSeparator)) {
-      return oldValue;
-    }
-
-    final normalizedText = text.replaceAll(decimalSeparator, '.');
-    if ('.'.allMatches(normalizedText).length > 1) return oldValue;
-
-    return newValue.copyWith(text: normalizeToDot ? normalizedText : text);
-  }
-
-  String _insertedText(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.text.length <= oldValue.text.length) return '';
-
-    final start = oldValue.selection.baseOffset.clamp(0, oldValue.text.length).toInt();
-    final end = (start + (newValue.text.length - oldValue.text.length)).clamp(0, newValue.text.length).toInt();
-    return newValue.text.substring(start, end);
   }
 }
 
