@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/extensions/string_extensions.dart';
@@ -25,6 +26,8 @@ import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/dashed_border_painter.dart';
 import 'package:coconut_wallet/utils/fee_rate_mixin.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:coconut_wallet/utils/logger.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:coconut_wallet/utils/vibration_util.dart';
 import 'package:coconut_wallet/utils/wallet_util.dart';
 import 'package:coconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
@@ -399,8 +402,9 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                       children: [
                         SingleChildScrollView(
                           controller: _screenScrollController,
-                          child: Selector<SendViewModel, bool>(
-                            selector: (_, viewModel) => viewModel.showAddressBoard,
+                          child: Selector<SendViewModel, (bool, bool)>(
+                            selector:
+                                (_, viewModel) => (viewModel.showAddressBoard, viewModel.currentUnit.isBasedOnSatoshi),
                             builder: (context, data, child) {
                               return SizedBox(height: _getScrollableHeight(usableHeight), child: child);
                             },
@@ -608,25 +612,30 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildInvisibleAmountField() {
-    final bool allowDecimal = !_viewModel.currentUnit.isBasedOnSatoshi;
-    return SizedBox(
-      width: 0,
-      height: 0,
-      child: TextField(
-        controller: _amountController,
-        focusNode: _amountFocusNode,
-        showCursor: false,
-        enableInteractiveSelection: false,
-        onEditingComplete: () {
-          _amountController.text = _removeTrailingDot(_amountController.text);
-          FocusScope.of(context).unfocus();
-        },
-        keyboardType: TextInputType.numberWithOptions(signed: false, decimal: allowDecimal),
-        inputFormatters:
-            allowDecimal
-                ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')), const SingleDotInputFormatter()]
-                : [FilteringTextInputFormatter.digitsOnly],
-      ),
+    return Selector<SendViewModel, bool>(
+      selector: (_, vm) => vm.currentUnit.isBasedOnSatoshi,
+      builder: (context, isBasedOnSatoshi, child) {
+        final bool allowDecimal = !isBasedOnSatoshi;
+        Logger.log('--> allowDecimal: $allowDecimal');
+        return SizedBox(
+          width: 0,
+          height: 0,
+          child: TextField(
+            controller: _amountController,
+            focusNode: _amountFocusNode,
+            showCursor: false,
+            enableInteractiveSelection: false,
+            onEditingComplete: () {
+              _amountController.text = _removeTrailingDot(_amountController.text);
+              FocusScope.of(context).unfocus();
+            },
+            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: allowDecimal),
+            // TODO: balance_format_util의 formatSatoshiToReadableBitcoin을 응용해서 Formatter를 하나 더 추가하기
+            inputFormatters:
+                allowDecimal ? [const BtcAmountInputFormatter()] : [FilteringTextInputFormatter.digitsOnly],
+          ),
+        );
+      },
     );
   }
 
@@ -1294,7 +1303,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                                           CoconutLayout.spacing_50w,
                                         ],
                                         Text(
-                                          '${amountText.isEmpty ? 0 : amountText.toThousandsSeparatedString()}',
+                                          '${amountText.isEmpty ? 0 : amountText.toBtcDisplayString()}',
                                           style: CoconutTypography.heading2_28_NumberBold.setColor(amountTextColor),
                                         ),
                                         if (!_viewModel.currentUnit.isPrefixSymbol) ...[
@@ -1963,7 +1972,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
       return;
     }
 
-    // 문자가 입력된 경우와 삭제된 경우를 인식한다.
+    // 문자가 입력된 경우와 삭제된 경우를 인식한다. (문자열 중간에 입력/삭제 불가)
     String currentText = _amountController.text;
     if (currentText.length > _previousAmountText.length) {
       String lastInserted = currentText.substring(_previousAmountText.length);

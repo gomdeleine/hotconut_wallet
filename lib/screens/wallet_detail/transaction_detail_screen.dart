@@ -740,7 +740,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> with 
       onTapUnderlineButton: () {},
       child: Text(
         // 인풋을 조회할 수 없는 경우, 수수료 표시 안 함.
-        tx.inputAddressList.isNotEmpty ? '${tx.feeRate.toLocaleString(decimalPlaces: 2)} sats/vB' : '-',
+        tx.inputAddressList.isNotEmpty ? '${tx.feeRate.toLocaleString(maxDecimalPlaces: 2)} sats/vB' : '-',
         style: CoconutTypography.body2_14_Number.setColor(CoconutColors.white),
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/config/number_format_config.dart';
+import 'package:coconut_wallet/utils/logger.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:intl/intl.dart';
 
 extension StringCheck on String {
@@ -9,6 +11,38 @@ extension StringCheck on String {
 }
 
 extension StringFormatting on String {
+  String toBtcDisplayString({bool groupDecimalDigits = true}) {
+    // String을 숫자로 변환할 수 없는 경우 원래 문자열 반환
+    final number = toDoubleSafe();
+    if (number == null) return this;
+
+    try {
+      // 소수점이 있는지 확인
+      if (contains('.')) {
+        List<String> parts = split('.');
+        String integerPart = parts[0];
+        String decimalPart = parts.length > 1 ? parts[1] : '';
+
+        String formattedIntegerPart = formatIntWithGroupingSeparator(
+          integerPart,
+          NumberFormatConfig.instance.groupingSeparator,
+        );
+
+        // 소수점 4자리가 넘어가는 경우 4자리씩 띄워서 처리 (옵션)
+        if (groupDecimalDigits && decimalPart.length > 4) {
+          decimalPart = "${decimalPart.substring(0, 4)} ${decimalPart.substring(4)}";
+        }
+
+        return '$formattedIntegerPart${NumberFormatConfig.instance.decimalSeparator}$decimalPart';
+      } else {
+        return int.parse(this).toThousandsSeparatedString();
+      }
+    } catch (e) {
+      return this;
+    }
+  }
+
+  @Deprecated('Use toBtcDisplayString() instead')
   String toThousandsSeparatedString({String? localeName}) {
     // String을 숫자로 변환할 수 없는 경우 원래 문자열 반환
     final number = num.tryParse(this);

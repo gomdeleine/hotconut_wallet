@@ -78,9 +78,14 @@ void main() {
       expect(seq, ['1', '10', '100', '1,000', '1,000.', '1,000.5', '1,000.']);
     });
 
-    test('소수점 입력 후 추가 입력/삭제 (de, decimalSep=,)', () {
+    test('소수점 입력 후 추가 입력/삭제 (es, decimalSep=,)', () {
       final seq = typeSequence(['1', '0', '0', '0', ',', '5', '<'], decimalSeparator: ',', groupingSeparator: '.');
       expect(seq, ['1', '10', '100', '1.000', '1.000,', '1.000,5', '1.000,']);
+    });
+
+    test('소수점 입력 후 추가 입력/삭제 (es, decimalSep=,)', () {
+      final seq = typeSequence(['2', ',', '5'], decimalSeparator: ',', groupingSeparator: '.');
+      expect(seq, ['2', '2,', '2,5']);
     });
 
     test('CASE1 연속입력: decimalSep=dot, 쉼표로 소수점 입력 후 숫자 추가/삭제 (en)', () {
