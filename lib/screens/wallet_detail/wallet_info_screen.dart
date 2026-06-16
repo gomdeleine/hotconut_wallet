@@ -157,7 +157,19 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                                 ),
                               ],
                               if (widget.walletType == WalletType.taproot) ...[
-                                SingleButton(enableShrinkAnim: true, title: 'TODO: 구현', onPressed: () async {}),
+                                SingleButton(
+                                  enableShrinkAnim: true,
+                                  title: t.wallet_info_screen.view_wallet_backup_data,
+                                  onPressed: () {
+                                    _removeTooltip();
+
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/taproot-wallet-backup-data',
+                                      arguments: {'id': widget.id, 'walletName': viewModel.walletName},
+                                    );
+                                  },
+                                ),
                               ],
                               if (widget.walletType == WalletType.multiSignature) ...[
                                 SingleButton(
