@@ -183,14 +183,16 @@ String _formatBtcText(String text, {required String decimalSeparator, required S
 }
 
 String formatIntWithGroupingSeparator(String integer, String groupingSeparator) {
+  final isNegative = integer.startsWith('-');
+  final digits = isNegative ? integer.substring(1) : integer;
   final buffer = StringBuffer();
-  for (var i = 0; i < integer.length; i++) {
-    if (i > 0 && (integer.length - i) % 3 == 0) {
+  for (var i = 0; i < digits.length; i++) {
+    if (i > 0 && (digits.length - i) % 3 == 0) {
       buffer.write(groupingSeparator);
     }
-    buffer.write(integer[i]);
+    buffer.write(digits[i]);
   }
-  return buffer.toString();
+  return isNegative ? '-${buffer.toString()}' : buffer.toString();
 }
 
 int _calculateSelectionOffset({
