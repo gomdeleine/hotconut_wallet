@@ -1046,10 +1046,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                     data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                     child: CoconutTextField(
                       textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                      textInputFormatter: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                        const SingleDotInputFormatter(normalizeToDot: false),
-                      ],
+                      textInputFormatter: const [FeeRateInputFormatter()],
                       enableInteractiveSelection: false,
                       textAlign: TextAlign.end,
                       controller: _feeRateController,
@@ -2094,7 +2091,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   String _removeTrailingDecimalSeparator(String text) {
-    final decimalSeparator = getNumberDecimalSeparator();
+    final decimalSeparator = NumberFormatConfig.instance.decimalSeparator;
     if (text.endsWith(decimalSeparator) || text.endsWith('.')) {
       return text.substring(0, text.length - 1);
     }
@@ -2102,7 +2099,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   String _formatDecimalTextForDisplay(String text) {
-    return text.replaceAll('.', getNumberDecimalSeparator());
+    return text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
   }
 
   String _normalizeDecimalTextForParsing(String text) {
