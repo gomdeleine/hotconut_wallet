@@ -40,7 +40,7 @@ mixin FeeRateMixin on ChangeNotifier {
     feeInfos[0].satsPerVb = recommendedFees.fastestFee;
     feeInfos[1].satsPerVb = recommendedFees.halfHourFee;
     feeInfos[2].satsPerVb = recommendedFees.hourFee;
-    _minimumFeeRate = recommendedFees.halfHourFee;
+    _minimumFeeRate = recommendedFees.hourFee;
 
     if (currentFeeRateText.isEmpty && recommendedFees.halfHourFee != null) {
       onDefaultFeeRateSet(recommendedFees.halfHourFee.toString());

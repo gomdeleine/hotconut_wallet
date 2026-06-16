@@ -5,6 +5,7 @@ import 'package:coconut_wallet/constants/dust_constants.dart';
 import 'package:coconut_wallet/enums/utxo_merge_enums.dart';
 import 'package:coconut_wallet/core/transaction/transaction_builder.dart';
 import 'package:coconut_wallet/enums/wallet_enums.dart';
+import 'package:coconut_wallet/extensions/string_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/utxo/utxo_state.dart';
 import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
@@ -139,7 +140,7 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   bool get hasUnexpectedError => unexpectedErrorMessage.isNotEmpty;
 
   bool get isMergeButtonVisible => _mergeState == MergeState.ready || _mergeState == MergeState.notEnoughSelectedUtxo;
-  bool get isMergeButtonEnabled => _mergeState == MergeState.ready;
+  bool get isMergeButtonEnabled => _mergeState == MergeState.ready && (feeRate != null && feeRate != 0);
   bool get isDirectInputReceiveAddressWarning {
     return _customReceiveAddressText != null &&
         _selectedReceiveAddress == _customReceiveAddressText &&
@@ -480,6 +481,22 @@ class UtxoMergeViewModel extends ChangeNotifier with FeeRateMixin {
   }
 
   String get feeRateInput => feeRateController.text.trim();
+  double? get feeRate => feeRateInput.toDoubleSafe();
+  bool? get isFeeRateAtLeastMinimum {
+    final rate = feeRate;
+    final minimum = minimumFeeRate;
+    if (rate == null || minimum == null) return null;
+    return rate >= minimum;
+  }
+
+  List<String> get additionalWarnings {
+    final warnings = <String>[];
+    if (isFeeRateAtLeastMinimum == false) {
+      warnings.add(t.toast.min_fee(minimum: minimumFeeRate!));
+    }
+
+    return warnings;
+  }
 
   bool get canPrepareMergeTransaction {
     return _currentStep == UtxoMergeStep.selectReceiveAddress &&

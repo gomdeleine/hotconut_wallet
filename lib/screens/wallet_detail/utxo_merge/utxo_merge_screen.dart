@@ -314,6 +314,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
         bool isMergeButtonEnabled,
         MergeState summaryState,
         MergeRecommendationLevelAndInfo? mergeRecommendationLevelAndInfo,
+        List<String> additionalWarnings,
       })
     >(
       selector:
@@ -322,6 +323,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
             isMergeButtonEnabled: viewModel.isMergeButtonEnabled,
             summaryState: viewModel.mergeState,
             mergeRecommendationLevelAndInfo: viewModel.mergeRecommendationLevelAndInfo,
+            additionalWarnings: viewModel.additionalWarnings,
           ),
       builder: (context, ctaState, child) {
         if (!ctaState.isMergeButtonVisible) {
@@ -329,6 +331,7 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
         }
 
         Widget? subWidget = _getMergeButtonSubTextWidget(
+          ctaState.additionalWarnings,
           ctaState.summaryState,
           ctaState.mergeRecommendationLevelAndInfo,
         );
@@ -353,23 +356,27 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
   }
 
   Widget? _getMergeButtonSubTextWidget(
+    List<String> warningMessages,
     MergeState summaryState,
     MergeRecommendationLevelAndInfo? mergeRecommendationLevelAndInfo,
   ) {
-    String message = '';
-    Color color = CoconutColors.white;
+    final messages = <({String message, Color color})>[];
+
+    for (final warning in warningMessages) {
+      messages.add((message: warning, color: CoconutColors.yellow));
+    }
+
     switch (summaryState) {
       case MergeState.notEnoughSelectedUtxo:
-        message = t.toast.merge_utxos_unavailable_description;
-        color = CoconutColors.hotPink;
+        messages.add((message: t.toast.merge_utxos_unavailable_description, color: CoconutColors.hotPink));
       case MergeState.ready:
         if (mergeRecommendationLevelAndInfo != null) {
-          message = mergeRecommendationLevelAndInfo.message;
-          color = switch (mergeRecommendationLevelAndInfo.mergeRecommendationLevel) {
+          final color = switch (mergeRecommendationLevelAndInfo.mergeRecommendationLevel) {
             MergeRecommendationLevel.discouraged => CoconutColors.hotPink,
             MergeRecommendationLevel.neutral => CoconutColors.yellow,
             MergeRecommendationLevel.recommended => CoconutColors.white,
           };
+          messages.add((message: mergeRecommendationLevelAndInfo.message, color: color));
         }
       case MergeState.idle:
       case MergeState.preparing:
@@ -377,13 +384,21 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
         return const SizedBox.shrink();
     }
 
-    if (message.isEmpty) {
+    if (messages.isEmpty) {
       return const SizedBox.shrink();
     }
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
-      child: Text(message, style: CoconutTypography.body3_12.setColor(color), textAlign: TextAlign.center),
+      child: Column(
+        children:
+            messages
+                .map(
+                  (e) =>
+                      Text(e.message, style: CoconutTypography.body3_12.setColor(e.color), textAlign: TextAlign.center),
+                )
+                .toList(),
+      ),
     );
   }
 
@@ -1091,13 +1106,17 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
   }
 
   Widget _buildEstimatedFeeOptionPicker() {
-    return Selector<UtxoMergeViewModel, ({bool isFeeRateInputEmpty, String estimatedFeeText, bool isFeeTooHigh})>(
+    return Selector<
+      UtxoMergeViewModel,
+      ({bool isFeeRateInputEmpty, String estimatedFeeText, bool isFeeTooHigh, double? feeRate})
+    >(
       selector: (_, vm) {
         final exception = vm.preparedMergeTransactionBuildResult?.exception;
         return (
           isFeeRateInputEmpty: vm.feeRateInput.isEmpty,
           estimatedFeeText: vm.estimatedFeeText,
           isFeeTooHigh: exception is InsufficientBalanceException || exception is SendAmountTooLowException,
+          feeRate: vm.feeRate,
         );
       },
       builder: (context, selector, _) {
@@ -1111,7 +1130,8 @@ class _UtxoMergeScreenState extends State<UtxoMergeScreen> with SingleTickerProv
           label: t.estimated_fee,
           textColor: shouldShowFeeRatePlaceholder ? CoconutColors.gray500 : CoconutColors.white,
           onTap: _showEstimatedFeeBottomSheet,
-          coconutOptionStateEnum: isFeeTooHigh ? CoconutOptionStateEnum.error : CoconutOptionStateEnum.normal,
+          coconutOptionStateEnum:
+              isFeeTooHigh || selector.feeRate == 0 ? CoconutOptionStateEnum.error : CoconutOptionStateEnum.normal,
           guideText: isFeeTooHigh ? t.merge_utxos_screen.exception.fee_too_high : null,
         );
       },

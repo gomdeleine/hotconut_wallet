@@ -1,7 +1,6 @@
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
 import 'package:coconut_wallet/config/number_format_config.dart';
-import 'package:coconut_wallet/utils/logger.dart';
 import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:intl/intl.dart';
 
@@ -11,6 +10,10 @@ extension StringCheck on String {
 }
 
 extension StringFormatting on String {
+  /// `.` 기준 BTC 문자열을 로케일 포맷으로 변환
+  /// - 정수부: 천단위 구분자 삽입
+  /// - 소수부: 4자리씩 공백 구분 (패딩 없음)
+  /// - 소수점: 로케일 구분자로 교체
   String toBtcDisplayString({bool groupDecimalDigits = true}) {
     // String을 숫자로 변환할 수 없는 경우 원래 문자열 반환
     final number = toDoubleSafe();
