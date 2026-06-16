@@ -286,7 +286,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
 
     if (!canContinue) return;
 
-    bool success = viewModel.prepareToSend(_parseFeeRateText(_textEditingController.text));
+    bool success = viewModel.prepareToSend(_textEditingController.text.toDoubleSafe()!);
 
     if (success && context.mounted) {
       Navigator.pushNamed(context, '/send-confirm');
@@ -298,7 +298,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
       return _buildErrorText(t.transaction_fee_bumping_screen.insufficient_balance_error);
     }
 
-    final double? feeInput = double.tryParse(_normalizeDecimalTextForParsing(_textEditingController.text));
+    final double? feeInput = _textEditingController.text.toDoubleSafe();
     if (_textEditingController.text.isEmpty || feeInput == null || feeInput == 0) {
       return null;
     }
@@ -353,14 +353,6 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
       style: CoconutTypography.body2_14.setColor(CoconutColors.hotPink),
       textScaler: const TextScaler.linear(1.0),
     );
-  }
-
-  String _normalizeDecimalTextForParsing(String text) {
-    return text.replaceAll(NumberFormatConfig.instance.decimalSeparator, '.').replaceAll(',', '.');
-  }
-
-  double _parseFeeRateText(String text) {
-    return double.parse(_normalizeDecimalTextForParsing(text));
   }
 
   void _onFeeRateChanged(String input) async {

@@ -1059,7 +1059,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                       height: 30,
                       padding: const EdgeInsets.only(left: 12, right: 2),
                       onChanged: (text) {
-                        final normalizedText = _normalizeDecimalTextForParsing(text);
+                        final normalizedText = normalizeNumTextForNumParsing(text);
                         final isTooLow = _viewModel.handleFeeRateChanged(normalizedText, (formattedText) {
                           final displayText = _formatDecimalTextForDisplay(formattedText);
                           _feeRateController.text = displayText;
@@ -2100,10 +2100,6 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
 
   String _formatDecimalTextForDisplay(String text) {
     return text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
-  }
-
-  String _normalizeDecimalTextForParsing(String text) {
-    return text.replaceAll(NumberFormatConfig.instance.decimalSeparator, '.').replaceAll(',', '.');
   }
 
   /// recipientList와 _addressControllerList 동기화

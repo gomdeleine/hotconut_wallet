@@ -176,8 +176,7 @@ class _P2PCalculatorScreenState extends State<P2PCalculatorScreen> with TickerPr
   }
 
   void _handlePremiumInputChanged(String value) {
-    final text = _normalizeLocaleDecimalText(value);
-    _viewModel.setPremiumRate(text.toDoubleSafe() ?? 0);
+    _viewModel.setPremiumRate(value.toDoubleSafe() ?? 0);
     _updateResultOnPremiumChange();
   }
 
