@@ -15,7 +15,6 @@ import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
 import 'package:coconut_wallet/widgets/button/single_button.dart';
 import 'package:coconut_wallet/widgets/fixed_text_scale.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
@@ -596,6 +595,10 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                   activeColor: CoconutColors.white,
                   cursorColor: CoconutColors.white,
                   maxLength: viewModel.maxInputLength,
+                  suffix: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(t.btc, style: CoconutTypography.body2_14_Bold),
+                  ),
                   errorText:
                       _viewModel.inputError == FakeBalanceInputError.exceedsTotalSupply
                           ? '  ${t.wallet_home_screen.edit.fake_balance.fake_balance_input_exceeds_error}'
