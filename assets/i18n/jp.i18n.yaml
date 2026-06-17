@@ -228,7 +228,7 @@ wallet_home_screen:
     fake_balance:
       fake_balance_setting: "フェイク残高設定"
       fake_balance_display: "フェイク残高表示"
-      fake_balance_input_placeholder: "偽の総残高を設定してください（BTC単位）"
+      fake_balance_input_placeholder: "偽の総残高を設定してください"
       fake_balance_input_description: "複数のウォレットがある場合、各ウォレットの残高は自動的に計算されます。"
       fake_balance_input_exceeds_error: "最大2100万BTCまで設定できます。"
     hide_fiat_price: "フィアット残高を非表示"

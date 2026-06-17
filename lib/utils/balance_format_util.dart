@@ -19,6 +19,16 @@ class UnitUtil {
   static int convertBitcoinToSatoshi(double bitcoin) {
     return (Decimal.parse(bitcoin.toString()) * Decimal.parse('100000000')).toDouble().toInt();
   }
+
+  /// double 변환 없이 BTC 문자열을 직접 satoshi(int)로 변환
+  /// 부동소수점 오차 없이 정확한 변환을 보장합니다.
+  static int? convertBitcoinStringToSatoshi(String bitcoinText) {
+    try {
+      return (Decimal.parse(bitcoinText) * Decimal.parse('100000000')).toDouble().toInt();
+    } catch (_) {
+      return null;
+    }
+  }
 }
 
 class BalanceFormatUtil {

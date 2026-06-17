@@ -8,7 +8,6 @@ import 'package:coconut_wallet/providers/view_model/home/wallet_home_edit_view_m
 import 'package:coconut_wallet/providers/wallet_provider.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/config/number_format_config.dart';
-import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
 import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
@@ -56,18 +55,10 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
         });
       }
 
-      if (_viewModel.tempFakeBalanceTotalBtc != null) {
-        if (_viewModel.tempFakeBalanceTotalBtc == 0) {
-          // 0일 때
-          _fakeBalanceController.text = '0';
-        } else if (_viewModel.tempFakeBalanceTotalBtc! % 1 == 0) {
-          // 정수일 때
-          _fakeBalanceController.text = _viewModel.tempFakeBalanceTotalBtc!.toInt().toThousandsSeparatedString();
-        } else {
-          // formatSatoshiToBtcInputText를 사용하여 locale-aware 포맷팅 적용
-          final satoshi = UnitUtil.convertBitcoinToSatoshi(_viewModel.tempFakeBalanceTotalBtc!);
-          _fakeBalanceController.text = BalanceFormatUtil.formatSatoshiToBtcInputText(satoshi);
-        }
+      if (_viewModel.tempFakeBalanceTotalAmount != null) {
+        _fakeBalanceController.text = BalanceFormatUtil.formatSatoshiToBtcInputText(
+          _viewModel.tempFakeBalanceTotalAmount!,
+        );
       }
 
       _fakeBalanceFocusNode.addListener(() {
@@ -90,14 +81,14 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
           if (!mounted) return;
 
           final text = normalizeNumTextForNumParsing(_fakeBalanceController.text);
-          final input = text.isEmpty ? null : double.tryParse(text);
+          final inputSats = text.isEmpty ? null : UnitUtil.convertBitcoinStringToSatoshi(text);
           final error =
-              (input != null && input > _viewModel.maximumAmount)
+              (inputSats != null && inputSats > _viewModel.maximumAmount * 100000000)
                   ? FakeBalanceInputError.exceedsTotalSupply
                   : FakeBalanceInputError.none;
 
           // ViewModel 상태 먼저 변경 (notifyListeners는 setState 밖에서)
-          _viewModel.setTempFakeBalanceTotalBtc(input);
+          _viewModel.setTempFakeBalanceTotalAmount(inputSats);
           _viewModel.setInputError(error);
 
           setState(() {});
@@ -319,7 +310,7 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                                     leftButtonText: t.wallet_home_screen.edit.alert.enter_again,
                                     rightButtonText: t.wallet_home_screen.edit.alert.set_to_0,
                                     onTapRight: () async {
-                                      viewModel.setTempFakeBalanceTotalBtc(0);
+                                      viewModel.setTempFakeBalanceTotalAmount(0);
 
                                       _onComplete();
                                       if (mounted) {
@@ -356,8 +347,6 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
   }
 
   bool _shouldEnableCompleteButton() {
-    final text = normalizeNumTextForNumParsing(_fakeBalanceController.text);
-
     final isToggleChanged =
         _viewModel.tempIsFakeBalanceActive != _viewModel.isFakeBalanceActive || // 가짜잔액표시 변동
         _viewModel.tempIsBalanceHidden != _viewModel.isBalanceHidden || // 잔액숨기기 변동
@@ -372,13 +361,11 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
         });
     if (_viewModel.tempIsFakeBalanceActive) {
       if (_viewModel.fakeBalanceTotalAmount == null) return true;
-      final expectedValue = UnitUtil.convertSatoshiToBitcoin(_viewModel.fakeBalanceTotalAmount!);
-      final parsed = text.isEmpty ? null : double.tryParse(text);
-      final isTextChanged = parsed != expectedValue;
+      final isTextChanged = _viewModel.tempFakeBalanceTotalAmount != _viewModel.fakeBalanceTotalAmount;
       // 가짜 잔액 표시가 활성화 되더라도 입력값이 없으면 변동되지 않음
       if (!isTextChanged) return isToggleChanged;
 
-      if (parsed != 0 && _viewModel.inputError != FakeBalanceInputError.none) {
+      if (_viewModel.tempFakeBalanceTotalAmount != 0 && _viewModel.inputError != FakeBalanceInputError.none) {
         return false;
       }
       return true;
@@ -581,10 +568,7 @@ class _WalletHomeEditScreenState extends State<WalletHomeEditScreen> with Ticker
                 child: CoconutTextField(
                   textInputType: const TextInputType.numberWithOptions(decimal: true),
                   textInputFormatter: const [BtcAmountInputFormatter()],
-                  placeholderText:
-                      viewModel.tempFakeBalanceTotalBtc != null
-                          ? ''
-                          : t.wallet_home_screen.edit.fake_balance.fake_balance_input_placeholder,
+                  placeholderText: t.wallet_home_screen.edit.fake_balance.fake_balance_input_placeholder,
                   isLengthVisible: false,
                   controller: _fakeBalanceController,
                   focusNode: _fakeBalanceFocusNode,
