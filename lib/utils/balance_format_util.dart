@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
-import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:coconut_wallet/extensions/string_extensions.dart';
 import 'package:decimal/decimal.dart';
 
 class UnitUtil {
@@ -18,13 +19,22 @@ class UnitUtil {
   static int convertBitcoinToSatoshi(double bitcoin) {
     return (Decimal.parse(bitcoin.toString()) * Decimal.parse('100000000')).toDouble().toInt();
   }
+
+  /// double 변환 없이 BTC 문자열을 직접 satoshi(int)로 변환
+  /// 부동소수점 오차 없이 정확한 변환을 보장합니다.
+  static int? convertBitcoinStringToSatoshi(String bitcoinText) {
+    try {
+      return (Decimal.parse(bitcoinText) * Decimal.parse('100000000')).toDouble().toInt();
+    } catch (_) {
+      return null;
+    }
+  }
 }
 
 class BalanceFormatUtil {
   /// 사용자 친화적 형식의 비트코인 잔액 보이기
   /// 예) 1 satoshi -> 0.0000 0001
-  static String formatSatoshiToReadableBitcoin(int satoshi, {bool forceEightDecimals = false, String? localeName}) {
-    final decimalSeparator = getNumberDecimalSeparator(localeName: localeName);
+  static String formatSatoshiToReadableBitcoin(int satoshi, {bool forceEightDecimals = false}) {
     double toBitcoin = UnitUtil.convertSatoshiToBitcoin(satoshi);
 
     String bitcoinString;
@@ -37,32 +47,16 @@ class BalanceFormatUtil {
       }
     }
 
-    // Split the integer and decimal parts
-    List<String> parts = bitcoinString.split('.');
-    String integerPart = parts[0];
-    String decimalPart = parts.length > 1 ? parts[1] : '';
+    if (bitcoinString == '0') return '0';
 
-    final integerPartFormatted =
-        integerPart == '-0' ? '-0' : int.parse(integerPart).toThousandsSeparatedString(localeName: localeName);
-
-    String decimalPartGrouped = '';
-    if (decimalPart.isNotEmpty) {
-      if (decimalPart.length <= 4) {
-        decimalPartGrouped = decimalPart;
-      } else {
-        decimalPart = decimalPart.padRight(8, '0');
-        // Group the decimal part into blocks of 4 digits
-        decimalPartGrouped = RegExp(r'.{1,4}').allMatches(decimalPart).map((match) => match.group(0)).join(' ');
-      }
+    // 소수부가 4자리 초과인 경우 8자리로 패딩 후 포맷
+    final parts = bitcoinString.split('.');
+    final decimalPart = parts.length > 1 ? parts[1] : '';
+    if (decimalPart.length > 4) {
+      bitcoinString = '${parts[0]}.${decimalPart.padRight(8, '0')}';
     }
 
-    if (integerPartFormatted == '0' && decimalPartGrouped == '') {
-      return '0';
-    }
-
-    return decimalPartGrouped.isNotEmpty
-        ? '$integerPartFormatted$decimalSeparator$decimalPartGrouped'
-        : integerPartFormatted;
+    return bitcoinString.toBtcDisplayString();
   }
 
   /// BIP21/입력용 BTC 텍스트 포맷팅
@@ -70,56 +64,41 @@ class BalanceFormatUtil {
   /// - 항상 소수부는 최대 8자리까지 표현
   /// - 소수부: trailing zero 제거
   /// - 정수부: locale 천단위 구분자
-  static String formatSatoshiToBtcInputText(int satoshi, {String? localeName}) {
-    final decimalSeparator = getNumberDecimalSeparator(localeName: localeName);
+  static String formatSatoshiToBtcInputText(int satoshi) {
     final rawBtcText = UnitUtil.convertSatoshiToBitcoinString(satoshi); // 8자리 고정 문자열
     final normalizedBtcText = rawBtcText.replaceFirst(RegExp(r'0+$'), '').replaceFirst(RegExp(r'\.$'), '');
 
     final parts = normalizedBtcText.split('.');
     final integerPart = parts[0].isEmpty ? '0' : parts[0];
-    final formattedIntegerPart = int.parse(integerPart).toThousandsSeparatedString(localeName: localeName);
+    final formattedIntegerPart = int.parse(integerPart).toThousandsSeparatedString();
 
     if (parts.length == 1) {
       return formattedIntegerPart;
     }
 
-    return '$formattedIntegerPart$decimalSeparator${parts[1]}';
+    return '$formattedIntegerPart${NumberFormatConfig.instance.decimalSeparator}${parts[1]}';
   }
 
   /// BIP21에서 사용되는 초기 입력 텍스트(표시 형식 포함)
-  static String formatSatsToBip21InputText({
-    required BitcoinUnit currentUnit,
-    required int? initialAmountSats,
-    String? localeName,
-  }) {
+  static String formatSatsToBip21InputText({required BitcoinUnit currentUnit, required int? initialAmountSats}) {
     if (initialAmountSats == null) return '';
 
     if (currentUnit.isBtcUnit) {
-      return formatSatoshiToBtcInputText(initialAmountSats, localeName: localeName);
+      return formatSatoshiToBtcInputText(initialAmountSats);
     }
 
-    return initialAmountSats.toThousandsSeparatedString(localeName: localeName);
+    return initialAmountSats.toThousandsSeparatedString();
   }
 
-  /// BIP21 입력 문자열(회계 표기로 `,` 포함)을 sats(int)로 변환
-  static int? parseBip21AmountTextToSats({
-    required BitcoinUnit currentUnit,
-    required String inputText,
-    String? localeName,
-  }) {
+  /// 포맷된 금액 문자열(회계 표기 포함)을 sats(int)로 변환
+  static int? parseAmountTextToSats({required BitcoinUnit currentUnit, required String inputText}) {
     if (currentUnit.isBtcUnit) {
-      final rawText = normalizeNumberTextForParsing(inputText, localeName: localeName);
-      if (rawText.isEmpty) return null;
-
-      final amount = double.tryParse(rawText);
+      final amount = inputText.toDoubleSafe();
       if (amount == null) return null;
       return currentUnit.toSatoshi(amount);
     }
 
-    final rawText = inputText.trim().replaceAll(RegExp(r'[^0-9]'), '');
-    if (rawText.isEmpty) return null;
-
-    return int.tryParse(rawText);
+    return inputText.toIntSafe();
   }
 }
 

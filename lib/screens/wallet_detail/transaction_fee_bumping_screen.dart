@@ -1,7 +1,10 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/core/exceptions/rbf_creation/rbf_creation_exception.dart';
 import 'package:coconut_wallet/enums/transaction_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
+import 'package:coconut_wallet/extensions/num_extensions.dart';
+import 'package:coconut_wallet/extensions/string_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/utxo/utxo_state.dart';
 import 'package:coconut_wallet/model/wallet/transaction_record.dart';
@@ -17,7 +20,7 @@ import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
 import 'package:coconut_wallet/repository/realm/wallet_preferences_repository.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
-import 'package:coconut_wallet/utils/text_field_filter_util.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:coconut_wallet/utils/transaction_util.dart';
 import 'package:coconut_wallet/widgets/bubble_clipper.dart';
 import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
@@ -283,7 +286,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
 
     if (!canContinue) return;
 
-    bool success = viewModel.prepareToSend(_parseFeeRateText(_textEditingController.text));
+    bool success = viewModel.prepareToSend(_textEditingController.text.toDoubleSafe()!);
 
     if (success && context.mounted) {
       Navigator.pushNamed(context, '/send-confirm');
@@ -295,7 +298,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
       return _buildErrorText(t.transaction_fee_bumping_screen.insufficient_balance_error);
     }
 
-    final double? feeInput = double.tryParse(_normalizeDecimalTextForParsing(_textEditingController.text));
+    final double? feeInput = _textEditingController.text.toDoubleSafe();
     if (_textEditingController.text.isEmpty || feeInput == null || feeInput == 0) {
       return null;
     }
@@ -352,40 +355,13 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
     );
   }
 
-  String _formatDecimalTextForDisplay(String text) {
-    return text.replaceAll('.', getNumberDecimalSeparator());
-  }
-
-  String _normalizeDecimalTextForParsing(String text) {
-    return text.replaceAll(getNumberDecimalSeparator(), '.').replaceAll(',', '.');
-  }
-
-  double _parseFeeRateText(String text) {
-    return double.parse(_normalizeDecimalTextForParsing(text));
-  }
-
-  String _formatFeeRateForDisplay(double value) {
-    final text = value % 1 == 0 ? value.toInt().toString() : value.toString();
-    return _formatDecimalTextForDisplay(text);
-  }
-
   void _onFeeRateChanged(String input) async {
     if (_viewModel.isInitializedSuccess == false) {
       return;
     }
 
-    final filteredText = filterNumericInput(_normalizeDecimalTextForParsing(input), decimalPlaces: 2, integerPlaces: 4);
-    final displayText = _formatDecimalTextForDisplay(filteredText);
-    _textEditingController.value = TextEditingValue(
-      text: displayText,
-      selection: TextSelection.collapsed(offset: displayText.length), // 커서를 맨 끝으로 이동
-    );
-
-    double? feeRate = double.tryParse(filteredText);
-
+    final feeRate = input.toDoubleSafe();
     _viewModel.onFeeRateChanged(feeRate);
-
-    return;
   }
 
   Future<bool> _showConfirmationDialog(BuildContext context) async {
@@ -471,9 +447,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
             children: [
               Text(t.transaction_fee_bumping_screen.existing_fee, style: CoconutTypography.body2_14_Bold),
               Text(
-                t.transaction_fee_bumping_screen.existing_fee_value(
-                  value: _formatFeeRateForDisplay(widget.transaction.feeRate),
-                ),
+                t.transaction_fee_bumping_screen.existing_fee_value(value: widget.transaction.feeRate.toLocaleString()),
                 style: CoconutTypography.body2_14_Bold,
               ),
             ],
@@ -539,7 +513,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
                     focusNode: _feeTextFieldFocusNode,
                     cursorColor: CoconutColors.white,
                     textInputType: const TextInputType.numberWithOptions(decimal: true),
-                    textInputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                    textInputFormatter: const [RateInputFormatter()],
                     errorColor: CoconutColors.hotPink,
                     activeColor: CoconutColors.white,
                     backgroundColor: CoconutColors.white.withValues(alpha: 0.15),
@@ -603,9 +577,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
                     );
                   },
                   child: Text(
-                    t.transaction_fee_bumping_screen.recommend_fee(
-                      fee: _formatFeeRateForDisplay(_viewModel.recommendFeeRate!),
-                    ),
+                    t.transaction_fee_bumping_screen.recommend_fee(fee: _viewModel.recommendFeeRate!.toLocaleString()),
                     key: ValueKey(_viewModel.recommendFeeRate),
                     style: CoconutTypography.body2_14,
                   ),
@@ -719,7 +691,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
                           children: [
                             Text(
                               t.transaction_fee_bumping_screen.existing_fee_value(
-                                value: _formatFeeRateForDisplay(fastestFeeSatsPerVb),
+                                value: fastestFeeSatsPerVb.toLocaleString(),
                               ),
                             ),
                           ],
@@ -753,7 +725,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
                         alignment: Alignment.centerRight,
                         child: Text(
                           t.transaction_fee_bumping_screen.existing_fee_value(
-                            value: _formatFeeRateForDisplay(halfhourFeeSatsPerVb),
+                            value: halfhourFeeSatsPerVb.toLocaleString(),
                           ),
                         ),
                       ),
@@ -784,9 +756,7 @@ class _TransactionFeeBumpingScreenState extends State<TransactionFeeBumpingScree
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerRight,
                         child: Text(
-                          t.transaction_fee_bumping_screen.existing_fee_value(
-                            value: _formatFeeRateForDisplay(hourFeeSatsPerVb),
-                          ),
+                          t.transaction_fee_bumping_screen.existing_fee_value(value: hourFeeSatsPerVb.toLocaleString()),
                         ),
                       ),
                     ),

@@ -229,7 +229,7 @@ wallet_home_screen:
     fake_balance:
       fake_balance_setting: "Configurar saldo falso"
       fake_balance_display: "Mostrar saldo falso"
-      fake_balance_input_placeholder: "Establece el saldo falso total (en BTC)"
+      fake_balance_input_placeholder: "Establece el saldo falso total"
       fake_balance_input_description: "Si tienes varias billeteras, el saldo de cada una se calculará automáticamente."
       fake_balance_input_exceeds_error: "Puedes establecer hasta 21 millones de BTC"
     hide_fiat_price: "Ocultar saldo en moneda fiduciaria"

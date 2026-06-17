@@ -1,3 +1,4 @@
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
@@ -258,7 +259,7 @@ class P2PCalculatorViewModel extends ChangeNotifier {
 
   String formatBtc(int sats) {
     var result = BalanceFormatUtil.formatSatoshiToReadableBitcoin(sats);
-    final decimalSeparator = getNumberDecimalSeparator();
+    final decimalSeparator = NumberFormatConfig.instance.decimalSeparator;
     if (result.endsWith(decimalSeparator)) {
       result = result.substring(0, result.length - decimalSeparator.length);
     }

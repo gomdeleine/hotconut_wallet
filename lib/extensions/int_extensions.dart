@@ -1,9 +1,8 @@
-import 'package:coconut_wallet/utils/locale_util.dart';
-import 'package:intl/intl.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 
 extension IntFormatting on int {
-  String toThousandsSeparatedString({String? localeName}) {
-    final formatter = NumberFormat.decimalPattern(localeName ?? getNumberFormatLocaleName());
-    return formatter.format(this);
+  String toThousandsSeparatedString() {
+    return formatIntWithGroupingSeparator(toString(), NumberFormatConfig.instance.groupingSeparator);
   }
 }

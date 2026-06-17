@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/enums/transaction_enums.dart';
+import 'package:coconut_wallet/extensions/num_extensions.dart';
 import 'package:coconut_wallet/model/error/app_error.dart';
 import 'package:coconut_wallet/model/utxo/utxo_state.dart';
 import 'package:coconut_wallet/model/wallet/transaction_record.dart';
@@ -739,7 +741,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> with 
       onTapUnderlineButton: () {},
       child: Text(
         // 인풋을 조회할 수 없는 경우, 수수료 표시 안 함.
-        tx.inputAddressList.isNotEmpty ? '${_formatFeeRateForDisplay(tx.feeRate, decimalPlaces: 2)} sats/vB' : '-',
+        tx.inputAddressList.isNotEmpty ? '${tx.feeRate.toLocaleString(maxDecimalPlaces: 2)} sats/vB' : '-',
         style: CoconutTypography.body2_14_Number.setColor(CoconutColors.white),
       ),
     );
@@ -953,7 +955,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> with 
         decimalPlaces == null
             ? (value % 1 == 0 ? value.toInt().toString() : value.toString())
             : value.toStringAsFixed(decimalPlaces);
-    return text.replaceAll('.', getNumberDecimalSeparator());
+    return text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
   }
 
   void _showDialogListener() {

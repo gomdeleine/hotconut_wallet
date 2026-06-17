@@ -594,10 +594,7 @@ class SendViewModel extends ChangeNotifier with FeeRateMixin {
         maxBalanceInSats > _dustThreshold
             ? (_currentUnit.isBasedOnSatoshi
                     ? maxBalanceInSats
-                    : BalanceFormatUtil.formatSatoshiToReadableBitcoin(
-                      maxBalanceInSats,
-                      localeName: 'en_US',
-                    ).replaceAll(' ', ''))
+                    : UnitUtil.convertSatoshiToBitcoinString(maxBalanceInSats))
                 .toString()
             : "0";
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/extensions/int_extensions.dart';
 import 'package:coconut_wallet/extensions/string_extensions.dart';
@@ -25,6 +26,8 @@ import 'package:coconut_wallet/utils/balance_format_util.dart';
 import 'package:coconut_wallet/utils/dashed_border_painter.dart';
 import 'package:coconut_wallet/utils/fee_rate_mixin.dart';
 import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:coconut_wallet/utils/logger.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:coconut_wallet/utils/vibration_util.dart';
 import 'package:coconut_wallet/utils/wallet_util.dart';
 import 'package:coconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
@@ -399,8 +402,9 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                       children: [
                         SingleChildScrollView(
                           controller: _screenScrollController,
-                          child: Selector<SendViewModel, bool>(
-                            selector: (_, viewModel) => viewModel.showAddressBoard,
+                          child: Selector<SendViewModel, (bool, bool)>(
+                            selector:
+                                (_, viewModel) => (viewModel.showAddressBoard, viewModel.currentUnit.isBasedOnSatoshi),
                             builder: (context, data, child) {
                               return SizedBox(height: _getScrollableHeight(usableHeight), child: child);
                             },
@@ -608,25 +612,30 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildInvisibleAmountField() {
-    final bool allowDecimal = !_viewModel.currentUnit.isBasedOnSatoshi;
-    return SizedBox(
-      width: 0,
-      height: 0,
-      child: TextField(
-        controller: _amountController,
-        focusNode: _amountFocusNode,
-        showCursor: false,
-        enableInteractiveSelection: false,
-        onEditingComplete: () {
-          _amountController.text = _removeTrailingDot(_amountController.text);
-          FocusScope.of(context).unfocus();
-        },
-        keyboardType: TextInputType.numberWithOptions(signed: false, decimal: allowDecimal),
-        inputFormatters:
-            allowDecimal
-                ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')), const SingleDotInputFormatter()]
-                : [FilteringTextInputFormatter.digitsOnly],
-      ),
+    return Selector<SendViewModel, bool>(
+      selector: (_, vm) => vm.currentUnit.isBasedOnSatoshi,
+      builder: (context, isBasedOnSatoshi, child) {
+        final bool allowDecimal = !isBasedOnSatoshi;
+        Logger.log('--> allowDecimal: $allowDecimal');
+        return SizedBox(
+          width: 0,
+          height: 0,
+          child: TextField(
+            controller: _amountController,
+            focusNode: _amountFocusNode,
+            showCursor: false,
+            enableInteractiveSelection: false,
+            onEditingComplete: () {
+              _amountController.text = _removeTrailingDot(_amountController.text);
+              FocusScope.of(context).unfocus();
+            },
+            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: allowDecimal),
+            // TODO: balance_format_util의 formatSatoshiToReadableBitcoin을 응용해서 Formatter를 하나 더 추가하기
+            inputFormatters:
+                allowDecimal ? [const BtcAmountInputFormatter()] : [FilteringTextInputFormatter.digitsOnly],
+          ),
+        );
+      },
     );
   }
 
@@ -1037,10 +1046,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                     data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                     child: CoconutTextField(
                       textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                      textInputFormatter: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                        const SingleDotInputFormatter(normalizeToDot: false),
-                      ],
+                      textInputFormatter: const [RateInputFormatter()],
                       enableInteractiveSelection: false,
                       textAlign: TextAlign.end,
                       controller: _feeRateController,
@@ -1053,7 +1059,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                       height: 30,
                       padding: const EdgeInsets.only(left: 12, right: 2),
                       onChanged: (text) {
-                        final normalizedText = _normalizeDecimalTextForParsing(text);
+                        final normalizedText = normalizeNumTextForNumParsing(text);
                         final isTooLow = _viewModel.handleFeeRateChanged(normalizedText, (formattedText) {
                           final displayText = _formatDecimalTextForDisplay(formattedText);
                           _feeRateController.text = displayText;
@@ -1294,7 +1300,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
                                           CoconutLayout.spacing_50w,
                                         ],
                                         Text(
-                                          '${amountText.isEmpty ? 0 : amountText.toThousandsSeparatedString()}',
+                                          '${amountText.isEmpty ? 0 : amountText.toBtcDisplayString()}',
                                           style: CoconutTypography.heading2_28_NumberBold.setColor(amountTextColor),
                                         ),
                                         if (!_viewModel.currentUnit.isPrefixSymbol) ...[
@@ -1963,7 +1969,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
       return;
     }
 
-    // 문자가 입력된 경우와 삭제된 경우를 인식한다.
+    // 문자가 입력된 경우와 삭제된 경우를 인식한다. (문자열 중간에 입력/삭제 불가)
     String currentText = _amountController.text;
     if (currentText.length > _previousAmountText.length) {
       String lastInserted = currentText.substring(_previousAmountText.length);
@@ -2085,7 +2091,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   String _removeTrailingDecimalSeparator(String text) {
-    final decimalSeparator = getNumberDecimalSeparator();
+    final decimalSeparator = NumberFormatConfig.instance.decimalSeparator;
     if (text.endsWith(decimalSeparator) || text.endsWith('.')) {
       return text.substring(0, text.length - 1);
     }
@@ -2093,11 +2099,7 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
   }
 
   String _formatDecimalTextForDisplay(String text) {
-    return text.replaceAll('.', getNumberDecimalSeparator());
-  }
-
-  String _normalizeDecimalTextForParsing(String text) {
-    return text.replaceAll(getNumberDecimalSeparator(), '.').replaceAll(',', '.');
+    return text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
   }
 
   /// recipientList와 _addressControllerList 동기화
@@ -2153,35 +2155,6 @@ class _SendScreenState extends State<SendScreen> with SingleTickerProviderStateM
     }
 
     setState(() {});
-  }
-}
-
-class SingleDotInputFormatter extends TextInputFormatter {
-  final bool normalizeToDot;
-
-  const SingleDotInputFormatter({this.normalizeToDot = true});
-
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final text = newValue.text;
-    final decimalSeparator = getNumberDecimalSeparator();
-    final groupingSeparator = getNumberGroupingSeparator();
-    if (_insertedText(oldValue, newValue).contains(groupingSeparator)) {
-      return oldValue;
-    }
-
-    final normalizedText = text.replaceAll(decimalSeparator, '.');
-    if ('.'.allMatches(normalizedText).length > 1) return oldValue;
-
-    return newValue.copyWith(text: normalizeToDot ? normalizedText : text);
-  }
-
-  String _insertedText(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (newValue.text.length <= oldValue.text.length) return '';
-
-    final start = oldValue.selection.baseOffset.clamp(0, oldValue.text.length).toInt();
-    final end = (start + (newValue.text.length - oldValue.text.length)).clamp(0, newValue.text.length).toInt();
-    return newValue.text.substring(start, end);
   }
 }
 

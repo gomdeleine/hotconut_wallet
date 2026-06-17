@@ -228,7 +228,7 @@ wallet_home_screen:
     fake_balance:
       fake_balance_setting: "가짜 잔액 설정"
       fake_balance_display: "가짜 잔액 표시"
-      fake_balance_input_placeholder: "총 가짜 잔액을 설정해 주세요.(BTC 단위)"
+      fake_balance_input_placeholder: "총 가짜 잔액을 설정해 주세요"
       fake_balance_input_description: "여러 지갑이 있을 경우, 각 지갑의 잔액은 자동으로 계산돼요."
       fake_balance_input_exceeds_error: "최대 2100만 BTC까지 설정할 수 있어요"
     hide_fiat_price: "법정 화폐 잔액 숨기기"

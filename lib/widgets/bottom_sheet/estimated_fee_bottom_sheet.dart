@@ -2,8 +2,9 @@ import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/model/send/fee_info.dart';
 import 'package:coconut_wallet/providers/connectivity_provider.dart';
+import 'package:coconut_wallet/config/number_format_config.dart';
 import 'package:coconut_wallet/utils/fee_rate_mixin.dart';
-import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
 import 'package:coconut_wallet/widgets/ripple_effect.dart';
 import 'package:flutter/material.dart';
@@ -92,8 +93,6 @@ class EstimatedFeeBottomSheet extends StatefulWidget {
 }
 
 class _EstimatedFeeBottomSheetState extends State<EstimatedFeeBottomSheet> {
-  bool _isApplyingControllerText = false;
-
   ScrollController get scrollController => widget.scrollController;
   Listenable get listenable => widget.listenable;
   String Function() get estimatedFeeTextGetter => widget.estimatedFeeTextGetter;
@@ -183,7 +182,7 @@ class _EstimatedFeeBottomSheetState extends State<EstimatedFeeBottomSheet> {
                     child: CoconutTextField(
                       textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                       textInputAction: TextInputAction.done,
-                      textInputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                      textInputFormatter: const [RateInputFormatter()],
                       enableInteractiveSelection: false,
                       textAlign: TextAlign.end,
                       controller: feeRateController,
@@ -193,13 +192,7 @@ class _EstimatedFeeBottomSheetState extends State<EstimatedFeeBottomSheet> {
                       height: 30,
                       padding: const EdgeInsets.only(left: 12, right: 2),
                       onChanged: (text) {
-                        if (_isApplyingControllerText) return;
-
-                        final isTooLow = onFeeRateChanged(_normalizeFeeRateText(text));
-                        final displayText = _formatFeeRateTextForDisplay(feeRateController.text);
-                        if (feeRateController.text != displayText) {
-                          _setFeeRateControllerText(displayText);
-                        }
+                        final isTooLow = onFeeRateChanged(normalizeNumTextForNumParsing(text));
                         if (isTooLow) {
                           CoconutToast.showBottomToast(
                             context: context,
@@ -328,10 +321,6 @@ class _EstimatedFeeBottomSheetState extends State<EstimatedFeeBottomSheet> {
           if (isFetching) return;
           if (sats != null) {
             onFeeRateSelected(sats);
-            final displayText = _formatFeeRateTextForDisplay(feeRateController.text);
-            if (feeRateController.text != displayText) {
-              _setFeeRateControllerText(displayText);
-            }
           }
         },
         child:
@@ -346,17 +335,7 @@ class _EstimatedFeeBottomSheetState extends State<EstimatedFeeBottomSheet> {
     );
   }
 
-  String _normalizeFeeRateText(String text) {
-    return text.replaceAll(getNumberDecimalSeparator(), '.').replaceAll(',', '.');
-  }
-
   String _formatFeeRateTextForDisplay(String text) {
-    return text.replaceAll('.', getNumberDecimalSeparator());
-  }
-
-  void _setFeeRateControllerText(String text) {
-    _isApplyingControllerText = true;
-    feeRateController.value = TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length));
-    _isApplyingControllerText = false;
+    return text.replaceAll('.', NumberFormatConfig.instance.decimalSeparator);
   }
 }

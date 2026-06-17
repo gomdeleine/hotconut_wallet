@@ -3,10 +3,8 @@ import 'package:coconut_wallet/enums/fiat_enums.dart';
 import 'package:coconut_wallet/localization/strings.g.dart';
 import 'package:coconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
 import 'package:coconut_wallet/utils/balance_format_util.dart';
-import 'package:coconut_wallet/utils/locale_util.dart';
-import 'package:coconut_wallet/utils/text_field_filter_util.dart';
+import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /// [Bip21AmountBottomSheet]에서 사용되는 결과 DTO
 class Bip21AmountBottomSheetResult {
@@ -23,11 +21,9 @@ class Bip21AmountBottomSheet {
     required BitcoinUnit currentUnit,
     required int? initialAmountSats,
   }) {
-    final localeName = getNumberFormatLocaleName();
     final initialText = BalanceFormatUtil.formatSatsToBip21InputText(
       currentUnit: currentUnit,
       initialAmountSats: initialAmountSats,
-      localeName: localeName,
     );
 
     return SingleTextFieldBottomSheet.showWithResult<Bip21AmountBottomSheetResult>(
@@ -39,9 +35,7 @@ class Bip21AmountBottomSheet {
       visibleTextLimit: false,
       collapsedHeight: 240,
       textInputFormatters:
-          currentUnit.isBtcUnit
-              ? [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')), BtcAmountInputFormatter(localeName: localeName)]
-              : [FilteringTextInputFormatter.digitsOnly, SatoshiAmountInputFormatter(localeName: localeName)],
+          currentUnit.isBtcUnit ? [const BtcAmountInputFormatter()] : [const SatoshiAmountInputFormatter()],
       completeEnabledWhen: (current, original) => current != original,
       focusOnlyWhenOriginalNotEmpty: false,
       prefix:
@@ -56,11 +50,7 @@ class Bip21AmountBottomSheet {
               ? Text(currentUnit.symbol, style: CoconutTypography.body2_14_Bold)
               : null,
       resultBuilder: (currentText, originalText) {
-        final sats = BalanceFormatUtil.parseBip21AmountTextToSats(
-          currentUnit: currentUnit,
-          inputText: currentText,
-          localeName: localeName,
-        );
+        final sats = BalanceFormatUtil.parseAmountTextToSats(currentUnit: currentUnit, inputText: currentText);
         return Bip21AmountBottomSheetResult(didEdit: currentText != originalText, amountInSats: sats);
       },
     );
