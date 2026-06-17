@@ -622,7 +622,7 @@ class SendViewModel extends ChangeNotifier with FeeRateMixin {
         maxBalanceInSats > _dustThreshold
             ? (_currentUnit.isBasedOnSatoshi
                     ? maxBalanceInSats
-                    : BalanceFormatUtil.formatSatoshiToReadableBitcoin(maxBalanceInSats).replaceAll(' ', ''))
+                    : UnitUtil.convertSatoshiToBitcoinString(maxBalanceInSats))
                 .toString()
             : "0";
 
@@ -826,6 +826,7 @@ class SendViewModel extends ChangeNotifier with FeeRateMixin {
 
   void onKeyTap(String newInput) {
     if (_currentIndex == _recipientList.length) return;
+    if (newInput == ',') newInput = '.';
     if (_currentUnit.isBasedOnSatoshi && newInput == '.') return;
 
     final recipient = _recipientList[_currentIndex];
