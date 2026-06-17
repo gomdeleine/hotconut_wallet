@@ -709,6 +709,7 @@ wallet_info_screen:
     mfp_placeholder_description: "This is a wallet added with extended public key\nand the master fingerprint was not entered\nso it is displayed as 00000000."
     wallet_backup_data: "This is the BSMS(BIP-129) backup information for this wallet. You can use this data to reconstruct the multisig wallet in case of device loss or replacement. Please keep it safe and be careful when sharing externally."
     taproot_wallet_backup_data: "This is the backup information for this wallet. You can use this data to reconstruct the inheritance wallet in case of device loss or replacement. Please keep it safe and be careful when sharing externally."
+    taproot_created_at: "This is the date this wallet was created in Coconut Vault"
     confirm_backup_data:
       step1_em: "Go to $name wallet detail screen"
       step2_preposition: "1. "

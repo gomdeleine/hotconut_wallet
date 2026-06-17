@@ -259,30 +259,29 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                   ),
                 ),
               ),
-              if (widget.walletType != WalletType.taproot)
-                Positioned(
-                  top: _tooltipTopPadding,
-                  right:
-                      MediaQuery.of(context).size.width -
-                      _walletTooltipIconPosition.dx -
-                      (_walletTooltipIconRenderBox == null ? 0 : _walletTooltipIconRenderBox!.size.width) -
-                      10,
-                  child: CoconutToolTip(
-                    width: MediaQuery.sizeOf(context).width,
-                    isBubbleClipperSideLeft: false,
-                    tooltipType: CoconutTooltipType.placement,
-                    richText: RichText(
-                      text: TextSpan(
-                        text: _getTooltipText(viewModel),
-                        style: CoconutTypography.body3_12
-                            .setColor(CoconutColors.black)
-                            .merge(const TextStyle(height: 1.3)),
-                      ),
+              Positioned(
+                top: _tooltipTopPadding,
+                right:
+                    MediaQuery.of(context).size.width -
+                    _walletTooltipIconPosition.dx -
+                    (_walletTooltipIconRenderBox == null ? 0 : _walletTooltipIconRenderBox!.size.width) -
+                    10,
+                child: CoconutToolTip(
+                  width: MediaQuery.sizeOf(context).width,
+                  isBubbleClipperSideLeft: false,
+                  tooltipType: CoconutTooltipType.placement,
+                  richText: RichText(
+                    text: TextSpan(
+                      text: _getTooltipText(viewModel),
+                      style: CoconutTypography.body3_12
+                          .setColor(CoconutColors.black)
+                          .merge(const TextStyle(height: 1.3)),
                     ),
-                    onTapRemove: _removeTooltip,
-                    isPlacementTooltipVisible: _tooltipRemainingTime > 0,
                   ),
+                  onTapRemove: _removeTooltip,
+                  isPlacementTooltipVisible: _tooltipRemainingTime > 0,
                 ),
+              ),
             ],
           );
         },
@@ -291,8 +290,6 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
   }
 
   String _getTooltipText(WalletInfoViewModel viewModel) {
-    assert(widget.walletType != WalletType.taproot);
-
     switch (widget.walletType) {
       case WalletType.multiSignature:
         return t.tooltip.multisig_wallet(
@@ -306,7 +303,7 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
         }
         return tooltipText;
       case WalletType.taproot:
-        throw ArgumentError();
+        return t.wallet_info_screen.tooltip.taproot_created_at;
     }
   }
 

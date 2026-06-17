@@ -52,14 +52,11 @@ class _WalletInfoItemCardState extends State<WalletInfoItemCard> {
   bool isItemTapped = false; // ui (edit 아이콘)
   bool isCustomAccount = false;
 
-  bool _isWithoutMfp() {
-    if (walletItem is! SinglesigWalletListItem) {
-      return false;
-    }
-    return isWalletWithoutMfp(walletItem) ||
-        (walletItem.walletBase as SingleSignatureWallet).keyStore.masterFingerprint ==
-            WalletAddService.masterFingerprintPlaceholder;
-  }
+  bool _isWithoutMfp() =>
+      walletItem is SinglesigWalletListItem &&
+      (isWalletWithoutMfp(walletItem) ||
+          (walletItem.walletBase as SingleSignatureWallet).keyStore.masterFingerprint ==
+              WalletAddService.masterFingerprintPlaceholder);
 
   bool _isExtendedPublicKey() {
     return walletImportSource == WalletImportSource.extendedPublicKey;
