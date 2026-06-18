@@ -1042,6 +1042,7 @@ alert:
     insufficient_balance: "Insufficient balance"
     minimum_amount: "You can send at least $amount"
     insufficient_fee: "[Send Failed]\nPlease try again by\nincreasing the fee rate."
+    non_final_taproot_child: "[Send Failed]\nPlease check the child wallet's inheritance date and time."
   signed_psbt:
     wrong_send_info: "Send information is different.\nPlease try again from the beginning."
     need_more_sign: "Need $count more signatures"

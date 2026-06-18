@@ -1044,7 +1044,8 @@ alert:
     broadcasting_failed: "[Envío fallido]\n$error"
     insufficient_balance: "Saldo insuficiente"
     minimum_amount: "Puedes enviar al menos $amount"
-    insufficient_fee: "[Envío fallido]\nPor favor, intenta nuevamente aumentando la comisión." 
+    insufficient_fee: "[Envío fallido]\nPor favor, intenta nuevamente aumentando la comisión."
+    non_final_taproot_child: "[Envío fallido]\nPor favor, verifica la fecha y hora de herencia de la billetera secundaria."
   signed_psbt:
     wrong_send_info: "La información de envío es diferente.\nPor favor, intenta nuevamente desde el principio."
     need_more_sign: "Necesitas $count firmas más"
