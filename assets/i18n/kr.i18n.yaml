@@ -442,6 +442,10 @@ send_screen:
   toast:
     draft_utxo_used: "이전에 선택한 비트코인이 이미 사용되었어요. UTXO를 다시 골라주세요."
     draft_utxo_locked: "이전에 선택한 비트코인이 사용 잠금 되었어요. UTXO를 다시 골라주세요."
+  taproot:
+    sign_path: "서명 경로"
+    sign_by_parent: "부모 키로 서명해요"
+    sign_by_child: "자식 키로 서명해요"
     
 utxo_selection_screen:
   title: "UTXO 고르기"

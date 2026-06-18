@@ -443,6 +443,10 @@ send_screen:
   toast:
     draft_utxo_used: "Previously selected bitcoin has already been spent. Please select UTXOs again."
     draft_utxo_locked: "Previously selected bitcoin has been locked. Please select UTXOs again."
+  taproot:
+    sign_path: "Signing Path"
+    sign_by_parent: "Sign with parent key"
+    sign_by_child: "Sign with child key"
 
 utxo_selection_screen:
   title: "Select UTXOs"

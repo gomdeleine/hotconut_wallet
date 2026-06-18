@@ -444,6 +444,10 @@ send_screen:
   toast:
     draft_utxo_used: "El bitcoin seleccionado anteriormente ya fue utilizado. Seleccione los UTXOs nuevamente."
     draft_utxo_locked: "El bitcoin seleccionado anteriormente ha sido bloqueado. Seleccione los UTXOs nuevamente."
+  taproot:
+    sign_path: "Ruta de firma"
+    sign_by_parent: "Firmar con la clave padre"
+    sign_by_child: "Firmar con la clave hija"
 
 utxo_selection_screen:
   title: "Seleccionar UTXOs"

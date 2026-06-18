@@ -443,6 +443,10 @@ send_screen:
   toast:
     draft_utxo_used: "以前に選択したビットコインはすでに使用されています。UTXOを再選択してください。"
     draft_utxo_locked: "以前に選択したビットコインがロックされています。UTXOを再選択してください。"
+  taproot:
+    sign_path: "署名経路"
+    sign_by_parent: "親キーで署名します"
+    sign_by_child: "子キーで署名します"
 
 utxo_selection_screen:
   title: "UTXO選択"
