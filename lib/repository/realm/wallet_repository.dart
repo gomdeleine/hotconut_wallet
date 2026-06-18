@@ -18,6 +18,7 @@ import 'package:coconut_wallet/repository/realm/converter/taproot_wallet.dart';
 import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
 import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
 import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
+import 'package:coconut_wallet/utils/logger.dart';
 import 'package:realm/realm.dart';
 
 class WalletRepository extends BaseRepository {
@@ -355,7 +356,7 @@ class WalletRepository extends BaseRepository {
       realmWalletBase.descriptor = newDescriptor;
     });
 
-    print('[updateMasterFingerprint] before: $oldDescriptor');
-    print('[updateMasterFingerprint] after : ${realm.find<RealmWalletBase>(walletId)?.descriptor}');
+    Logger.log('[updateMasterFingerprint] before: $oldDescriptor');
+    Logger.log('[updateMasterFingerprint] after : ${realm.find<RealmWalletBase>(walletId)?.descriptor}');
   }
 }

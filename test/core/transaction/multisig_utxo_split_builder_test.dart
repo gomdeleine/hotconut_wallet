@@ -9,6 +9,7 @@ import 'package:coconut_wallet/model/wallet/wallet_address.dart';
 import 'package:coconut_wallet/repository/realm/address_repository.dart';
 import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
 import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:coconut_wallet/utils/logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'utxo_split_test_helper.dart';
@@ -42,9 +43,9 @@ void main() {
   );
 
   void printSplitOutputs(UtxoSplitResult result, String label) {
-    print('--- $label ---');
+    Logger.log('--- $label ---');
     for (final entry in result.splitAmountMap.entries) {
-      print('${entry.key} x ${entry.value}');
+      Logger.log('${entry.key} x ${entry.value}');
     }
   }
 
