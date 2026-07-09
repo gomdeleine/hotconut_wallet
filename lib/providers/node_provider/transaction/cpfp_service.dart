@@ -1,12 +1,12 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/model/node/cpfp_history.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/repository/realm/transaction_repository.dart';
-import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
-import 'package:coconut_wallet/services/electrum_service.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/model/node/cpfp_history.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_repository.dart';
+import 'package:hotconut_wallet/repository/realm/utxo_repository.dart';
+import 'package:hotconut_wallet/services/electrum_service.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 typedef CpfpInfo = ({String parentTransactionHash, double originalFee, List<Transaction> previousTransactions});
 

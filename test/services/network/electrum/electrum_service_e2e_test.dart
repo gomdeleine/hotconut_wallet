@@ -1,5 +1,5 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/services/electrum_service.dart';
+import 'package:hotconut_wallet/services/electrum_service.dart';
 import 'package:test/test.dart';
 
 String host = 'regtest-electrum.coconut.onl';

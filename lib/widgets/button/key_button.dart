@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:coconut_wallet/styles.dart';
+import 'package:hotconut_wallet/styles.dart';
 
 class KeyButton extends StatefulWidget {
   final String keyValue;

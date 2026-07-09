@@ -1,6 +1,6 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:coconut_wallet/styles.dart';
+import 'package:hotconut_wallet/styles.dart';
 
 class ToggleWidget extends StatefulWidget {
   final String toggleName;

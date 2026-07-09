@@ -1,9 +1,10 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/extensions/double_extensions.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/send_info_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/extensions/double_extensions.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/send_info_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/utils/balance_format_util.dart';
 import 'package:flutter/material.dart';
 
 class SendConfirmViewModel extends ChangeNotifier {
@@ -33,6 +34,7 @@ class SendConfirmViewModel extends ChangeNotifier {
       _unsignedPsbt?.inputs.map((input) => input.witnessUtxo?.amount).toList() ??
       List<int?>.filled(transaction?.inputs.length ?? 0, null);
   double? get totalSendAmount => _totalSendAmount; // BTC
+  bool get isHotWallet => _walletListItemBase.walletImportSource == WalletImportSource.hotWallet;
 
   void _setTotalSendAmount() {
     final externalOutputAmountSum = externalOutputAmounts.fold<int>(0, (sum, amount) => sum + amount);

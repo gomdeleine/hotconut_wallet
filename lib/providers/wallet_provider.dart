@@ -1,27 +1,28 @@
 import 'dart:async';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/node/wallet_update_info.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/wallet/wallet_address.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/model/wallet/watch_only_wallet.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/view_model/home/wallet_add_scanner_view_model.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/repository/realm/transaction_repository.dart';
-import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
-import 'package:coconut_wallet/repository/realm/wallet_repository.dart';
-import 'package:coconut_wallet/services/model/response/block_timestamp.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/suspicious_transaction_util.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/node/wallet_update_info.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_address.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/model/wallet/watch_only_wallet.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/view_model/home/wallet_add_scanner_view_model.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_repository.dart';
+import 'package:hotconut_wallet/repository/realm/utxo_repository.dart';
+import 'package:hotconut_wallet/repository/realm/wallet_repository.dart';
+import 'package:hotconut_wallet/services/hot_wallet/hot_wallet_key_service.dart';
+import 'package:hotconut_wallet/services/model/response/block_timestamp.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/suspicious_transaction_util.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:tuple/tuple.dart';
@@ -41,6 +42,7 @@ class WalletProvider extends ChangeNotifier {
   final TransactionRepository _transactionRepository;
   final UtxoRepository _utxoRepository;
   final WalletRepository _walletRepository;
+  final HotWalletKeyService _hotWalletKeyService;
 
   late final PreferenceProvider _preferenceProvider;
 
@@ -62,7 +64,8 @@ class WalletProvider extends ChangeNotifier {
     this._walletRepository,
     Future<void> Function(int) saveWalletCount,
     this._preferenceProvider,
-  ) : _saveWalletCount = saveWalletCount {
+  ) : _saveWalletCount = saveWalletCount,
+      _hotWalletKeyService = HotWalletKeyService() {
     // ValueNotifier들 초기화
     walletLoadStateNotifier = ValueNotifier(_walletLoadState);
     walletItemListNotifier = ValueNotifier(_walletItemList);
@@ -359,6 +362,29 @@ class WalletProvider extends ChangeNotifier {
 
     _saveWalletCount(updatedList.length);
     return newItem;
+  }
+
+  Future<ResultOfSyncFromVault> addHotWallet({
+    required WatchOnlyWallet watchOnlyWallet,
+    required String mnemonic,
+    required String secret,
+    required bool usesPassphrase,
+  }) async {
+    if (_walletItemList.any((wallet) => wallet.name == watchOnlyWallet.name)) {
+      return ResultOfSyncFromVault(result: WalletSyncResult.existingName);
+    }
+
+    final newWallet = await _addNewWallet(watchOnlyWallet);
+    await _hotWalletKeyService.saveSeed(
+      walletId: newWallet.id,
+      mnemonic: mnemonic,
+      secret: secret,
+      usesPassphrase: usesPassphrase,
+    );
+
+    _handleNewWalletAdded(newWallet.id);
+
+    return ResultOfSyncFromVault(result: WalletSyncResult.newWalletAdded, walletId: newWallet.id);
   }
 
   /// 변동 사항이 있었으면 true, 없었으면 false를 반환합니다.

@@ -1,8 +1,8 @@
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/bottom_sheet/selection_bottom_sheet.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/bottom_sheet/selection_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

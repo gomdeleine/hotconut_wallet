@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
 
 /// 트랜잭션 상세 정보를 담는 클래스
 class TransactionDetails {

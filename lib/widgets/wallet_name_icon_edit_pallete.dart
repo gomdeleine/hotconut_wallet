@@ -1,9 +1,9 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/utils/icons_util.dart';
-import 'package:coconut_wallet/widgets/icon/svg_icon.dart';
-import 'package:coconut_wallet/widgets/icon/wallet_icon.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/utils/icons_util.dart';
+import 'package:hotconut_wallet/widgets/icon/svg_icon.dart';
+import 'package:hotconut_wallet/widgets/icon/wallet_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

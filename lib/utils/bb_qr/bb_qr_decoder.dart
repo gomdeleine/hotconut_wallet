@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:base32/base32.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 class BbQrDecoder {
   // ColdCard Q1 Export Wallet Data

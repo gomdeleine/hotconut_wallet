@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/services/network/socket/socket_factory.dart';
-import 'package:coconut_wallet/services/network/socket/socket_manager.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/services/network/socket/socket_factory.dart';
+import 'package:hotconut_wallet/services/network/socket/socket_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

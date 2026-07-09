@@ -1,8 +1,8 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/taproot_script_path_config.dart';
-import 'package:coconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/taproot_script_path_config.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
 
 class TaprootWalletListItem extends WalletListItemBase {
   TaprootWalletListItem({

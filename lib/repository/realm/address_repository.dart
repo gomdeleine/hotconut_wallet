@@ -1,17 +1,17 @@
 import 'dart:math';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/address.dart';
-import 'package:coconut_wallet/model/node/script_status.dart';
-import 'package:coconut_wallet/model/node/update_address_balance_dto.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/model/wallet/wallet_address.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/repository/realm/base_repository.dart';
-import 'package:coconut_wallet/repository/realm/converter/address.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/address.dart';
+import 'package:hotconut_wallet/model/node/script_status.dart';
+import 'package:hotconut_wallet/model/node/update_address_balance_dto.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_address.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/repository/realm/base_repository.dart';
+import 'package:hotconut_wallet/repository/realm/converter/address.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:realm/realm.dart';
 
 class AddressRepository extends BaseRepository {

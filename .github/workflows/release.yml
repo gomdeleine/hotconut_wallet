@@ -1,0 +1,188 @@
+# Manual Android release workflow.
+#
+# Usage: Actions → Release → Run workflow
+#   - version:      semantic version for --build-name (default 0.1.0)
+#   - build_number: Android versionCode via --build-number (default 1)
+#
+# Produces unsigned release APKs for mainnet and regtest, attached to a GitHub Release.
+# Network config is read from mainnet.env / regtest.env in the repo root.
+
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version (build-name)
+        required: true
+        default: "0.1.0"
+        type: string
+      build_number:
+        description: Android build number (versionCode)
+        required: true
+        default: "1"
+        type: string
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FLUTTER_VERSION: "3.29.1"
+
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter (FVM)
+        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+        with:
+          path: .fvmrc
+          cache: true
+
+      - name: Install dependencies
+        run: fvm flutter pub get
+
+      - name: Code generation
+        run: make ready
+
+      - name: Package generated code
+        run: |
+          mapfile -t generated_files < <(find lib -type f \( -name '*.g.dart' -o -name '*.realm.dart' \))
+          if [ "${#generated_files[@]}" -eq 0 ]; then
+            echo "No generated Dart files found after make ready."
+            exit 1
+          fi
+          tar czf generated-code.tar.gz "${generated_files[@]}" lib/localization
+
+      - name: Upload prepare artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: prepare-artifacts
+          retention-days: 1
+          path: generated-code.tar.gz
+
+  build-android:
+    name: Build Android (${{ matrix.flavor }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        flavor: [mainnet, regtest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null 2>&1 || true
+          sdkmanager "platforms;android-36" "build-tools;35.0.0"
+
+      - name: Setup Flutter (FVM)
+        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+        with:
+          path: .fvmrc
+          cache: true
+
+      - name: Download prepare artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: prepare-artifacts
+
+      - name: Restore prepared workspace files
+        run: tar xzf generated-code.tar.gz
+
+      - name: Install dependencies
+        run: fvm flutter pub get
+
+      - name: Build APK
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          BUILD_NUMBER="${{ github.event.inputs.build_number }}"
+          FLAVOR="${{ matrix.flavor }}"
+
+          BUILD_ARGS=(
+            build apk
+            --flavor "$FLAVOR"
+            --release
+            --build-name="$VERSION"
+            --build-number="$BUILD_NUMBER"
+          )
+
+          if [ "$FLAVOR" = "mainnet" ]; then
+            BUILD_ARGS+=(--dart-define=USE_FIREBASE=true)
+          fi
+
+          fvm flutter "${BUILD_ARGS[@]}"
+
+      - name: Rename APK
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          FLAVOR="${{ matrix.flavor }}"
+          cp "build/app/outputs/flutter-apk/app-${FLAVOR}-release.apk" \
+            "hotconut-wallet-${VERSION}-${FLAVOR}.apk"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-${{ matrix.flavor }}
+          retention-days: 7
+          path: hotconut-wallet-${{ github.event.inputs.version }}-${{ matrix.flavor }}.apk
+
+  release:
+    name: Publish GitHub Release
+    needs: build-android
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download APK artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: apk-*
+          path: apks
+          merge-multiple: true
+
+      - name: List release assets
+        run: ls -lh apks/
+
+      - name: Create release tag
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          TAG="v${VERSION}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists; skipping tag creation."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -a "$TAG" -m "Release $TAG"
+            git push origin "$TAG"
+          fi
+
+      - name: Create or update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          name: v${{ github.event.inputs.version }}
+          generate_release_notes: true
+          files: apks/*.apk
+          fail_on_unmatched_files: true

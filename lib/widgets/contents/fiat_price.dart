@@ -1,6 +1,6 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/providers/price_provider.dart';
-import 'package:coconut_wallet/providers/connectivity_provider.dart';
+import 'package:hotconut_wallet/providers/price_provider.dart';
+import 'package:hotconut_wallet/providers/connectivity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

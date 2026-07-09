@@ -1,17 +1,17 @@
 import 'dart:math';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/enums/transaction_enums.dart';
-import 'package:coconut_wallet/extensions/int_extensions.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/transaction_util.dart';
-import 'package:coconut_wallet/widgets/button/custom_underlined_button.dart';
-import 'package:coconut_wallet/widgets/input_output_detail_row.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/enums/transaction_enums.dart';
+import 'package:hotconut_wallet/extensions/int_extensions.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/utils/balance_format_util.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/transaction_util.dart';
+import 'package:hotconut_wallet/widgets/button/custom_underlined_button.dart';
+import 'package:hotconut_wallet/widgets/input_output_detail_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

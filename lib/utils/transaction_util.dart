@@ -1,12 +1,12 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/dust_constants.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/enums/transaction_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/constants/dust_constants.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/enums/transaction_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

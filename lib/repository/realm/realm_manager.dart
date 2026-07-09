@@ -1,7 +1,7 @@
-import 'package:coconut_wallet/constants/realm_constants.dart';
-import 'package:coconut_wallet/constants/secure_keys.dart';
-import 'package:coconut_wallet/repository/realm/migration/migration.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
+import 'package:hotconut_wallet/constants/realm_constants.dart';
+import 'package:hotconut_wallet/constants/secure_keys.dart';
+import 'package:hotconut_wallet/repository/realm/migration/migration.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
 

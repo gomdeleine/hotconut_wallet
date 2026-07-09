@@ -1,7 +1,7 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/services/wallet_add_service.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/utils/descriptor_util.dart';
+import 'package:hotconut_wallet/services/wallet_add_service.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/utils/descriptor_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

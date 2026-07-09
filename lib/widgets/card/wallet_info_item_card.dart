@@ -1,17 +1,18 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_info_edit_bottom_sheet.dart';
-import 'package:coconut_wallet/services/wallet_add_service.dart';
-import 'package:coconut_wallet/utils/colors_util.dart';
-import 'package:coconut_wallet/utils/wallet_util.dart';
-import 'package:coconut_wallet/widgets/button/tooltip_button.dart';
-import 'package:coconut_wallet/widgets/icon/wallet_icon.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_info_edit_bottom_sheet.dart';
+import 'package:hotconut_wallet/services/wallet_add_service.dart';
+import 'package:hotconut_wallet/utils/colors_util.dart';
+import 'package:hotconut_wallet/utils/wallet_util.dart';
+import 'package:hotconut_wallet/widgets/button/tooltip_button.dart';
+import 'package:hotconut_wallet/widgets/icon/wallet_icon.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math' as math;
@@ -201,11 +202,32 @@ class _WalletInfoItemCardState extends State<WalletInfoItemCard> {
                     CoconutLayout.spacing_200w,
                     // 이름
                     Expanded(
-                      child: Text(
-                        nameText,
-                        style: CoconutTypography.heading4_18_Bold.setColor(CoconutColors.white),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              nameText,
+                              style: CoconutTypography.heading4_18_Bold.setColor(CoconutColors.white),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (walletImportSource == WalletImportSource.hotWallet) ...[
+                            CoconutLayout.spacing_100w,
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: CoconutColors.hotPink.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: CoconutColors.hotPink),
+                              ),
+                              child: Text(
+                                t.hot_wallet.badge,
+                                style: CoconutTypography.body3_12_Bold.setColor(CoconutColors.hotPink),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                   ],

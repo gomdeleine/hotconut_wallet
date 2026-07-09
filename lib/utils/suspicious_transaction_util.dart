@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
 
 // WalletProvider 에서 사용
 class SuspiciousTransactionUtil {

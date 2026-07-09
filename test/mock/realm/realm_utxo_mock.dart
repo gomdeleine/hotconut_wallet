@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
 
 class RealmUtxoMock {
   static RealmUtxo getMock({

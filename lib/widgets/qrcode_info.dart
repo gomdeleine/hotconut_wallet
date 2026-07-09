@@ -1,6 +1,6 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/widgets/adaptive_qr_image.dart';
-import 'package:coconut_wallet/widgets/button/copy_text_container.dart';
+import 'package:hotconut_wallet/widgets/adaptive_qr_image.dart';
+import 'package:hotconut_wallet/widgets/button/copy_text_container.dart';
 import 'package:flutter/material.dart';
 
 class QrCodeInfo extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 
 class PinLengthToggleButton extends StatelessWidget {
   final int currentPinLength;

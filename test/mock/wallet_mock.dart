@@ -1,9 +1,9 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
 
 class WalletMock {
   static SinglesigWalletListItem createSingleSigWalletItem({

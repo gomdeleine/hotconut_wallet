@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:coconut_wallet/config/number_format_config.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/extensions/int_extensions.dart';
-import 'package:coconut_wallet/extensions/string_extensions.dart';
+import 'package:hotconut_wallet/config/number_format_config.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/extensions/int_extensions.dart';
+import 'package:hotconut_wallet/extensions/string_extensions.dart';
 import 'package:decimal/decimal.dart';
 
 class UnitUtil {

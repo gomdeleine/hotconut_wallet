@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
+import 'package:hotconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

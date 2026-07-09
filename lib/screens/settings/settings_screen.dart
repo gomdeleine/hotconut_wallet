@@ -1,24 +1,27 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/auth_provider.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/view_model/settings/settings_view_model.dart';
-import 'package:coconut_wallet/repository/realm/realm_manager.dart';
-import 'package:coconut_wallet/screens/common/pin_check_screen.dart';
-import 'package:coconut_wallet/screens/settings/pin_setting_screen.dart';
-import 'package:coconut_wallet/screens/settings/realm_debug_screen.dart';
-import 'package:coconut_wallet/screens/settings/unit_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/settings/language_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/settings/fiat_bottom_sheet.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/button/button_group.dart';
-import 'package:coconut_wallet/widgets/custom_loading_overlay.dart';
-import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/auth_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/view_model/settings/settings_view_model.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/repository/realm/realm_manager.dart';
+import 'package:hotconut_wallet/screens/common/pin_check_screen.dart';
+import 'package:hotconut_wallet/screens/settings/pin_setting_screen.dart';
+import 'package:hotconut_wallet/screens/settings/realm_debug_screen.dart';
+import 'package:hotconut_wallet/screens/settings/unit_bottom_sheet.dart';
+import 'package:hotconut_wallet/screens/settings/language_bottom_sheet.dart';
+import 'package:hotconut_wallet/screens/settings/fiat_bottom_sheet.dart';
+import 'package:hotconut_wallet/utils/hot_wallet_util.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/button/button_group.dart';
+import 'package:hotconut_wallet/widgets/custom_loading_overlay.dart';
+import 'package:hotconut_wallet/widgets/dialog.dart';
+import 'package:hotconut_wallet/widgets/overlays/common_bottom_sheets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/widgets/button/single_button.dart';
+import 'package:hotconut_wallet/widgets/button/single_button.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -64,6 +67,16 @@ class _SettingsScreen extends State<SettingsScreen> {
                               return;
                             }
 
+                            if (hasHotWallet(context.read<WalletProvider>())) {
+                              await showInfoDialog(
+                                context,
+                                context.read<PreferenceProvider>().language,
+                                t.hot_wallet.pin_disable_blocked_title,
+                                t.hot_wallet.pin_disable_blocked_description,
+                              );
+                              return;
+                            }
+
                             final authProvider = viewModel.authProvider;
                             if (await authProvider.isBiometricsAuthValid()) {
                               viewModel.deletePin();
@@ -83,7 +96,12 @@ class _SettingsScreen extends State<SettingsScreen> {
                             isOn: viewModel.isSetBiometrics,
                             onChanged: (isOn) async {
                               if (isOn) {
-                                viewModel.authenticateWithBiometrics(isSave: true);
+                                final pin = await _getPinFromCheck();
+                                if (pin == null) return;
+
+                                final authProvider = viewModel.authProvider;
+                                await authProvider.enableHotWalletBiometricFastPath(pin);
+                                await authProvider.authenticateWithBiometrics(isSave: true);
                               } else {
                                 viewModel.saveIsSetBiometrics(false);
                               }
@@ -330,12 +348,15 @@ class _SettingsScreen extends State<SettingsScreen> {
     );
   }
 
-  void _showPinSettingScreen({required bool useBiometrics}) {
-    CommonBottomSheets.showCustomHeightBottomSheet(
+  Future<void> _showPinSettingScreen({required bool useBiometrics}) async {
+    final success = await CommonBottomSheets.showCustomHeightBottomSheet<bool>(
       context: context,
       heightRatio: 0.9,
       child: CustomLoadingOverlay(child: PinSettingScreen(useBiometrics: useBiometrics)),
     );
+    if (success == true && context.mounted) {
+      Navigator.pop(context);
+    }
   }
 
   Future<bool> _isPinCheckValid() async {
@@ -345,6 +366,15 @@ class _SettingsScreen extends State<SettingsScreen> {
           child: const CustomLoadingOverlay(child: PinCheckScreen()),
         ) ==
         true);
+  }
+
+  Future<String?> _getPinFromCheck() async {
+    final result = await CommonBottomSheets.showCustomHeightBottomSheet(
+      context: context,
+      heightRatio: 0.9,
+      child: const CustomLoadingOverlay(child: PinCheckScreen(returnPinOnSuccess: true)),
+    );
+    return result is String ? result : null;
   }
 
   String _getCurrentLanguageDisplayName(String language) {

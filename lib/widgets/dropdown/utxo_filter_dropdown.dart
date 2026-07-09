@@ -1,5 +1,5 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/utxo_enums.dart';
+import 'package:hotconut_wallet/enums/utxo_enums.dart';
 import 'package:flutter/material.dart';
 
 class UtxoOrderDropdown extends StatelessWidget {

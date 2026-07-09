@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
 
 /// 갱신된 데이터 정보를 담는 클래스
 class WalletUpdateInfo {

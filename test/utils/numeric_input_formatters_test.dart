@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/config/number_format_config.dart';
-import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
+import 'package:hotconut_wallet/config/number_format_config.dart';
+import 'package:hotconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';

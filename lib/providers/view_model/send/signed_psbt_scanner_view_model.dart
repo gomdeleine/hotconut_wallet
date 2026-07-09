@@ -1,7 +1,7 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/providers/send_info_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/providers/send_info_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
 
 class SignedPsbtScannerViewModel {
   late final SendInfoProvider _sendInfoProvider;

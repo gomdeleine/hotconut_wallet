@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
 
 /// 상태 관리자 인터페이스
 abstract class StateManagerInterface {

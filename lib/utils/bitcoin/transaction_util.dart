@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/taproot_script_path_config.dart';
-import 'package:coconut_wallet/utils/hex_util.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/taproot_script_path_config.dart';
+import 'package:hotconut_wallet/utils/hex_util.dart';
 
 const String rawTxVersion1Field = '01000000';
 const String rawTxVersion2Field = '02000000';

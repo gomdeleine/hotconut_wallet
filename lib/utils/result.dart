@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/model/error/app_error.dart';
+import 'package:hotconut_wallet/model/error/app_error.dart';
 
 class Result<T> {
   final T? _value;

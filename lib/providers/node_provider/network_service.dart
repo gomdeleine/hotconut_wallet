@@ -1,12 +1,12 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/model/error/app_error.dart';
-import 'package:coconut_wallet/repository/realm/transaction_repository.dart';
-import 'package:coconut_wallet/services/model/response/block_header.dart';
-import 'package:coconut_wallet/services/model/response/block_timestamp.dart';
-import 'package:coconut_wallet/services/model/response/recommended_fee.dart';
-import 'package:coconut_wallet/services/electrum_service.dart';
-import 'package:coconut_wallet/utils/file_logger.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/model/error/app_error.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_repository.dart';
+import 'package:hotconut_wallet/services/model/response/block_header.dart';
+import 'package:hotconut_wallet/services/model/response/block_timestamp.dart';
+import 'package:hotconut_wallet/services/model/response/recommended_fee.dart';
+import 'package:hotconut_wallet/services/electrum_service.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 
 /// NodeProvider의 네트워크 관련 기능을 담당하는 서비스 클래스
 /// ElectrumService의 네트워크 관련 기능을 직접 구현합니다.

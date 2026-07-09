@@ -1,20 +1,20 @@
 import 'dart:ui';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/model/wallet/watch_only_wallet.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/repository/realm/transaction_repository.dart';
-import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
-import 'package:coconut_wallet/repository/realm/wallet_repository.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/model/wallet/watch_only_wallet.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_repository.dart';
+import 'package:hotconut_wallet/repository/realm/utxo_repository.dart';
+import 'package:hotconut_wallet/repository/realm/wallet_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // ─────────────────────────────────────────────

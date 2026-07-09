@@ -1,8 +1,8 @@
-import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
-import 'package:coconut_wallet/core/transaction/utxo_selector.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/taproot_script_path_config.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
+import 'package:hotconut_wallet/core/transaction/utxo_selector.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/taproot_script_path_config.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

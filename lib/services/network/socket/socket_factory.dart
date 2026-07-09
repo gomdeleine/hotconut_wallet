@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:coconut_lib/coconut_lib.dart';
 import 'package:flutter/foundation.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 abstract class SocketFactory {
   Future<Socket> createSocket(String host, int port, {Duration timeout});

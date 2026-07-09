@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/services/speed_app_ln_invoice_service.dart';
+import 'package:hotconut_wallet/services/speed_app_ln_invoice_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,11 +1,11 @@
 {
-    "name": "coconut_wallet",
-    "short_name": "coconut_wallet",
+    "name": "hotconut_wallet",
+    "short_name": "hotconut_wallet",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#1e1e1e",
+    "theme_color": "#1e1e1e",
+    "description": "Hotconut Wallet - Bitcoin self-custody wallet",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

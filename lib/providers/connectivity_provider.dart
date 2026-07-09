@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:vpn_detector/vpn_detector.dart';

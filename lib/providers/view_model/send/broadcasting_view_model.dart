@@ -2,22 +2,22 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/transaction_draft.dart';
-import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
-import 'package:coconut_wallet/providers/send_info_provider.dart';
-import 'package:coconut_wallet/providers/transaction_provider.dart';
-import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/repository/realm/transaction_draft_repository.dart';
-import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
-import 'package:coconut_wallet/screens/wallet_detail/transaction_fee_bumping_screen.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_draft.dart';
+import 'package:hotconut_wallet/providers/node_provider/node_provider.dart';
+import 'package:hotconut_wallet/providers/send_info_provider.dart';
+import 'package:hotconut_wallet/providers/transaction_provider.dart';
+import 'package:hotconut_wallet/providers/utxo_tag_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_draft_repository.dart';
+import 'package:hotconut_wallet/repository/realm/utxo_repository.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/transaction_fee_bumping_screen.dart';
+import 'package:hotconut_wallet/utils/balance_format_util.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class InvalidTransactionException implements Exception {
@@ -208,7 +208,7 @@ class BroadcastingViewModel extends ChangeNotifier {
             ? _utxoRepository.getValidatedSelectedUtxoList(_walletId!, inputUtxoIds)
             : (inputUtxoIds, null);
 
-    //_debugPrintSendInfoProvider();
+    // Previously logged signed PSBT for debugging; removed for security.
 
     Psbt psbt;
     if (_hasAllInputsBip32Derivation(signedPsbt)) {
@@ -322,18 +322,6 @@ class BroadcastingViewModel extends ChangeNotifier {
 
   void clearSendInfo() {
     _sendInfoProvider.clear();
-  }
-
-  void _debugPrintSendInfoProvider() {
-    debugPrint('------- sendInfoProvider ------');
-    debugPrint('walletId: $_walletId');
-    debugPrint('transactionDraftId: ${_sendInfoProvider.unsignedDraftId}');
-    debugPrint('signedPsbt: ${_sendInfoProvider.signedResult}');
-    debugPrint('txWaitingForSign: ${_sendInfoProvider.txWaitingForSign}');
-    debugPrint('walletId: ${_sendInfoProvider.walletId}');
-    debugPrint('walletBase: $_walletBase');
-    debugPrint('walletAddressType: ${_walletBase!.addressType}');
-    debugPrint('-------------------------------');
   }
 
   bool isTxContentEqual(Transaction signedTx, Transaction? unSignedTx) {

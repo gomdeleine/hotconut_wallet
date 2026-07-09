@@ -1,12 +1,12 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/enums/transaction_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/utils/datetime_util.dart';
-import 'package:coconut_wallet/utils/text_utils.dart';
-import 'package:coconut_wallet/utils/transaction_util.dart';
-import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/enums/transaction_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/utils/datetime_util.dart';
+import 'package:hotconut_wallet/utils/text_utils.dart';
+import 'package:hotconut_wallet/utils/transaction_util.dart';
+import 'package:hotconut_wallet/widgets/button/shrink_animation_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

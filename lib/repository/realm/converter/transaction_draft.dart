@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/model/wallet/transaction_draft.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_draft.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
 
 TransactionDraft mapRealmTxDraftToTxDraft(RealmTransactionDraft realmDraft, String? signedPsbtBase64Encoded) {
   return TransactionDraft(

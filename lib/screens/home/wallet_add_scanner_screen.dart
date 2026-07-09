@@ -3,28 +3,25 @@ import 'dart:io';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/analytics/analytics_event_names.dart';
-import 'package:coconut_wallet/analytics/analytics_parameter_names.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/view_model/home/wallet_add_scanner_view_model.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/screens/home/wallet_add_mfp_input_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
-import 'package:coconut_wallet/services/analytics_service.dart';
-import 'package:coconut_wallet/utils/descriptor_util.dart';
-import 'package:coconut_wallet/utils/file_logger.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/text_utils.dart';
-import 'package:coconut_wallet/widgets/animated_qr/coconut_qr_scanner.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
-import 'package:coconut_wallet/widgets/card/wallet_expandable_info_card.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/view_model/home/wallet_add_scanner_view_model.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/utils/hot_wallet_util.dart';
+import 'package:hotconut_wallet/screens/home/wallet_add_mfp_input_bottom_sheet.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
+import 'package:hotconut_wallet/utils/descriptor_util.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/text_utils.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/coconut_qr_scanner.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/widgets/card/wallet_expandable_info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 
@@ -44,12 +41,29 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
   MobileScannerController? controller;
   bool _isProcessing = false;
   bool _clipboardContentAvailable = false;
-  late WalletAddScannerViewModel _viewModel;
+  bool _isHotWalletRedirect = false;
+  WalletAddScannerViewModel? _viewModel;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    if (widget.importSource == WalletImportSource.hotWallet) {
+      _isHotWalletRedirect = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        final canProceed = await ensureHotWalletPinSet(context);
+        if (!mounted) return;
+        if (canProceed) {
+          Navigator.pushReplacementNamed(context, '/hot-wallet-onboarding');
+        } else {
+          Navigator.pop(context);
+        }
+      });
+      return;
+    }
+
     _checkClipboard();
 
     _viewModel = WalletAddScannerViewModel(
@@ -309,6 +323,10 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
 
   @override
   Widget build(BuildContext context) {
+    if (_isHotWalletRedirect) {
+      return const Scaffold(backgroundColor: CoconutColors.black);
+    }
+
     return Scaffold(
       appBar: CoconutAppBar.build(
         title: _getAppBarTitle(),
@@ -335,7 +353,7 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
             },
             onComplete: _onCompletedScanning,
             onFailed: _onFailedScanning,
-            qrDataHandler: _viewModel.qrDataHandler,
+            qrDataHandler: _viewModel!.qrDataHandler,
           ),
           Padding(
             padding: const EdgeInsets.only(
@@ -404,11 +422,11 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
       ResultOfSyncFromVault? addResult;
       if (descriptor != null) {
         context.loaderOverlay.show();
-        addResult = await _viewModel.addWallet(descriptor);
+        addResult = await _viewModel!.addWallet(descriptor);
       } else {
         String? mfp = await _showMfpInputBottomSheet();
         context.loaderOverlay.show();
-        addResult = await _viewModel.addWallet(extendedPublicKey!, isExtendedPublicKey: true, masterFingerPrint: mfp);
+        addResult = await _viewModel!.addWallet(extendedPublicKey!, isExtendedPublicKey: true, masterFingerPrint: mfp);
       }
       await _handleAddWalletResult(addResult);
     } catch (e, stackTrace) {
@@ -475,14 +493,14 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
 
     try {
       String? mfp;
-      if (_viewModel.isExtendedPublicKeyScanned) {
+      if (_viewModel!.isExtendedPublicKeyScanned) {
         await controller?.stop();
         mfp = await _showMfpInputBottomSheet();
       }
 
-      ResultOfSyncFromVault addResult = await _viewModel.addWallet(
+      ResultOfSyncFromVault addResult = await _viewModel!.addWallet(
         additionInfo,
-        isExtendedPublicKey: _viewModel.isExtendedPublicKeyScanned,
+        isExtendedPublicKey: _viewModel!.isExtendedPublicKeyScanned,
         masterFingerPrint: mfp,
       );
       await _handleAddWalletResult(addResult);
@@ -501,11 +519,6 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
     switch (addResult.result) {
       case WalletSyncResult.newWalletAdded:
         {
-          context.read<AnalyticsService>().logEvent(
-            eventName: AnalyticsEventNames.walletAddCompleted,
-            parameters: {AnalyticsParameterNames.walletAddImportSource: widget.importSource.name},
-          );
-
           if (widget.onNewWalletAdded != null) {
             widget.onNewWalletAdded!(addResult);
           }
@@ -529,7 +542,7 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
           _showErrorDialog(
             t.alert.wallet_add.update_failed,
             t.alert.wallet_add.update_failed_description(
-              name: TextUtils.ellipsisIfLonger(_viewModel.getWalletName(addResult.walletId!), maxLength: 15),
+              name: TextUtils.ellipsisIfLonger(_viewModel!.getWalletName(addResult.walletId!), maxLength: 15),
             ),
           );
 
@@ -546,7 +559,7 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
           _showErrorDialog(
             t.alert.wallet_add.already_exist,
             t.alert.wallet_add.already_exist_description(
-              name: TextUtils.ellipsisIfLonger(_viewModel.getWalletName(addResult.walletId!), maxLength: 15),
+              name: TextUtils.ellipsisIfLonger(_viewModel!.getWalletName(addResult.walletId!), maxLength: 15),
             ),
           );
         }
@@ -574,7 +587,7 @@ class _WalletAddScannerScreenState extends State<WalletAddScannerScreen> with Wi
     if (mounted) {
       context.loaderOverlay.hide();
       controller?.start();
-      _viewModel.qrDataHandler.reset(); // TODO: 추가됨. 다른 타입 지갑 추가 시 동작 확인 필요
+      _viewModel!.qrDataHandler.reset(); // TODO: 추가됨. 다른 타입 지갑 추가 시 동작 확인 필요
     }
   }
 

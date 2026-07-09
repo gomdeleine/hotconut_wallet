@@ -1,7 +1,7 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/widgets/bottom_sheet/single_field_fixed_bottom_sheet_body.dart';
-import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/widgets/bottom_sheet/single_field_fixed_bottom_sheet_body.dart';
+import 'package:hotconut_wallet/widgets/overlays/common_bottom_sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';

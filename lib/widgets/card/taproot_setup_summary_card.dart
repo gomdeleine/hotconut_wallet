@@ -1,6 +1,6 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/widgets/card/taproot_participant_card.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/widgets/card/taproot_participant_card.dart';
 import 'package:flutter/material.dart';
 
 class TaprootSetupSummaryCard extends StatelessWidget {

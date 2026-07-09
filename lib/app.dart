@@ -1,90 +1,88 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/app_guard.dart';
-import 'package:coconut_wallet/providers/auth_provider.dart';
-import 'package:coconut_wallet/providers/connectivity_provider.dart';
-import 'package:coconut_wallet/providers/preferences/block_explorer_provider.dart';
-import 'package:coconut_wallet/providers/preferences/electrum_server_provider.dart';
-import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
-import 'package:coconut_wallet/providers/preferences/feature_settings_provider.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/send_info_provider.dart';
-import 'package:coconut_wallet/providers/transaction_provider.dart';
-import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
-import 'package:coconut_wallet/providers/visibility_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/repository/realm/realm_manager.dart';
-import 'package:coconut_wallet/repository/realm/subscription_repository.dart';
-import 'package:coconut_wallet/repository/realm/transaction_draft_repository.dart';
-import 'package:coconut_wallet/repository/realm/transaction_repository.dart';
-import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
-import 'package:coconut_wallet/providers/price_provider.dart';
-import 'package:coconut_wallet/repository/realm/wallet_preferences_repository.dart';
-import 'package:coconut_wallet/repository/realm/wallet_repository.dart';
-import 'package:coconut_wallet/routes/route_observer.dart';
-import 'package:coconut_wallet/screens/home/wallet_home_edit_screen.dart';
-import 'package:coconut_wallet/screens/home/wallet_home_screen.dart';
-import 'package:coconut_wallet/screens/home/wallet_list_screen.dart';
-import 'package:coconut_wallet/screens/send/refactor/send_screen.dart';
-import 'package:coconut_wallet/screens/send/refactor/utxo_selection_screen.dart';
-import 'package:coconut_wallet/screens/settings/block_explorer_screen.dart';
-import 'package:coconut_wallet/screens/settings/coconut_crew_screen.dart';
-import 'package:coconut_wallet/screens/settings/electrum_server_screen.dart';
-import 'package:coconut_wallet/screens/settings/log_viewer_screen.dart';
-import 'package:coconut_wallet/screens/utility/p2p_calculator_screen.dart';
-import 'package:coconut_wallet/screens/transaction_draft/transaction_draft_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/address_list_screen.dart';
-import 'package:coconut_wallet/screens/review/negative_feedback_screen.dart';
-import 'package:coconut_wallet/screens/review/positive_feedback_screen.dart';
-import 'package:coconut_wallet/screens/send/broadcasting_complete_screen.dart';
-import 'package:coconut_wallet/screens/send/broadcasting_screen.dart';
-import 'package:coconut_wallet/screens/send/send_confirm_screen.dart';
-import 'package:coconut_wallet/screens/settings/app_info_screen.dart';
-import 'package:coconut_wallet/screens/settings/bip39_list_screen.dart';
-import 'package:coconut_wallet/screens/send/signed_psbt_scanner_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/address_search_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_split_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/transaction_detail_screen.dart';
-import 'package:coconut_wallet/screens/send/unsigned_transaction_qr_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/transaction_fee_bumping_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_detail_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_list_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_merge/utxo_merge_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_tag_crud_screen.dart';
-import 'package:coconut_wallet/screens/home/wallet_add_scanner_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_overview_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/taproot_wallet_backup_data_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_backup_data_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_detail_receive_address_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_detail_screen.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:hotconut_wallet/app_guard.dart';
+import 'package:hotconut_wallet/providers/auth_provider.dart';
+import 'package:hotconut_wallet/providers/connectivity_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/block_explorer_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/electrum_server_provider.dart';
+import 'package:hotconut_wallet/providers/node_provider/node_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/feature_settings_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/send_info_provider.dart';
+import 'package:hotconut_wallet/providers/transaction_provider.dart';
+import 'package:hotconut_wallet/providers/utxo_tag_provider.dart';
+import 'package:hotconut_wallet/providers/visibility_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/repository/realm/realm_manager.dart';
+import 'package:hotconut_wallet/repository/realm/subscription_repository.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_draft_repository.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_repository.dart';
+import 'package:hotconut_wallet/repository/realm/utxo_repository.dart';
+import 'package:hotconut_wallet/providers/price_provider.dart';
+import 'package:hotconut_wallet/repository/realm/wallet_preferences_repository.dart';
+import 'package:hotconut_wallet/repository/realm/wallet_repository.dart';
+import 'package:hotconut_wallet/routes/route_observer.dart';
+import 'package:hotconut_wallet/screens/home/wallet_home_edit_screen.dart';
+import 'package:hotconut_wallet/screens/home/wallet_home_screen.dart';
+import 'package:hotconut_wallet/screens/home/wallet_list_screen.dart';
+import 'package:hotconut_wallet/screens/send/hot_wallet_sign_screen.dart';
+import 'package:hotconut_wallet/screens/hot_wallet/hot_wallet_onboarding_screen.dart';
+import 'package:hotconut_wallet/screens/hot_wallet/mnemonic_export_screen.dart';
+import 'package:hotconut_wallet/screens/send/refactor/send_screen.dart';
+import 'package:hotconut_wallet/screens/send/refactor/utxo_selection_screen.dart';
+import 'package:hotconut_wallet/screens/settings/block_explorer_screen.dart';
+import 'package:hotconut_wallet/screens/settings/coconut_crew_screen.dart';
+import 'package:hotconut_wallet/screens/settings/electrum_server_screen.dart';
+import 'package:hotconut_wallet/screens/settings/log_viewer_screen.dart';
+import 'package:hotconut_wallet/screens/utility/p2p_calculator_screen.dart';
+import 'package:hotconut_wallet/screens/transaction_draft/transaction_draft_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/address_list_screen.dart';
+import 'package:hotconut_wallet/screens/send/broadcasting_complete_screen.dart';
+import 'package:hotconut_wallet/screens/send/broadcasting_screen.dart';
+import 'package:hotconut_wallet/screens/send/send_confirm_screen.dart';
+import 'package:hotconut_wallet/screens/settings/app_info_screen.dart';
+import 'package:hotconut_wallet/screens/settings/bip39_list_screen.dart';
+import 'package:hotconut_wallet/screens/send/signed_psbt_scanner_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/address_search_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_split_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/transaction_detail_screen.dart';
+import 'package:hotconut_wallet/screens/send/unsigned_transaction_qr_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/transaction_fee_bumping_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_detail_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_list_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_merge/utxo_merge_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_tag_crud_screen.dart';
+import 'package:hotconut_wallet/screens/home/wallet_add_scanner_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_overview_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/taproot_wallet_backup_data_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_backup_data_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_detail_receive_address_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_detail_screen.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/screens/common/pin_check_screen.dart';
-import 'package:coconut_wallet/screens/onboarding/start_screen.dart';
-import 'package:coconut_wallet/widgets/deep_link_listener.dart';
-import 'package:coconut_wallet/widgets/custom_loading_overlay.dart';
+import 'package:hotconut_wallet/screens/common/pin_check_screen.dart';
+import 'package:hotconut_wallet/screens/onboarding/start_screen.dart';
+import 'package:hotconut_wallet/widgets/deep_link_listener.dart';
+import 'package:hotconut_wallet/widgets/custom_loading_overlay.dart';
 import 'package:provider/provider.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/services/analytics_service.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 
 enum AppEntryFlow { splash, main, pinCheck }
 
-class CoconutWalletApp extends StatefulWidget {
+class HotconutWalletApp extends StatefulWidget {
   static late String kMempoolHost;
   static late String kFaucetHost;
   static late NetworkType kNetworkType;
-  static late bool kIsFirebaseAnalyticsUsed;
 
-  const CoconutWalletApp({super.key});
+  const HotconutWalletApp({super.key});
 
   @override
-  State<CoconutWalletApp> createState() => _CoconutWalletAppState();
+  State<HotconutWalletApp> createState() => _HotconutWalletAppState();
 }
 
-class _CoconutWalletAppState extends State<CoconutWalletApp> {
+class _HotconutWalletAppState extends State<HotconutWalletApp> {
   /// 0 = splash, 1 = main, 2 = pin check
   AppEntryFlow _appEntryFlow = AppEntryFlow.splash;
 
@@ -109,14 +107,6 @@ class _CoconutWalletAppState extends State<CoconutWalletApp> {
         ChangeNotifierProvider(create: (_) => FeatureSettingsProvider()),
 
         Provider.value(value: _realmManager),
-
-        Provider<AnalyticsService>(
-          create:
-              (context) => AnalyticsService(
-                CoconutWalletApp.kIsFirebaseAnalyticsUsed ? FirebaseAnalytics.instance : null,
-                !CoconutWalletApp.kIsFirebaseAnalyticsUsed,
-              ),
-        ),
 
         // Repository 등록 - Provider보다 먼저 등록해야 함
         Provider<AddressRepository>(create: (context) => AddressRepository(context.read<RealmManager>())),
@@ -174,11 +164,10 @@ class _CoconutWalletAppState extends State<CoconutWalletApp> {
               final walletProvider = context.read<WalletProvider>();
               return NodeProvider(
                 context.read<ElectrumServerProvider>().getElectrumServer(),
-                CoconutWalletApp.kNetworkType,
+                HotconutWalletApp.kNetworkType,
                 context.read<ConnectivityProvider>(),
                 walletProvider.walletLoadStateNotifier,
                 walletProvider.walletItemListNotifier,
-                CoconutWalletApp.kIsFirebaseAnalyticsUsed ? context.read<AnalyticsService>() : null,
               );
             },
           ),
@@ -196,11 +185,7 @@ class _CoconutWalletAppState extends State<CoconutWalletApp> {
                 }
                 return AppGuard(child: DeepLinkListener(navigatorKey: _navigatorKey, child: currentChild));
               },
-              navigatorObservers: [
-                routeObserver,
-                if (CoconutWalletApp.kIsFirebaseAnalyticsUsed)
-                  FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-              ],
+              navigatorObservers: [routeObserver],
               localizationsDelegates: const [
                 DefaultMaterialLocalizations.delegate,
                 DefaultWidgetsLocalizations.delegate,
@@ -257,8 +242,6 @@ class _CoconutWalletAppState extends State<CoconutWalletApp> {
                 '/wallet-list': (context) => const WalletListScreen(),
                 '/app-info': (context) => const AppInfoScreen(),
                 '/signed-psbt-scanner': (context) => const SignedPsbtScannerScreen(),
-                '/positive-feedback': (context) => const PositiveFeedbackScreen(),
-                '/negative-feedback': (context) => const NegativeFeedbackScreen(),
                 '/mnemonic-word-list': (context) => const Bip39ListScreen(),
                 '/coconut-crew': (context) => const CoconutCrewScreen(),
                 '/log-viewer': (context) => const LogViewerScreen(),
@@ -320,6 +303,11 @@ class _CoconutWalletAppState extends State<CoconutWalletApp> {
                       context,
                       (args) => UnsignedTransactionQrScreen(walletName: args['walletName']),
                     ),
+                '/hot-wallet-sign': (context) => const HotWalletSignScreen(),
+                '/hot-wallet-onboarding': (context) => const HotWalletOnboardingScreen(),
+                '/hot-wallet-export':
+                    (context) =>
+                        buildScreenWithArgs(context, (args) => MnemonicExportScreen(walletId: args['walletId'])),
                 '/send':
                     (context) => buildScreenWithArgs(
                       context,

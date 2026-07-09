@@ -22,32 +22,8 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0.0'
 }
 
-def getFlavor() {
-    def taskNames = gradle.startParameter.taskNames
-    if (taskNames.any { it.toLowerCase().contains("regtest")}) {
-        return "regtest"
-    } else if (taskNames.any { it.toLowerCase().contains("mainnet")}) {
-        return "mainnet"
-    }
-    throw new GradleException("❌ build flavor를 추론할 수 없습니다. taskNames: ${taskNames}")
-}
-def flavor = getFlavor()
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file("key_${flavor}.properties")
-if (keystorePropertiesFile.exists()) {
-    keystorePropertiesFile.withReader('UTF-8') { reader ->
-        keystoreProperties.load(reader)
-    }
-} else {
-    throw new GradleException("❌ keystore properties 파일이 존재하지 않습니다: ${keystorePropertiesFile}")
-}
-
-if (flavor == "mainnet" && file("src/mainnet/google-services.json").exists()) {
-    apply plugin: 'com.google.gms.google-services'
-}
-
 android {
-    namespace "onl.coconut.wallet"
+    namespace "app.hotconut.wallet"
     compileSdk 36
     ndkVersion flutter.ndkVersion
 
@@ -65,25 +41,16 @@ android {
     }
 
     defaultConfig {
-        applicationId "onl.coconut.wallet"
+        applicationId "app.hotconut.wallet"
         minSdkVersion 23
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-    }
-
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

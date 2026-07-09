@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-//import 'package:coconut_wallet/packages/bc-ur-dart/lib/cbor_lite.dart';
-//import 'package:coconut_wallet/packages/bc-ur-dart/lib/ur.dart';
-//import 'package:coconut_wallet/packages/bc-ur-dart/lib/ur_encoder.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/type_converter_utils.dart';
+//import 'package:hotconut_wallet/packages/bc-ur-dart/lib/cbor_lite.dart';
+//import 'package:hotconut_wallet/packages/bc-ur-dart/lib/ur.dart';
+//import 'package:hotconut_wallet/packages/bc-ur-dart/lib/ur_encoder.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/type_converter_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cbor/cbor.dart';
 import 'package:ur/ur_decoder.dart';

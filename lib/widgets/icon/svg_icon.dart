@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:coconut_wallet/utils/colors_util.dart';
-import 'package:coconut_wallet/utils/icons_util.dart';
+import 'package:hotconut_wallet/utils/colors_util.dart';
+import 'package:hotconut_wallet/utils/icons_util.dart';
 
 class SvgIcon extends StatelessWidget {
   final int index;

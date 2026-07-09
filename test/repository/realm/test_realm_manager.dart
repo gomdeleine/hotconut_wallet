@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/realm_manager.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/realm_manager.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:realm/realm.dart';
 

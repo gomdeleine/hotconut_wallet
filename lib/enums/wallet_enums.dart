@@ -1,6 +1,6 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/icon_path.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/constants/icon_path.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 
 enum WalletType {
   singleSignature,
@@ -33,7 +33,17 @@ enum WalletSyncResult {
 
 enum WalletLoadState { never, loadingFromDB, loadCompleted }
 
-enum WalletImportSource { coconutVault, keystone, jade, seedSigner, coldCard, krux, extendedPublicKey, descriptor }
+enum WalletImportSource {
+  coconutVault,
+  keystone,
+  jade,
+  seedSigner,
+  coldCard,
+  krux,
+  extendedPublicKey,
+  descriptor,
+  hotWallet,
+}
 
 extension WalletImportSourceExtension on WalletImportSource {
   String get displayName {
@@ -53,6 +63,8 @@ extension WalletImportSourceExtension on WalletImportSource {
       case WalletImportSource.extendedPublicKey:
       case WalletImportSource.descriptor:
         return t.wallet_add_scanner_screen.self;
+      case WalletImportSource.hotWallet:
+        return t.wallet_add_scanner_screen.hot_wallet;
     }
   }
 
@@ -88,6 +100,8 @@ extension WalletImportSourceExtension on WalletImportSource {
       case WalletImportSource.extendedPublicKey:
       case WalletImportSource.descriptor:
         return kZpubIconPath;
+      case WalletImportSource.hotWallet:
+        return kHotWalletIconPath;
     }
   }
 }

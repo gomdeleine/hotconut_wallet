@@ -1,6 +1,6 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 
 String getNextThirdPartyWalletName(WalletImportSource walletImportSource, List<String> walletNames) {
   assert(walletImportSource != WalletImportSource.coconutVault);
@@ -52,5 +52,7 @@ String _getThirdPartyDefaultName(WalletImportSource walletImportSource) {
           : t.third_party.extended_public_keys.vpub;
     case WalletImportSource.coconutVault:
       throw 'Coconut Vault is not third party';
+    case WalletImportSource.hotWallet:
+      return t.hot_wallet.title;
   }
 }

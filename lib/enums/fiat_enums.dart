@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:coconut_wallet/extensions/int_extensions.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/extensions/int_extensions.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 
 import '../utils/balance_format_util.dart';
 

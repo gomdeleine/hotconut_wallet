@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
-import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/providers/utxo_tag_provider.dart';
 import 'package:flutter/material.dart';
 
 class UtxoTagCrudViewModel extends ChangeNotifier {

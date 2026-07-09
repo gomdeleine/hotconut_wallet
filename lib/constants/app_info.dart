@@ -2,7 +2,4 @@
 
 /// TODO: release date 기록
 const RELEASE_DATE = '2026.06.18';
-const COPYRIGHT_TEXT = '© 2025 Nonce Lab. Inc. in S.Korea.\nLicensed under the MIT License with Commons Clause.';
-
-/// AppStore App ID (iOS)
-const APPSTORE_ID_REGTEST = '6654902298';
+const COPYRIGHT_TEXT = '© 2026 Hotconut Wallet.\nLicensed under the MIT License with Commons Clause.';

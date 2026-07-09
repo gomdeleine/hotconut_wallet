@@ -1,13 +1,13 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/extensions/widget_animation_extensions.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/bottom_sheet/selectable_list_bottom_sheet.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
-import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
+import 'package:hotconut_wallet/extensions/widget_animation_extensions.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/bottom_sheet/selectable_list_bottom_sheet.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/widgets/button/shrink_animation_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:coconut_wallet/styles.dart';
+import 'package:hotconut_wallet/styles.dart';
 
 class CommonBottomSheets {
   static Future<T?> showBottomSheet<T>({

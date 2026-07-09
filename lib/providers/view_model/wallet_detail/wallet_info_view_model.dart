@@ -1,23 +1,23 @@
 import 'dart:async';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/core/bip/129/signer_bsms.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/node/wallet_update_info.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/auth_provider.dart';
-import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
-import 'package:coconut_wallet/services/wallet_add_service.dart';
-import 'package:coconut_wallet/widgets/card/taproot_participant_card.dart';
+import 'package:hotconut_wallet/core/bip/129/signer_bsms.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/node/wallet_update_info.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/auth_provider.dart';
+import 'package:hotconut_wallet/providers/node_provider/node_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
+import 'package:hotconut_wallet/services/wallet_add_service.dart';
+import 'package:hotconut_wallet/widgets/card/taproot_participant_card.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -100,6 +100,8 @@ class WalletInfoViewModel extends ChangeNotifier {
       _walletItemBase is SinglesigWalletListItem &&
       (_walletItemBase.walletBase as SingleSignatureWallet).keyStore.masterFingerprint ==
           WalletAddService.masterFingerprintPlaceholder;
+
+  bool get isHotWallet => _walletItemBase.walletImportSource == WalletImportSource.hotWallet;
 
   int get transactionCount => _walletProvider.getTransactionRecordList(_walletId).length;
   int get utxoCount => _walletProvider.getUtxoList(_walletId).length;

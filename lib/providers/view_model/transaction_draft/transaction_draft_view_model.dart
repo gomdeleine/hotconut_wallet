@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/model/wallet/transaction_draft.dart';
-import 'package:coconut_wallet/repository/realm/transaction_draft_repository.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_draft.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_draft_repository.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 import 'package:flutter/material.dart';
 
 class TransactionDraftViewModel extends ChangeNotifier {

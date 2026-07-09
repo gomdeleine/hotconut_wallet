@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/utils/hash_util.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/utils/hash_util.dart';
 import 'package:realm/realm.dart';
 
 int getLastId(Realm realm, String key) {

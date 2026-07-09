@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:coconut_wallet/constants/shared_pref_keys.dart';
+import 'package:hotconut_wallet/constants/shared_pref_keys.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:coconut_wallet/model/faucet/faucet_history.dart';
-import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
+import 'package:hotconut_wallet/model/faucet/faucet_history.dart';
+import 'package:hotconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:mockito/mockito.dart';

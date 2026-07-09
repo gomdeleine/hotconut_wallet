@@ -1,9 +1,9 @@
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/bb_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/bc_ur_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/descriptor_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/extended_pub_key_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/i_fragmented_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/i_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/bb_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/bc_ur_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/descriptor_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/extended_pub_key_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/i_fragmented_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/i_qr_scan_data_handler.dart';
 
 /// TODO: 0.8.0 배포 시 SeedSigner 추가 기능에 영향을 주고 싶지 않아서 별도로 구현
 /// TODO: 추가 테스트 완료 후 wallet_add_scanner_screen.dart에 적용 필요

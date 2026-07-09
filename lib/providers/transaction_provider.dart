@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/repository/realm/transaction_repository.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_repository.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:flutter/cupertino.dart';
 
 class TransactionProvider extends ChangeNotifier {

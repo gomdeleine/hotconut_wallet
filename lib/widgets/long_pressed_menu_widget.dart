@@ -3,8 +3,8 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/button/shrink_animation_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

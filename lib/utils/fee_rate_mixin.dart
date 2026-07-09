@@ -1,8 +1,8 @@
-import 'package:coconut_wallet/enums/transaction_enums.dart';
-import 'package:coconut_wallet/model/send/fee_info.dart';
-import 'package:coconut_wallet/services/fee_service.dart';
-import 'package:coconut_wallet/config/number_format_config.dart';
-import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
+import 'package:hotconut_wallet/enums/transaction_enums.dart';
+import 'package:hotconut_wallet/model/send/fee_info.dart';
+import 'package:hotconut_wallet/services/fee_service.dart';
+import 'package:hotconut_wallet/config/number_format_config.dart';
+import 'package:hotconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:flutter/foundation.dart';
 
 enum RecommendedFeeFetchStatus { fetching, succeed, failed }

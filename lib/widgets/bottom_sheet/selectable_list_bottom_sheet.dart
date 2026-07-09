@@ -1,6 +1,6 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
 import 'package:flutter/material.dart';
 
 typedef SelectableItemBuilder<T> = Widget Function(BuildContext context, T item, bool isSelected, VoidCallback? onTap);

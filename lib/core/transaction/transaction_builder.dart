@@ -1,16 +1,16 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/dust_constants.dart';
-import 'package:coconut_wallet/core/transaction/utxo_selector.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/extensions/transaction_extension.dart';
-import 'package:coconut_wallet/model/taproot_script_path_config.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/utils/coconut_lib_exception_parser.dart';
-import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
-import 'package:coconut_wallet/utils/fee_rate_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/dust_constants.dart';
+import 'package:hotconut_wallet/core/transaction/utxo_selector.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/extensions/transaction_extension.dart';
+import 'package:hotconut_wallet/model/taproot_script_path_config.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/utils/coconut_lib_exception_parser.dart';
+import 'package:hotconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
+import 'package:hotconut_wallet/utils/fee_rate_util.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 class TransactionBuildResult {
   final Transaction? transaction;

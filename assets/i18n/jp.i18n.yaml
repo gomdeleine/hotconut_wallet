@@ -7,6 +7,7 @@
 coconut_wallet: "coconut_wallet"
 coconut_vault: "coconut_vault"
 coconut_lib: "coconut_lib"
+hotconut_wallet: "hotconut_wallet"
 
 bitcoin_name: "Bitcoin"
 wallet: "ウォレット"
@@ -73,7 +74,7 @@ app_info: "アプリ情報"
 update_failed: "更新失敗"
 calculation_failed: "計算失敗"
 contact_email: "hello@noncelab.com"
-email_subject: "[Coconut Wallet] お問い合わせ"
+email_subject: "[Hotconut Wallet] お問い合わせ"
 amount: "金額"
 send_amount: "金額"
 fetch_fee_failed: "手数料取得失敗"
@@ -218,7 +219,7 @@ pin_check_screen:
   text: "パスワードを入力してください"
 
 # lib/screens/home
-wallet_home_screen: 
+wallet_home_screen:
   view_all_wallets: "マイウォレット一覧"
   edit_home_screen: "ホーム画面を編集"
   edit:
@@ -238,7 +239,7 @@ wallet_home_screen:
       wallet_list: "ウォレット\n一覧"
       recent_transactions: "最近の\n取引 (24時間)"
       analysis: "分析"
-    alert: 
+    alert:
       empty_fake_balance: "フェイク残高を入力"
       empty_fake_balance_description: "金額が設定されていません。\nもう一度入力するか、0 BTCに設定しますか？"
       set_to_0: "0 BTCに設定"
@@ -274,6 +275,7 @@ wallet_add_scanner_screen:
   seed_signer: "SeedSigner"
   cold_card: "Coldcard"
   krux: "Krux"
+  hot_wallet: "ホットウォレット"
   self: "ウォレット情報を入力"
   self_description: "他のアプリの情報でウォレットを追加できます。"
   select: "選択"
@@ -358,7 +360,7 @@ wallet_add_scanner_screen:
     mfp_input_placeholder: "マスターフィンガープリントの例: f75f7ab5"
     mfp_skip: "スキップ"
     back_scan: "QRスキャンに戻る"
-  
+
 # lib/screens/wallet_list
 wallet_list:
   wallet_count: "$count 項目"
@@ -487,7 +489,7 @@ send_confirm_screen:
 signed_psbt_scanner_screen:
   title: "署名済みトランザクションをスキャン"
   bbqr_mode_switching: "BBQRモードに切り替え中。\nしばらくお待ちください。"
-  
+
 unsigned_tx_qr_screen:
   hardware_wallet_screen_guide: "ガイド"
   guide_keystone:
@@ -542,14 +544,14 @@ app_info_screen:
   ask_to_discord: "Discordチャンネルで質問"
   ask_to_x: "Xで質問"
   ask_to_email: "メールで質問"
-  category2_opensource: "Coconut Walletはオープンソースです"
+  category2_opensource: "Hotconut Walletはオープンソースです"
   contribution: "オープンソース開発に参加"
   tos_and_policy: "利用規約とポリシー"
   terms_of_service: "利用規約"
   privacy_policy: "プライバシーポリシー"
   license: "オープンソースライセンス"
   data_collection: "データ収集通知"
-  version_and_date: "CoconutWallet ver. $version (リリース日: $releasedAt)"
+  version_and_date: "HotconutWallet ver. $version (リリース日: $releasedAt)"
   inquiry: "お問い合わせ内容"
 bip39_list_screen:
   result: "'$text'の検索結果"
@@ -569,7 +571,7 @@ settings_screen:
   utxo_manual_selection: "UTXO 数手動選択"
   utxo_manual_selection_description: "送金に使用するUTXOを手動で選択します"
   utxo_tier_theme: "コインの色"
-  electrum_server: 
+  electrum_server:
     server_address: "サーバーアドレス"
     port: "ポート"
     use_ssl: "SSLを使用"
@@ -581,7 +583,7 @@ settings_screen:
     error_msg:
       invalid_domain_format: "有効なドメインフォーマットではありません"
       port_out_of_range: "有効なポート番号（1-65535）を入力してください"
-    alert: 
+    alert:
       connection_failed: "接続できません！"
       connecting: "接続中..."
       connected: "接続済み"
@@ -606,7 +608,7 @@ settings_screen:
     log_target_description_2: "ブロードキャスト失敗段階の原因をログします。"
     clear_log: "ログをクリア"
     clear_log_description: "ログをクリアしてもよろしいですか？"
-    email_subject: "[Coconut Wallet] デバッグログ"
+    email_subject: "[Hotconut Wallet] デバッグログ"
     email_body: "状況: （問題が発生した状況を簡潔に説明してください）"
     email_error_msg: "メールアプリを開けません。ログをコピーしてDiscordチャンネルに投稿してください。"
     buttons:
@@ -624,7 +626,7 @@ address_list_screen:
   set_amount: "金額設定"
   share: "共有する"
   enter_receive_amount: "受け取る金額を入力"
-  
+
 utxo_overview_screen:
   by_amount: "金額別"
   by_tag: "タグ別"
@@ -876,7 +878,7 @@ split_utxo_screen:
 
 # lib/widgets/card
 wallet_list_add_guide_card:
-  add_watch_only: "ウォッチオンリーウォレットを\n追加してみてください！"
+  add_watch_only: "ウォレットを\n追加してみてください！"
 wallet_list_glossary_shortcut_card:
   any_word_you_dont_know: "知らない用語はありませんか？"
   top_right: "右上の"
@@ -893,8 +895,8 @@ faucet_request_bottom_sheet:
   request_amount: "$bitcoin BTCをリクエスト"
 license_bottom_sheet:
   title: "ライセンス情報"
-  coconut_wallet: "Coconut Wallet"
-  copyright_text1: "Coconut WalletはMITライセンスに従い、著作権は大韓民国のNonceLab Inc.に帰属します。完全なMITライセンステキストは"
+  coconut_wallet: "Hotconut Wallet"
+  copyright_text1: "Hotconut WalletはMITライセンスに従い、著作権は大韓民国のNonceLab Inc.に帰属します。完全なMITライセンステキストは"
   copyright_text2: "で確認できます。\n\nこのアプリケーションに含まれるサードパーティソフトウェアの著作権は以下の通りです。これについてご質問がある場合は、"
   copyright_text3: "までお問い合わせください。"
   email_subject: "[Wallet] ライセンスお問い合わせ"
@@ -924,7 +926,7 @@ glossary_bottom_sheet:
   related: "関連用語"
 user_experience_survey_bottom_sheet:
   text1: "ビットコイン送金を完了しました👍"
-  text2: "Coconut Walletは役に立ちましたか？"
+  text2: "Hotconut Walletは役に立ちましたか？"
   text3: "はい、良かったです！"
   text4: "まあまあです"
 unit_bottom_sheet:
@@ -996,7 +998,7 @@ tooltip:
   wallet_add2: "Vault"
   wallet_add3: "使用したいウォレットを"
   wallet_add4: "エクスポート"
-  wallet_add5: "で選択し、画面に表示されるQRコードをスキャンしてください。" 
+  wallet_add5: "で選択し、画面に表示されるQRコードをスキャンしてください。"
   amount_to_be_sent: "受信したビットコインのみ送信可能。\n受信中金額: $bitcoin $unit"
   scan_signed_psbt:
     guide: "${by_hardware_wallet}での署名が完了しましたか？\n${hardware_wallet}画面のQRコードをスキャンしてください。"
@@ -1135,9 +1137,9 @@ language_bottom_sheet:
   spanish: "Español"
 
 estimated_fee_bottom_sheet:
-    title: "予想手数料"
-    estimated_fee: "予想手数料"
-    fee_rate: "手数料率"
+  title: "予想手数料"
+  estimated_fee: "予想手数料"
+  fee_rate: "手数料率"
 
 long_pressed_menu:
   hide: "非表示"
@@ -1164,3 +1166,58 @@ taproot:
   setup_summary_card:
     signer_configuration: "署名構成"
     inheritance_condition: "相続条件"
+
+hot_wallet:
+  title: "ホットウォレット"
+  onboarding_title: "ホットウォレット作成"
+  onboarding_description: "ニーモニックをこの端末に暗号化保存し、アプリ内で署名します。オフライン署名機より安全性は低いため、少額でテストしてください。"
+  pin_required_title: "PINの設定が必要です"
+  pin_required_description: "ホットウォレットはニーモニックをこの端末に暗号化して保存します。作成前にPINを設定してください。"
+  set_pin: "PINを設定"
+  pin_disable_blocked_title: "PINを解除できません"
+  pin_disable_blocked_description: "ホットウォレットがある間はPINを解除できません。PINを変更する場合は「パスワードを変更」を使用してください。PINを解除するには、先にホットウォレットを削除してください。"
+  create_hot_wallet: "ホットウォレット作成"
+  create_new: "新しいニーモニックを生成"
+  import_existing: "ニーモニックをインポート"
+  generate_title: "ニーモニック生成"
+  generate_description: "以下の24語を安全な場所にバックアップしてください。この画面の撮影・キャプチャは禁止です。"
+  generate_description_12: "以下の12語を安全な場所にバックアップしてください。この画面の撮影・キャプチャは禁止です。"
+  generate_description_24: "以下の24語を安全な場所にバックアップしてください。この画面の撮影・キャプチャは禁止です。"
+  mnemonic_length_12: "12語"
+  mnemonic_length_24: "24語"
+  regenerate_mnemonic: "再生成"
+  regenerate_confirm_title: "ニーモニックを再生成しますか？"
+  regenerate_confirm_description: "現在のニーモニックは使用できなくなります。すでにバックアップした場合は、新しいニーモニックを安全に保管してください。"
+  copy_mnemonic: "すべてコピー"
+  copy_mnemonic_warning: "ニーモニックをクリップボードにコピーすると、他のアプリからアクセスされる可能性があります。コピー後はクリップボードを消去し、他人と共有しないでください。"
+  copy_mnemonic_success: "ニーモニックをコピーしました。"
+  skip_backup: "後でバックアップ"
+  skip_backup_warning: "バックアップ確認をスキップすると、ニーモニックを紛失した場合に復元できません。後でウォレット情報から確認できます。"
+  scan_mnemonic_qr: "QRでスキャン"
+  scan_mnemonic_qr_title: "ニーモニックQRスキャン"
+  import_title: "ニーモニックインポート"
+  import_placeholder: "ニーモニックをスペース区切りで入力"
+  passphrase_label: "パスフレーズ（任意）"
+  passphrase_placeholder: "BIP39パスフレーズ"
+  backup_title: "バックアップ確認"
+  backup_description: "ニーモニックを安全にバックアップしたか確認します。"
+  backup_quiz_title: "バックアップ確認クイズ"
+  backup_quiz_prompt: "${position}番目の単語は？"
+  backup_quiz_failed: "不正解です。もう一度お試しください。"
+  wallet_name_label: "ウォレット名"
+  wallet_name_placeholder: "ホットウォレット"
+  export_title: "ニーモニック表示"
+  export_warning: "ニーモニックを他人と共有しないでください。画面の撮影・キャプチャは禁止です。"
+  sign_title: "署名"
+  sign_description: "PINを入力してトランザクションに署名します。"
+  sign_passphrase_title: "パスフレーズ入力"
+  sign_passphrase_description: "BIP39パスフレーズを入力して署名を完了してください。アプリに保存されず、署名のたびに入力が必要です。"
+  sign_failed: "署名に失敗しました。PINを確認してください。"
+  passphrase_incorrect: "パスフレーズが正しくありません。"
+  passphrase_failed_attempts: "連続失敗 ${count}回"
+  passphrase_wallet_notice: "このウォレットはBIP39パスフレーズを使用します。アプリに保存されず、署名のたびに入力が必要です。"
+  export_passphrase_notice: "BIP39パスフレーズは表示されません。ニーモニックと分けて安全に保管してください。"
+  invalid_mnemonic: "無効なニーモニックです。"
+  badge: "Hot"
+  view_mnemonic: "ニーモニック表示"
+  hot_wallet_description: "この端末で直接署名するウォレットです。"

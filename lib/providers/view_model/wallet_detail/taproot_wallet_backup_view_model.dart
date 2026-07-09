@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
 import 'package:flutter/material.dart';
 
 class TaprootWalletBackupViewModel extends ChangeNotifier {

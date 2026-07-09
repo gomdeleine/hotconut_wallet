@@ -1,12 +1,12 @@
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/auth_provider.dart';
-import 'package:coconut_wallet/utils/hash_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/auth_provider.dart';
+import 'package:hotconut_wallet/services/hot_wallet/hot_wallet_key_service.dart';
+import 'package:hotconut_wallet/utils/hash_util.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/animated_dialog.dart';
-import 'package:coconut_wallet/widgets/pin/pin_input_pad.dart';
-import 'package:coconut_wallet/widgets/pin/pin_length_toggle_button.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/animated_dialog.dart';
+import 'package:hotconut_wallet/widgets/pin/pin_input_pad.dart';
+import 'package:hotconut_wallet/widgets/pin/pin_length_toggle_button.dart';
 import 'package:provider/provider.dart';
 
 class PinSettingScreen extends StatefulWidget {
@@ -25,6 +25,10 @@ class _PinSettingScreenState extends State<PinSettingScreen> {
   late int _pinLength;
   late List<String> _shuffledPinNumbers;
   late AuthProvider _authProvider;
+  late bool _isChangingPin;
+  String _oldPin = '';
+
+  int get _confirmStep => _isChangingPin ? 2 : 1;
 
   @override
   void initState() {
@@ -33,6 +37,7 @@ class _PinSettingScreenState extends State<PinSettingScreen> {
     pinConfirm = '';
     errorMessage = '';
     _authProvider = Provider.of<AuthProvider>(context, listen: false);
+    _isChangingPin = _authProvider.isSetPin;
     _pinLength = _authProvider.pinLength == 0 ? 4 : _authProvider.pinLength;
     _shuffledPinNumbers = _authProvider.getShuffledNumberPad(isSettings: true);
   }
@@ -74,11 +79,6 @@ class _PinSettingScreenState extends State<PinSettingScreen> {
     );
   }
 
-  Future<bool> _comparePin(String input) async {
-    bool isSamePin = await _authProvider.verifyPin(input);
-    return isSamePin;
-  }
-
   void returnToBackSequence(String message, {bool isError = false, bool firstSequence = false}) {
     setState(() {
       errorMessage = message;
@@ -87,6 +87,7 @@ class _PinSettingScreenState extends State<PinSettingScreen> {
       if (firstSequence) {
         step = 0;
         pin = '';
+        _oldPin = '';
       }
     });
     if (isError) {
@@ -97,43 +98,80 @@ class _PinSettingScreenState extends State<PinSettingScreen> {
     vibrateLightDouble();
   }
 
+  Future<void> _onOldPinComplete() async {
+    try {
+      final isValid = await _authProvider.verifyPin(pin);
+      if (!isValid) {
+        returnToBackSequence(t.errors.pin_check_error.incorrect, isError: true, firstSequence: true);
+        return;
+      }
+
+      setState(() {
+        _oldPin = pin;
+        pin = '';
+        step = 1;
+        errorMessage = '';
+        _shufflePinNumbers();
+      });
+    } catch (_) {
+      returnToBackSequence(t.errors.pin_setting_error.process_failed, isError: true);
+    }
+  }
+
+  Future<void> _onNewPinComplete() async {
+    if (_isChangingPin && pin == _oldPin) {
+      returnToBackSequence(t.errors.pin_setting_error.already_in_use, firstSequence: true);
+      return;
+    }
+
+    setState(() {
+      step = _confirmStep;
+      errorMessage = '';
+      pinConfirm = '';
+      _shufflePinNumbers();
+    });
+  }
+
+  Future<void> _onConfirmComplete() async {
+    if (pinConfirm != pin) {
+      returnToBackSequence(t.errors.pin_setting_error.incorrect, isError: true, firstSequence: true);
+      return;
+    }
+
+    try {
+      if (_isChangingPin) {
+        await HotWalletKeyService().changeSecret(oldSecret: _oldPin, newSecret: pin);
+      }
+
+      final hashedPin = generateHashString(pin);
+      await _authProvider.savePinSet(hashedPin, pin.length);
+
+      if (widget.useBiometrics && _authProvider.canCheckBiometrics) {
+        await _authProvider.authenticateWithBiometrics(isSave: true);
+        await _authProvider.checkDeviceBiometrics();
+      }
+
+      if (_authProvider.isSetBiometrics) {
+        await _authProvider.enableHotWalletBiometricFastPath(pin);
+      }
+
+      vibrateLight();
+      await _showPinSetSuccessLottie();
+
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
+    } catch (_) {
+      returnToBackSequence(t.errors.pin_setting_error.save_failed, isError: true, firstSequence: true);
+    }
+  }
+
   void _onKeyTap(String value) async {
     setState(() {
       errorMessage = '';
     });
 
-    if (step == 0) {
-      if (value == '<') {
-        if (pin.isNotEmpty) {
-          setState(() => pin = pin.substring(0, pin.length - 1));
-        }
-      } else if (pin.length < _pinLength) {
-        setState(() => pin += value);
-        vibrateExtraLight();
-      }
-
-      if (_authProvider.isSetPin && pin.length == _pinLength) {
-        try {
-          bool isSameAsOldPin = await _comparePin(pin);
-
-          if (isSameAsOldPin) {
-            returnToBackSequence(t.errors.pin_setting_error.already_in_use, firstSequence: true);
-            return;
-          }
-        } catch (error) {
-          returnToBackSequence(t.errors.pin_setting_error.process_failed, isError: true);
-          return;
-        }
-      }
-
-      setState(() {
-        if (pin.length == _pinLength) {
-          step = 1;
-          errorMessage = '';
-          _shufflePinNumbers();
-        }
-      });
-    } else if (step == 1) {
+    if (step == _confirmStep) {
       if (value == '<') {
         if (pinConfirm.isNotEmpty) {
           setState(() => pinConfirm = pinConfirm.substring(0, pinConfirm.length - 1));
@@ -144,41 +182,49 @@ class _PinSettingScreenState extends State<PinSettingScreen> {
       }
 
       if (pinConfirm.length == pin.length) {
-        if (pinConfirm != pin) {
-          returnToBackSequence(t.errors.pin_setting_error.incorrect, isError: true, firstSequence: true);
-          return;
-        }
-
-        try {
-          var hashedPin = generateHashString(pin);
-          Logger.log('hashedPin: $hashedPin');
-          await _authProvider.savePinSet(hashedPin, pin.length);
-
-          if (widget.useBiometrics && _authProvider.canCheckBiometrics) {
-            await _authProvider.authenticateWithBiometrics(isSave: true);
-            await _authProvider.checkDeviceBiometrics();
-          }
-
-          vibrateLight();
-          await _showPinSetSuccessLottie();
-
-          if (mounted) {
-            Navigator.pop(context); // Close success dialog
-            Navigator.pop(context); // Close PIN setting screen
-          }
-        } catch (e) {
-          returnToBackSequence(t.errors.pin_setting_error.save_failed, isError: true, firstSequence: true);
-        }
+        await _onConfirmComplete();
       }
+      return;
     }
+
+    if (value == '<') {
+      if (pin.isNotEmpty) {
+        setState(() => pin = pin.substring(0, pin.length - 1));
+      }
+      return;
+    }
+
+    if (pin.length < _pinLength) {
+      setState(() => pin += value);
+      vibrateExtraLight();
+    }
+
+    if (pin.length != _pinLength) {
+      return;
+    }
+
+    if (_isChangingPin && step == 0) {
+      await _onOldPinComplete();
+      return;
+    }
+
+    await _onNewPinComplete();
+  }
+
+  String _titleForStep() {
+    if (_isChangingPin && step == 0) {
+      return t.pin_check_screen.text;
+    }
+    if (step == _confirmStep) {
+      return t.pin_setting_screen.enter_again;
+    }
+    return t.pin_setting_screen.new_password;
   }
 
   @override
   Widget build(BuildContext context) {
-    String title = step == 0 ? t.pin_setting_screen.new_password : t.pin_setting_screen.enter_again;
-
     Widget? centerWidget;
-    if (step == 0) {
+    if (!_isChangingPin && step == 0) {
       centerWidget = PinLengthToggleButton(
         currentPinLength: _pinLength,
         onToggle: () {
@@ -192,20 +238,23 @@ class _PinSettingScreenState extends State<PinSettingScreen> {
 
     return Scaffold(
       body: PinInputPad(
-        title: title,
-        pin: step == 0 ? pin : pinConfirm,
+        title: _titleForStep(),
+        pin: step == _confirmStep ? pinConfirm : pin,
         errorMessage: errorMessage,
         onKeyTap: _onKeyTap,
         pinShuffleNumbers: _shuffledPinNumbers,
         onClosePressed: () => Navigator.pop(context),
-        onBackPressed: () {
-          setState(() {
-            step = 0;
-            pin = '';
-            pinConfirm = '';
-            errorMessage = '';
-          });
-        },
+        onBackPressed:
+            step > 0
+                ? () {
+                  setState(() {
+                    step -= 1;
+                    pin = step == 0 ? '' : pin;
+                    pinConfirm = '';
+                    errorMessage = '';
+                  });
+                }
+                : null,
         step: step,
         pinLength: _pinLength,
         appBarVisible: true,

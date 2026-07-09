@@ -1,9 +1,9 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
-import 'package:coconut_wallet/core/transaction/transaction_builder.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
+import 'package:hotconut_wallet/core/transaction/transaction_builder.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../mock/wallet_mock.dart';

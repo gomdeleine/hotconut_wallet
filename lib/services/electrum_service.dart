@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/network_constants.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/providers/node_provider/transaction/mempool_api_service.dart';
-import 'package:coconut_wallet/services/model/response/block_header.dart';
-import 'package:coconut_wallet/services/model/response/block_timestamp.dart';
-import 'package:coconut_wallet/services/model/response/electrum_response_types.dart';
-import 'package:coconut_wallet/services/network/socket/socket_manager.dart';
-import 'package:coconut_wallet/utils/electrum_utils.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/transaction_util.dart';
+import 'package:hotconut_wallet/constants/network_constants.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/providers/node_provider/transaction/mempool_api_service.dart';
+import 'package:hotconut_wallet/services/model/response/block_header.dart';
+import 'package:hotconut_wallet/services/model/response/block_timestamp.dart';
+import 'package:hotconut_wallet/services/model/response/electrum_response_types.dart';
+import 'package:hotconut_wallet/services/network/socket/socket_manager.dart';
+import 'package:hotconut_wallet/utils/electrum_utils.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/transaction_util.dart';
 
 part 'model/request/electrum_request_types.dart';
 

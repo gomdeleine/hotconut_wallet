@@ -146,7 +146,6 @@ wallet_lib
 coconut_lib
 coconut_lib_internal
 
-*.env
 key.properties
 
 # FVM Version Cache
@@ -171,8 +170,4 @@ default.realm.management
 features/*
 .metadata
 
-# Google Services
-GoogleService-Info.plist
-google-services.json
-firebase.json
-coconut-fastlane-supply.json
+docs/

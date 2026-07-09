@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/services/model/request/faucet_request.dart';
-import 'package:coconut_wallet/services/dio_client.dart';
-import 'package:coconut_wallet/services/model/response/faucet_status_response.dart';
+import 'package:hotconut_wallet/services/model/request/faucet_request.dart';
+import 'package:hotconut_wallet/services/dio_client.dart';
+import 'package:hotconut_wallet/services/model/response/faucet_status_response.dart';
 
 class Faucet {
   final DioClient _dio = DioClient();

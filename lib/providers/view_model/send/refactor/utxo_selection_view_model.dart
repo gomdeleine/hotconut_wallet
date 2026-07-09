@@ -1,15 +1,15 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/transaction_enums.dart';
-import 'package:coconut_wallet/enums/utxo_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/send/fee_info.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/price_provider.dart';
-import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/enums/transaction_enums.dart';
+import 'package:hotconut_wallet/enums/utxo_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/send/fee_info.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/price_provider.dart';
+import 'package:hotconut_wallet/providers/utxo_tag_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:flutter/material.dart';
 
 class UtxoSelectionViewModel extends ChangeNotifier {

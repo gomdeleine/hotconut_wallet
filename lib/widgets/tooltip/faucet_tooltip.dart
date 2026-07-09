@@ -1,5 +1,5 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/widgets/bubble_clipper.dart';
+import 'package:hotconut_wallet/widgets/bubble_clipper.dart';
 import 'package:flutter/cupertino.dart';
 
 class FaucetTooltip extends StatefulWidget {

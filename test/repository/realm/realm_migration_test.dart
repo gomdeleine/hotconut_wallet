@@ -1,9 +1,9 @@
-import 'package:coconut_wallet/constants/realm_constants.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/realm_constants.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:realm/realm.dart';
-import 'package:coconut_wallet/repository/realm/migration/migration.dart';
+import 'package:hotconut_wallet/repository/realm/migration/migration.dart';
 import 'dart:io';
 
 import '../../mock/realm/realm_wallet_base_mock.dart';

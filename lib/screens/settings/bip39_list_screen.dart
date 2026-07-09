@@ -1,9 +1,9 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:coconut_wallet/styles.dart';
+import 'package:hotconut_wallet/styles.dart';
 
 /// 공통 스타일
 const _defaultTextStyle = TextStyle(color: CoconutColors.white);

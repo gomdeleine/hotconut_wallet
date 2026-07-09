@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:coconut_wallet/extensions/double_extensions.dart';
+import 'package:hotconut_wallet/extensions/double_extensions.dart';
 
 void main() {
   group('DoubleFormatting', () {

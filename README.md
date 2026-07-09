@@ -1,94 +1,56 @@
-# Coconut Wallet
+# Hotconut
 
-[![GitHub tag](https://img.shields.io/badge/dynamic/yaml.svg?url=https://raw.githubusercontent.com/noncelab/coconut_wallet/main/pubspec.yaml&query=$.version&label=Version)](https://github.com/noncelab/coconut_wallet)
-[![License](https://img.shields.io/badge/License-X11-green.svg)](https://github.com/noncelab/coconut_wallet/blob/main/LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.29-blue?logo=flutter)](https://flutter.dev)
-[![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android-lightgrey)](https://github.com/noncelab/coconut_wallet)
+[![License](https://img.shields.io/badge/License-X11-green.svg)](https://github.com/gomdeleine/hotconut_wallet/blob/main/LICENSE)
 
 <p align="center">
-  <img src="./assets/readme/wallet.png" alt="Coconut Wallet Logo" width="96"/>
+  <img src="./assets/readme/wallet.png" alt="Hotconut Logo" width="96"/>
 </p>
 
 <p align="center">
-  <a href="https://apps.apple.com/kr/app/%EC%BD%94%EC%BD%94%EB%84%9B-%EC%9B%94%EB%A0%9B-%EB%B9%84%ED%8A%B8%EC%BD%94%EC%9D%B8-%EC%A7%80%EA%B0%91/id6745778545"><img src="./assets/readme/app-store-badge.png" alt="App Store" height="40"/></a>&nbsp;&nbsp;
-  <a href="https://play.google.com/store/apps/details?id=onl.coconut.wallet"><img src="./assets/readme/google-play-badge.png" alt="Google Play" height="40"/></a>
+  A personal fork of a watch-only Bitcoin wallet — build and use at your own risk
 </p>
 
-<p align="center">
-  <a href="https://apps.apple.com/kr/app/%EC%BD%94%EC%BD%94%EB%84%9B-%EC%9B%94%EB%A0%9B-%EB%B9%84%ED%8A%B8%EC%BD%94%EC%9D%B8-%EC%A7%80%EA%B0%91/id6745778545">Download iOS App</a>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="https://play.google.com/store/apps/details?id=onl.coconut.wallet">Download Android App</a>
-</p>
+## Important Notice
 
-<p align="center">
-  Watch-only Bitcoin Wallet for iOS & Android
-</p>
+**This is a personal fork, not a product.**
 
+- Built and maintained for **my own use**. There is **no plan** to publish on the App Store or Google Play.
+- **Build from source** on your own device if you want to try it. No official binaries are provided.
+- **No warranty, no support, no liability.** Use at your own risk, especially on mainnet. I am not responsible for loss of funds, bugs, or any other damages.
+- **Not affiliated with Nonce Lab.** This is an unofficial fork of [Coconut Wallet](https://github.com/noncelab/coconut_wallet). "Coconut Wallet" is a trademark of Nonce Lab, Inc.
 
-> **Try it risk-free!** A **REGTEST VERSION** is available on both app stores, allowing you to practice air-gapped transactions with test bitcoin — no real funds required.</br>
-> [Download iOS App(ver.regtest)](https://apps.apple.com/app/id6654902298) · [Download Android App(ver.regtest)](https://play.google.com/store/apps/details?id=onl.coconut.wallet.regtest)
+## About This Fork
 
----
+Hotconut is a local fork of [Coconut Wallet](https://github.com/noncelab/coconut_wallet). The name blends **hot** (for the experimental on-device hot wallet) and **coconut** — a nod to its upstream roots, not an affiliation with Nonce Lab.
 
-**Coconut Wallet** is a **watch-only Bitcoin wallet** designed to work with [Coconut Vault](https://github.com/noncelab/coconut_vault). By operating the vault and wallet on two physically separate devices, it implements a **secure air-gapped transaction signing architecture** where private keys never touch an online device.
+Changes in this fork (experimental, unmaintained for others):
 
-## Features
+- **Hot wallet (experimental)** — optional on-device signing; not part of upstream's watch-only model. Use with extreme caution.
+- **Privacy-oriented** — Firebase / analytics-related code removed or disabled compared to upstream.
+- Other tweaks for personal workflow; no stability or security guarantees.
 
-No hot wallet. Watch-only only.
+## Architecture & Documentation
 
-- **Supported hardware wallets** — Keystone 3 Pro, Seedsigner, Jade, Coldcard, Krux
-- **Air-gapped signing** — Private keys never leave the offline device
-- **SegWit** — Native SegWit (Bech32) address support
-- **Multisig** — Multi-signature wallet support
-- **RBF (Replace-By-Fee)** — Fee bumping for unconfirmed transactions
-- **CPFP (Child-Pays-For-Parent)** — Fee acceleration via child transactions
-- **Batch sending** — Send to multiple recipients in a single transaction
-- **UTXO management** — Coin control with UTXO locking and tagging
-- **PSBT** — BIP-174 Partially Signed Bitcoin Transactions
-- **Draft transactions** — Save transactions as drafts for later signing or sending
-- **Multilingual** — 한국어, English, 日本語, Español
+For system design, security model, supported hardware wallets, and feature list, see the upstream project:
 
-## Architecture
+- [Coconut Wallet README](https://github.com/noncelab/coconut_wallet/blob/main/README.md) — architecture, features, air-gapped signing flow
+- [Coconut Vault](https://github.com/noncelab/coconut_vault) — offline signer (recommended pairing for watch-only use)
+- [coconut_lib](https://github.com/noncelab/coconut_lib) — Bitcoin wallet library
 
-```
-      OFFLINE                                        ONLINE
-┌─────────────────┐          QR Code         ┌─────────────────┐
-│  Coconut Vault  │ ◄──────────────────────► │ Coconut Wallet  │
-│                 │                          │                 │
-│  · Key storage  │                          │  · Balance sync │
-│  · Tx signing   │                          │  · Tx creation  │
-│                 │                          │  · Broadcasting │
-└─────────────────┘                          └─────────────────┘
-```
-
-The wallet stays online to keep your wallet data up to date and broadcasts signed transactions to the Bitcoin network.
-
-## Coconut Projects
-
-| Project | Description |
-|---------|-------------|
-| [coconut_lib](https://pub.dartlang.org/packages/coconut_lib) | [![pub](https://img.shields.io/pub/v/coconut_lib.svg?label=coconut_lib&color=blue)](https://pub.dartlang.org/packages/coconut_lib) — Bitcoin wallet development library |
-| [coconut_vault](https://github.com/noncelab/coconut_vault) | [![tag](https://img.shields.io/badge/dynamic/yaml.svg?url=https://raw.githubusercontent.com/noncelab/coconut_vault/main/pubspec.yaml&query=$.version&label=coconut_vault)](https://github.com/noncelab/coconut_vault) — Offline signer |
-| [coconut_wallet](https://github.com/noncelab/coconut_wallet) | [![tag](https://img.shields.io/badge/dynamic/yaml.svg?url=https://raw.githubusercontent.com/noncelab/coconut_wallet/main/pubspec.yaml&query=$.version&label=coconut_wallet)](https://github.com/noncelab/coconut_wallet) — Watch-only wallet |
-| [coconut_design_system](https://github.com/noncelab/coconut_design_system) | [![tag](https://img.shields.io/badge/dynamic/yaml.svg?url=https://raw.githubusercontent.com/noncelab/coconut_design_system/main/pubspec.yaml&query=$.version&label=coconut_wallet)](https://github.com/noncelab/coconut_wallet) — Design System |
+This fork inherits most of that design. Differences are listed in [About This Fork](#about-this-fork) above.
 
 ## Build & Run
+
+You are expected to build and run this yourself; see [Important Notice](#important-notice) above.
 
 ### Prerequisites
 
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (3.29+)
 - Dart 3.7+
-- Android Studio or Xcode
 
 ```bash
 flutter --version
-```
-
-### Clone & Install Dependencies
-
-```bash
-git clone https://github.com/noncelab/coconut_wallet.git
-cd coconut_wallet
 flutter pub get
 ```
 
@@ -100,100 +62,45 @@ dart run realm generate
 flutter pub run slang
 ```
 
-> If Realm generation fails, run `dart run build_runner clean` first.
-
 ### Environment Variables
 
-This project requires environment variables configured via `flutter_dotenv`. To obtain the env file for development, please contact us at [hello@noncelab.com](mailto:hello@noncelab.com).
-
-### Android Keystore Setup
-
-Generate a local keystore for Android builds:
-
-```bash
-keytool -genkey -v -keystore android/app/local.jks \
-  -storepass android -alias local -keypass android \
-  -keyalg RSA -keysize 2048 -validity 10000 \
-  -dname "CN=Local Dev,O=Coconut,C=KR"
-```
-
-Create `key_regtest.properties` and `key_mainnet.properties` under the `android/` directory:
-
-```properties
-storePassword=android
-keyPassword=android
-keyAlias=local
-storeFile=../app/local.jks
-```
+Network config lives in `mainnet.env`, `regtest.env`, and `testnet.env` in the project root.
+Edit the values there for local development or release builds.
 
 ### Run
 
 ```bash
-# Debug
+# Debug (recommended for development)
 flutter run --flavor regtest
 
-# Release
-flutter run --release --flavor regtest
+# Release (no keystore required — uses debug signing)
+flutter build apk --flavor regtest --release
 ```
 
 ### Flavors
 
 | Flavor | Description |
 |--------|-------------|
-| `mainnet` | Real Bitcoin mainnet — production release distributed via app stores |
-| `regtest` | Local testnet — for learning and development |
+| `mainnet` | Bitcoin mainnet |
+| `regtest` | Testnet for learning and development |
 
 ### IDE Configuration
-
-**Android Studio / IntelliJ**
-
-Run → Edit Configurations... → Set Build Flavor to `regtest`
 
 **VS Code** — `.vscode/launch.json`:
 
 ```json
 {
-  "name": "coconut_wallet (debug)",
+  "name": "hotconut (debug)",
   "request": "launch",
   "type": "dart",
   "args": ["--flavor", "regtest"]
 }
 ```
 
-> **⚠️ Mainnet Self-Build Disclaimer**: If you build and run the app from source on mainnet outside of official distribution channels (App Store / Google Play), we assume no responsibility for any loss of funds or errors that may occur. Please use `regtest` mode for development and testing.
+## License & Attribution
 
-## Contributing
+This project is licensed under the **X11 Consortium License (MIT/X)**, the same license as [Coconut Wallet](https://github.com/noncelab/coconut_wallet/blob/main/LICENSE).
 
-Please refer to [CONTRIBUTING.md](https://github.com/noncelab/coconut_wallet/blob/main/CONTRIBUTING.md) for details.
-
-- [Issues](https://github.com/noncelab/coconut_wallet/issues) — Bug reports and feature requests
-- [Pull Requests](https://github.com/noncelab/coconut_wallet/pulls) — New features, documentation improvements, and bug fixes
-
-## Responsible Disclosure
-
-If you discover a critical security vulnerability, please report it directly to [hello@noncelab.com](mailto:hello@noncelab.com) instead of opening a public issue.
-
-## License
-
-X11 Consortium License (identical to MIT, with an additional restriction that the copyright holder's name may not be used for promotional purposes).
-
-See [LICENSE](https://github.com/noncelab/coconut_wallet/blob/main/LICENSE) for details.
-
-### Dependencies
-
-All third-party libraries used in this project are licensed under MIT, BSD, or Apache. See the [full list](https://github.com/noncelab/coconut_wallet/blob/main/lib/oss_licenses.dart) for details.
-
-## Community & Links
-
-| | |
-|---|---|
-| **Website** | [coconut.onl](https://coconut.onl)|
-| **X (Twitter)** | [@CoconutWallet 🌐](https://x.com/CoconutWallet) / [@Coconut 🇰🇷](https://x.com/Coconut_BTC) |
-| **Discord** | [Join our Discord](https://discord.gg/VjZxYaQCRj) |
-| **Documentation** | [Tutorials & Docs](https://tutorial.coconut.onl) |
-| **GitHub** | [github.com/noncelab](https://github.com/noncelab) |
-| **Company Site** | [NonceLab](https://noncelab.com) |
-
-
-</br>
-<img src="./assets/readme/coconut-logo.png" alt="Coconut Logo" width="320"/>
+- The original copyright and license notice from Nonce Lab, Inc. are preserved in [LICENSE](LICENSE).
+- Modifications in this fork are also distributed under the same license, **provided as-is with no warranty**.
+- Per the upstream license: the name **Nonce Lab** must not be used for promotion without written permission, and **"Coconut Wallet"** is a trademark of Nonce Lab, Inc. This project is **Hotconut**, an independent fork — not Coconut Wallet and not endorsed by Nonce Lab.

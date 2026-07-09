@@ -1,9 +1,9 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/core/bip/129/multisig_normalizer.dart';
-import 'package:coconut_wallet/core/bip/129/signer_bsms.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/core/bip/129/multisig_normalizer.dart';
+import 'package:hotconut_wallet/core/bip/129/signer_bsms.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class MultisigWalletListItem extends WalletListItemBase {

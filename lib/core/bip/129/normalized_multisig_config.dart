@@ -1,5 +1,5 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/core/bip/129/signer_bsms.dart';
+import 'package:hotconut_wallet/core/bip/129/signer_bsms.dart';
 
 class NormalizedMultisigConfig {
   final String name;

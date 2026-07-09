@@ -7,6 +7,7 @@
 coconut_wallet: "coconut_wallet"
 coconut_vault: "coconut_vault"
 coconut_lib: "coconut_lib"
+hotconut_wallet: "hotconut_wallet"
 
 bitcoin_name: "Bitcoin"
 wallet: "Wallet"
@@ -73,7 +74,7 @@ app_info: "앱 정보"
 update_failed: "업데이트 실패"
 calculation_failed: "계산 실패"
 contact_email: "hello@noncelab.com"
-email_subject: "[코코넛 월렛] 이용 관련 문의"
+email_subject: "[핫코넛 월렛] 이용 관련 문의"
 amount: "수량"
 send_amount: "보낼 수량"
 fetch_fee_failed: "수수료 조회 실패"
@@ -164,7 +165,7 @@ utility:
     add_wallet: "지갑 추가하기"
     copy_format(currency, currencyAmount, btcUnit, btcAmount, currencySymbol, referencePrice, referenceTime, transactionPremiumRate, transactionPremium, premiumToSats): "[거래 계산서]\n\n$currency: $currencyAmount\n$btcUnit: $btcAmount\n──────────────\n기준 시세: $currencySymbol $referencePrice / BTC\n기준 일시: $referenceTime\n거래 프리미엄: $transactionPremiumRate / $currencySymbol $transactionPremium ($premiumToSats sats)"
     enter_amount_first: "먼저 금액을 입력해 주세요"
-    
+
 transaction_draft:
   title: "임시 저장 트랜잭션"
   empty_message: "임시 저장된 트랜잭션이 없어요"
@@ -218,7 +219,7 @@ pin_check_screen:
   text: "비밀번호를 눌러주세요"
 
 # lib/screens/home
-wallet_home_screen: 
+wallet_home_screen:
   view_all_wallets: "내 지갑 전체보기"
   edit_home_screen: "홈 화면 편집하기"
   edit:
@@ -238,7 +239,7 @@ wallet_home_screen:
       wallet_list: "지갑 목록"
       recent_transactions: "24시간 내\n거래"
       analysis: "분석"
-    alert: 
+    alert:
       empty_fake_balance: "가짜 잔액 입력"
       empty_fake_balance_description: "금액이 설정되지 않았어요.\n다시 입력하시거나 0 BTC로 설정할까요?"
       set_to_0: "0 BTC로 설정"
@@ -274,6 +275,7 @@ wallet_add_scanner_screen:
   seed_signer: "시드사이너"
   cold_card: "콜드카드"
   krux: "크럭스"
+  hot_wallet: "핫월렛"
   self: "직접 입력"
   self_description: "다른 앱에서 생성한 정보로 지갑을 추가할 수 있어요"
   select: " 선택"
@@ -446,7 +448,7 @@ send_screen:
     sign_path: "서명 경로"
     sign_by_parent: "부모 키로 서명해요"
     sign_by_child: "자식 키로 서명해요"
-    
+
 utxo_selection_screen:
   title: "UTXO 고르기"
   skip: "건너뛰기"
@@ -486,7 +488,7 @@ send_confirm_screen:
 signed_psbt_scanner_screen:
   title: "서명 트랜잭션 읽기"
   bbqr_mode_switching: "BBQR 모드로 전환 중이에요.\n잠시만 기다려주세요."
-  
+
 unsigned_tx_qr_screen:
   hardware_wallet_screen_guide: "화면 안내"
   guide_keystone:
@@ -531,7 +533,7 @@ coconut_qr_scanner:
   camera_error:
     title: "카메라 사용 불가"
     need_camera_permission: "설정에서 카메라 권한을 허용해 주세요."
-    
+
 # lib/screens/settings
 app_info_screen:
   coconut_crew_genesis_member: "코코넛 크루: 제네시스 멤버"
@@ -541,14 +543,14 @@ app_info_screen:
   ask_to_discord: "디스코드 채널로 문의하기"
   ask_to_x: "X로 문의하기"
   ask_to_email: "이메일로 문의하기"
-  category2_opensource: "Coconut Wallet은 오픈소스입니다"
+  category2_opensource: "Hotconut Wallet은 오픈소스입니다"
   contribution: "오픈소스 개발 참여하기"
   tos_and_policy: "약관 및 정책"
   terms_of_service: "이용 약관"
   privacy_policy: "개인정보 처리방침"
   license: "오픈소스 라이선스"
   data_collection: "데이터 수집 안내"
-  version_and_date: "CoconutWallet ver. $version (released at $releasedAt)"
+  version_and_date: "HotconutWallet ver. $version (released at $releasedAt)"
   inquiry: "문의 내용"
 bip39_list_screen:
   result: "'$text' 검색 결과"
@@ -572,7 +574,7 @@ settings_screen:
     english: "English"
     japanese: "日本語"
     spanish: "Español"
-  electrum_server: 
+  electrum_server:
     server_address: "서버 주소"
     port: "포트"
     use_ssl: "SSL 사용"
@@ -584,7 +586,7 @@ settings_screen:
     error_msg:
       invalid_domain_format: "도메인 형식이 아니에요"
       port_out_of_range: "유효한 포트를 입력해주세요 (1~65535)"
-    alert: 
+    alert:
       connection_failed: "연결할 수 없습니다!"
       connecting: "연결 중입니다"
       connected: "연결되었습니다"
@@ -609,7 +611,7 @@ settings_screen:
     log_target_description_2: "브로드캐스트 실패 구간 원인을 로깅합니다."
     clear_log: "로그 지우기"
     clear_log_description: "로그를 지우시겠어요?"
-    email_subject: "[코코넛 월렛] Debug Log"
+    email_subject: "[핫코넛 월렛] Debug Log"
     email_body: "상황: (여기에 어떤 상황에서 발생한 문제인지 간략히 적어주세요)"
     email_error_msg: "이메일 앱을 열 수 없어요. 로그를 복사해서 디스코드 채널에 올려주세요."
     buttons:
@@ -691,7 +693,6 @@ utxo_detail_screen:
   utxo_unlocked_button: "잠금 해제"
   lock_status: "잠금 상태"
 
-
 utxo_tag_screen:
   onboarding_title: "UTXO 태그를 관리할 수 있어요"
   add_tag: "+ 버튼을 눌러 첫 태그를 만들어 보세요"
@@ -761,7 +762,7 @@ transaction_fee_bumping_screen:
   recommended_fees_is_null: "수수료를 조회하는 중이에요"
   recommended_fee_less_than_pending_tx_fee: "기존 수수료보다 큰 수수료를 지정해 주세요"
   recommended_fee_less_than_network_fee: "추천 수수료 이상으로 지정해 주세요"
-  
+
   please_select_more_utxo: "${amount} 이상의 UTXO를 선택해 주세요"
   dialog:
     fee_alert_title: "알림"
@@ -812,7 +813,7 @@ merge_utxos_screen:
   summary_card_destination: "\n${destination} 주소로 합칠게요."
   summary_card_to_wallet_destination: "${wallet_name}의 새로운"
   summary_card_to_unowned_address_destination: "지갑에서 확인되지 않는"
-  summary_card_to_selected_address_destination: "선택한" 
+  summary_card_to_selected_address_destination: "선택한"
   used_utxos_count: "${total}개 중 ${used}개 사용"
   receive_address_bottomsheet:
     title: "주소 선택"
@@ -820,7 +821,7 @@ merge_utxos_screen:
     custom: "직접 입력"
     not_your_owned_wallet: "지갑에서 확인되지 않는 주소입니다"
   tag_criteria: "태그 기준"
-  count: 
+  count:
     one: "${count}개"
     other: "${count}개"
   selected_tag_title: "#${name} 태그"
@@ -838,7 +839,6 @@ merge_utxos_screen:
   merge_cta_discouraged_costly: "합치는 비용이 절약되는 수수료보다 더 커요"
   exception:
     fee_too_high: "수수료가 너무 커요"
-
 
 split_utxo_screen:
   title: "UTXO 나누기"
@@ -881,7 +881,7 @@ split_utxo_screen:
 
 # lib/widgets/card
 wallet_list_add_guide_card:
-  add_watch_only: "보기 전용 지갑을 추가해 보세요!"
+  add_watch_only: "지갑을 추가해 보세요!"
 wallet_list_glossary_shortcut_card:
   any_word_you_dont_know: "모르는 용어가 있으신가요?"
   top_right: "오른쪽 위 "
@@ -898,8 +898,8 @@ faucet_request_bottom_sheet:
   request_amount: "$bitcoin BTC 요청하기"
 license_bottom_sheet:
   title: "라이선스 안내"
-  coconut_wallet: "Coconut Wallet"
-  copyright_text1: "코코넛 월렛은 MIT 라이선스를 따르며 저작권은 대한민국의 논스랩 주식회사에 있습니다. MIT 라이선스 전문은 "
+  coconut_wallet: "Hotconut Wallet"
+  copyright_text1: "핫코넛 월렛은 MIT 라이선스를 따르며 저작권은 대한민국의 논스랩 주식회사에 있습니다. MIT 라이선스 전문은 "
   copyright_text2: "에서 확인해 주세요.\n\n이 애플리케이션에 포함된 타사 소프트웨어에 대한 저작권을 다음과 같이 명시합니다. 이에 대해 궁금한 사항이 있으시면 "
   copyright_text3: "으로 문의해 주시기 바랍니다."
   email_subject: "[월렛] 라이선스 문의"
@@ -929,7 +929,7 @@ glossary_bottom_sheet:
   related: "관련 용어"
 user_experience_survey_bottom_sheet:
   text1: "비트코인 전송을 완료하셨군요👍"
-  text2: "코코넛 월렛이 도움이 되었나요?"
+  text2: "핫코넛 월렛이 도움이 되었나요?"
   text3: "네, 좋아요!"
   text4: "그냥 그래요"
 unit_bottom_sheet:
@@ -1106,7 +1106,7 @@ alert:
     try_again: "$count 후에 다시 시도해 주세요"
   fee_bumping:
     not_enough_amount: "$bumpingType를 실행하기에 충분한 잔액이 없습니다.\n현재 사용 가능한 잔액을 확인해 주세요."
-  without_mfp: 
+  without_mfp:
     title: "마스터 핑거프린트 추가"
     description: "비트코인을 보내려면 마스터 핑거프린트를 먼저 추가해야 해요. 계속 하시겠어요?"
     skip_button: "취소"
@@ -1133,16 +1133,16 @@ fiat_bottom_sheet:
   jpy_price: "비트플라이어 기준"
 
 language_bottom_sheet:
-  title: "언어 설정"   
+  title: "언어 설정"
   korean: "한국어"
   english: "English"
   japanese: "日本語"
   spanish: "Español"
 
 estimated_fee_bottom_sheet:
-    title: "예상 수수료"
-    estimated_fee: "예상 수수료"
-    fee_rate: "수수료율"
+  title: "예상 수수료"
+  estimated_fee: "예상 수수료"
+  fee_rate: "수수료율"
 
 long_pressed_menu:
   hide: "숨기기"
@@ -1169,3 +1169,58 @@ taproot:
   setup_summary_card:
     signer_configuration: "서명자 구성"
     inheritance_condition: "상속 조건"
+
+hot_wallet:
+  title: "핫월렛"
+  onboarding_title: "핫월렛 만들기"
+  onboarding_description: "니모닉을 이 기기에 암호화 저장하고 앱에서 직접 서명합니다. 오프라인 서명기보다 보안 수준이 낮으니 소액 테스트 후 사용하세요."
+  pin_required_title: "PIN 설정 필요"
+  pin_required_description: "핫월렛은 니모닉을 이 기기에 암호화해 저장합니다. 지갑을 만들기 전에 PIN을 설정해 주세요."
+  set_pin: "PIN 설정하기"
+  pin_disable_blocked_title: "PIN을 해제할 수 없습니다"
+  pin_disable_blocked_description: "핫월렛이 있는 동안에는 PIN을 해제할 수 없습니다. PIN을 바꾸려면 '비밀번호 바꾸기'를 사용하세요. 핫월렛을 삭제한 뒤 PIN을 해제할 수 있습니다."
+  create_hot_wallet: "핫월렛 만들기"
+  create_new: "새 니모닉 생성"
+  import_existing: "니모닉 가져오기"
+  generate_title: "니모닉 생성"
+  generate_description: "아래 24단어를 안전한 곳에 백업하세요. 이 화면을 캡처하거나 촬영하지 마세요."
+  generate_description_12: "아래 12단어를 안전한 곳에 백업하세요. 이 화면을 캡처하거나 촬영하지 마세요."
+  generate_description_24: "아래 24단어를 안전한 곳에 백업하세요. 이 화면을 캡처하거나 촬영하지 마세요."
+  mnemonic_length_12: "12단어"
+  mnemonic_length_24: "24단어"
+  regenerate_mnemonic: "다시 생성"
+  regenerate_confirm_title: "니모닉을 다시 생성할까요?"
+  regenerate_confirm_description: "현재 니모닉은 더 이상 사용할 수 없습니다. 이미 백업했다면 새 니모닉을 안전하게 보관하세요."
+  copy_mnemonic: "전체 복사"
+  copy_mnemonic_warning: "니모닉을 클립보드에 복사하면 다른 앱에서 접근할 수 있습니다. 복사 후 클립보드를 비우고, 다른 사람과 공유하지 마세요."
+  copy_mnemonic_success: "니모닉이 복사되었습니다."
+  skip_backup: "백업 나중에"
+  skip_backup_warning: "백업 확인을 건너뛰면 니모닉을 잃어버렸을 때 복구할 수 없습니다. 나중에 지갑 정보에서 니모닉을 확인할 수 있습니다."
+  scan_mnemonic_qr: "QR로 스캔"
+  scan_mnemonic_qr_title: "니모닉 QR 스캔"
+  import_title: "니모닉 가져오기"
+  import_placeholder: "니모닉 단어를 공백으로 구분해 입력하세요"
+  passphrase_label: "패스프레이즈 (선택)"
+  passphrase_placeholder: "BIP39 패스프레이즈"
+  backup_title: "백업 확인"
+  backup_description: "니모닉을 안전하게 백업했는지 확인합니다."
+  backup_quiz_title: "백업 확인 퀴즈"
+  backup_quiz_prompt: "${position}번째 단어는?"
+  backup_quiz_failed: "정답이 아닙니다. 다시 시도해 주세요."
+  wallet_name_label: "지갑 이름"
+  wallet_name_placeholder: "핫월렛"
+  export_title: "니모닉 보기"
+  export_warning: "니모닉을 다른 사람과 공유하지 마세요. 화면 캡처·촬영을 금지합니다."
+  sign_title: "서명"
+  sign_description: "PIN을 입력해 트랜잭션에 서명합니다."
+  sign_passphrase_title: "패스프레이즈 입력"
+  sign_passphrase_description: "BIP39 패스프레이즈를 입력해 서명을 완료하세요. 앱에 저장되지 않으며 매 서명마다 입력해야 합니다."
+  sign_failed: "서명에 실패했습니다. PIN을 확인해 주세요."
+  passphrase_incorrect: "패스프레이즈가 올바르지 않습니다."
+  passphrase_failed_attempts: "연속 실패 ${count}회"
+  passphrase_wallet_notice: "이 지갑은 BIP39 패스프레이즈를 사용합니다. 패스프레이즈는 앱에 저장되지 않으며 서명할 때마다 입력해야 합니다."
+  export_passphrase_notice: "BIP39 패스프레이즈는 표시되지 않습니다. 니모닉과 분리하여 안전하게 보관하세요."
+  invalid_mnemonic: "유효하지 않은 니모닉입니다."
+  badge: "핫"
+  view_mnemonic: "니모닉 보기"
+  hot_wallet_description: "이 기기에서 직접 서명하는 지갑입니다."

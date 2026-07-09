@@ -1,10 +1,10 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
-import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
-import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
-import 'package:coconut_wallet/utils/colors_util.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/providers/utxo_tag_provider.dart';
+import 'package:hotconut_wallet/repository/realm/utxo_repository.dart';
+import 'package:hotconut_wallet/utils/colors_util.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';

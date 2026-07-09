@@ -1,11 +1,12 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/utils/colors_util.dart';
-import 'package:coconut_wallet/utils/icons_util.dart';
-import 'package:coconut_wallet/utils/text_utils.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/utils/colors_util.dart';
+import 'package:hotconut_wallet/utils/icons_util.dart';
+import 'package:hotconut_wallet/utils/text_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:hotconut_wallet/widgets/icon/wallet_import_source_icon.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MultisigSignerCard extends StatelessWidget {
@@ -33,8 +34,9 @@ class MultisigSignerCard extends StatelessWidget {
     final iconIndex = signer.iconIndex ?? 0;
 
     String? importSourceIconPath;
+    WalletImportSource? walletImportSource;
     if (!isInnerWallet && signer.signerSource?.isNotEmpty == true) {
-      final WalletImportSource? walletImportSource = WalletImportSourceExtension.fromString(signer.signerSource!);
+      walletImportSource = WalletImportSourceExtension.fromString(signer.signerSource!);
       if (walletImportSource != null) {
         importSourceIconPath = walletImportSource.externalWalletIconPath;
       }
@@ -75,11 +77,24 @@ class MultisigSignerCard extends StatelessWidget {
                       color: isInnerWallet ? ColorUtil.getColor(8).backgroundColor : CoconutColors.gray800,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
-                    child: SvgPicture.asset(
-                      finalIconPath,
-                      colorFilter: ColorFilter.mode(finalIconColor, BlendMode.srcIn),
-                      width: 18, //isInnerWallet ? 18 : 15
-                    ),
+                    child:
+                        isInnerWallet
+                            ? SvgPicture.asset(
+                              finalIconPath,
+                              colorFilter: ColorFilter.mode(finalIconColor, BlendMode.srcIn),
+                              width: 18,
+                            )
+                            : walletImportSource != null
+                            ? WalletImportSourceIcon(
+                              walletImportSource: walletImportSource,
+                              width: 18,
+                              colorFilter: ColorFilter.mode(finalIconColor, BlendMode.srcIn),
+                            )
+                            : SvgPicture.asset(
+                              finalIconPath,
+                              colorFilter: ColorFilter.mode(finalIconColor, BlendMode.srcIn),
+                              width: 18,
+                            ),
                   ),
                   CoconutLayout.spacing_300w,
 

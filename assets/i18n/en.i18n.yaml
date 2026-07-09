@@ -7,6 +7,7 @@
 coconut_wallet: "coconut_wallet"
 coconut_vault: "coconut_vault"
 coconut_lib: "coconut_lib"
+hotconut_wallet: "hotconut_wallet"
 
 bitcoin_name: "Bitcoin"
 wallet: "Wallet"
@@ -24,7 +25,7 @@ show: "Show"
 hide: "Hide"
 paste: "Paste"
 export: "Export"
-edit: "Edit"  
+edit: "Edit"
 max: "Max"
 all: "All"
 no: "No"
@@ -73,7 +74,7 @@ app_info: "App Info"
 update_failed: "Update Failed"
 calculation_failed: "Calculation Failed"
 contact_email: "hello@noncelab.com"
-email_subject: "[Coconut Wallet] Inquiry"
+email_subject: "[Hotconut Wallet] Inquiry"
 amount: "Amount"
 send_amount: "Amount"
 fetch_fee_failed: "Fee Fetch Failed"
@@ -164,7 +165,7 @@ utility:
     add_wallet: "Add Wallet"
     copy_format(currency, currencyAmount, btcUnit, btcAmount, currencySymbol, referencePrice, referenceTime, transactionPremiumRate, transactionPremium, premiumToSats): "[Transaction Bill]\n\n$currency: $currencyAmount\n$btcUnit: $btcAmount\n──────────────\nReference Price: $currencySymbol $referencePrice / BTC\nReference Datetime: $referenceTime\nTransaction Premium: $transactionPremiumRate / $currencySymbol $transactionPremium ($premiumToSats sats)"
     enter_amount_first: "Please enter the amount first"
-    
+
 transaction_draft:
   title: "Temporary Transaction"
   empty_message: "No temporary transaction saved"
@@ -218,7 +219,7 @@ pin_check_screen:
   text: "Enter your password"
 
 # lib/screens/home
-wallet_home_screen: 
+wallet_home_screen:
   view_all_wallets: "View All Wallets"
   edit_home_screen: "Edit Home Screen"
   edit:
@@ -238,10 +239,10 @@ wallet_home_screen:
       wallet_list: "Wallet\nList"
       recent_transactions: "Recent\nTransactions\n(24hours)"
       analysis: "Analysis"
-    alert: 
+    alert:
       empty_fake_balance: "Enter Fake Balance"
       empty_fake_balance_description: "No amount has been entered.\nWould you like to enter it again or set it to 0 BTC?"
-      set_to_0: "Set balance to 0 BTC" 
+      set_to_0: "Set balance to 0 BTC"
       enter_again: "Try again"
   last_24_hours_transactions: "Last 24 hours transactions"
   syncing_recent_transaction: "Syncing recent transactions"
@@ -274,6 +275,7 @@ wallet_add_scanner_screen:
   seed_signer: "SeedSigner"
   cold_card: "Coldcard"
   krux: "Krux"
+  hot_wallet: "Hot Wallet"
   self: "Enter Wallet Info"
   self_description: "Add a watch-only wallet using information from another app."
   select: "Select"
@@ -302,7 +304,7 @@ wallet_add_scanner_screen:
     step2_em: " Connect Software Wallet"
     step3: "3. Select one of BlueWallet, Sparrow, or Zeus wallets"
   guide_jade:
-    step0_preposition: "In an " 
+    step0_preposition: "In an "
     step0_em: "Active "
     step0: "State,"
     step1: "1. "
@@ -358,7 +360,7 @@ wallet_add_scanner_screen:
     mfp_input_placeholder: "Master Fingerprint ex: f75f7ab5"
     mfp_skip: "Skip"
     back_scan: "Go back to QR scan"
-  
+
 # lib/screens/wallet_list
 wallet_list:
   wallet_count: "$count Items"
@@ -481,14 +483,14 @@ send_address_screen:
   amount_placeholder: "Please enter the amount to send"
 send_confirm_screen:
   title: "Transaction Details"
-  total_required_amount: "$n is required in total." 
+  total_required_amount: "$n is required in total."
   output_detail_title: "Output Details"
   flow_input_title: "Input #$index"
   flow_output_title: "Output #$index"
 signed_psbt_scanner_screen:
   title: "Scan Signed Tx"
   bbqr_mode_switching: "Switching to BBQR mode.\nPlease wait a moment."
-  
+
 unsigned_tx_qr_screen:
   hardware_wallet_screen_guide: "Guide"
   guide_keystone:
@@ -524,7 +526,7 @@ unsigned_tx_qr_screen:
   high_density_qr: "Complex QR"
   view_bbqr: "View BBQR"
   view_ur: "View UR"
-  
+
   guide_hardware_wallet:
     step1: "Please scan the QR code below with your hardware wallet to start the signing process."
 
@@ -543,14 +545,14 @@ app_info_screen:
   ask_to_discord: "Ask via Discord Channel"
   ask_to_x: "Ask via X"
   ask_to_email: "Ask via Email"
-  category2_opensource: "Coconut Wallet is open source"
+  category2_opensource: "Hotconut Wallet is open source"
   contribution: "Participate in Open Source Development"
   tos_and_policy: "Terms and Policy"
   terms_of_service: "Terms of Service"
   privacy_policy: "Privacy Policy"
   license: "Open Source License"
   data_collection: "Data Collection Notice"
-  version_and_date: "CoconutWallet ver. $version (released at $releasedAt)"
+  version_and_date: "HotconutWallet ver. $version (released at $releasedAt)"
   inquiry: "Inquiry Content"
 bip39_list_screen:
   result: "Search results for '$text'"
@@ -569,7 +571,7 @@ settings_screen:
   utxo_manual_selection: "UTXO Manual Selection"
   utxo_manual_selection_description: "Select UTXOs manually for sending"
   utxo_tier_theme: "Coin Color"
-  electrum_server: 
+  electrum_server:
     server_address: "Server Address"
     port: "Port"
     use_ssl: "Use SSL"
@@ -581,7 +583,7 @@ settings_screen:
     error_msg:
       invalid_domain_format: "Not a valid domain format"
       port_out_of_range: "Please enter a valid port number (1–65535)"
-    alert: 
+    alert:
       connection_failed: "Cannot connect!"
       connecting: "Connecting..."
       connected: "Connected"
@@ -606,7 +608,7 @@ settings_screen:
     log_target_description_2: "Logs the cause of broadcast failure stages."
     clear_log: "Clear Log"
     clear_log_description: "Are you sure to clear log?"
-    email_subject: "[Coconut Wallet] Debug Log"
+    email_subject: "[Hotconut Wallet] Debug Log"
     email_body: "Situation: (Please briefly describe the situation where the problem occurred)"
     email_error_msg: "Unable to open email app. Please copy the log and post it on the Discord channel."
     buttons:
@@ -875,7 +877,7 @@ split_utxo_screen:
 
 # lib/widgets/card
 wallet_list_add_guide_card:
-  add_watch_only: "Try adding a watch-only wallet!"
+  add_watch_only: "Try adding a wallet!"
 wallet_list_glossary_shortcut_card:
   any_word_you_dont_know: "Don't know any terms?"
   top_right: "Top right "
@@ -892,8 +894,8 @@ faucet_request_bottom_sheet:
   request_amount: "Request $bitcoin BTC"
 license_bottom_sheet:
   title: "License Information"
-  coconut_wallet: "Coconut Wallet"
-  copyright_text1: "Coconut Wallet follows the MIT license and the copyright belongs to NonceLab Inc. of the Republic of Korea. The full MIT license text can be found at "
+  coconut_wallet: "Hotconut Wallet"
+  copyright_text1: "Hotconut Wallet follows the MIT license and the copyright belongs to NonceLab Inc. of the Republic of Korea. The full MIT license text can be found at "
   copyright_text2: ".\n\nThe copyrights for third-party software included in this application are stated as follows. If you have any questions about this, please contact us at "
   copyright_text3: "."
   email_subject: "[Wallet] License Inquiry"
@@ -923,7 +925,7 @@ glossary_bottom_sheet:
   related: "Related Terms"
 user_experience_survey_bottom_sheet:
   text1: "You've completed the Bitcoin transfer👍"
-  text2: "Was Coconut Wallet helpful?"
+  text2: "Was Hotconut Wallet helpful?"
   text3: "Yes, it's good!"
   text4: "Just okay"
 unit_bottom_sheet:
@@ -1163,3 +1165,58 @@ taproot:
   setup_summary_card:
     signer_configuration: "Signer Configuration"
     inheritance_condition: "Inheritance Condition"
+
+hot_wallet:
+  title: "Hot Wallet"
+  onboarding_title: "Create Hot Wallet"
+  onboarding_description: "Your mnemonic is encrypted and stored on this device for in-app signing. This is less secure than an offline signer. Test with a small amount first."
+  pin_required_title: "PIN Required"
+  pin_required_description: "Hot wallets encrypt and store your mnemonic on this device. Set a PIN before creating one."
+  set_pin: "Set PIN"
+  pin_disable_blocked_title: "Cannot Disable PIN"
+  pin_disable_blocked_description: "You cannot disable your PIN while a hot wallet exists. Use Change Password to update your PIN. Delete the hot wallet first if you need to disable PIN protection."
+  create_hot_wallet: "Create Hot Wallet"
+  create_new: "Generate New Mnemonic"
+  import_existing: "Import Mnemonic"
+  generate_title: "Generate Mnemonic"
+  generate_description: "Back up these 24 words in a safe place. Do not capture or photograph this screen."
+  generate_description_12: "Back up these 12 words in a safe place. Do not capture or photograph this screen."
+  generate_description_24: "Back up these 24 words in a safe place. Do not capture or photograph this screen."
+  mnemonic_length_12: "12 words"
+  mnemonic_length_24: "24 words"
+  regenerate_mnemonic: "Regenerate"
+  regenerate_confirm_title: "Regenerate mnemonic?"
+  regenerate_confirm_description: "The current mnemonic will no longer be valid. If you already backed it up, store the new mnemonic safely."
+  copy_mnemonic: "Copy All"
+  copy_mnemonic_warning: "Copying your mnemonic to the clipboard may expose it to other apps. Clear the clipboard after copying and never share it with anyone."
+  copy_mnemonic_success: "Mnemonic copied."
+  skip_backup: "Back Up Later"
+  skip_backup_warning: "If you skip backup verification, you cannot recover your wallet if you lose the mnemonic. You can view it later in wallet info."
+  scan_mnemonic_qr: "Scan QR"
+  scan_mnemonic_qr_title: "Scan Mnemonic QR"
+  import_title: "Import Mnemonic"
+  import_placeholder: "Enter mnemonic words separated by spaces"
+  passphrase_label: "Passphrase (optional)"
+  passphrase_placeholder: "BIP39 passphrase"
+  backup_title: "Backup Verification"
+  backup_description: "Verify that you have safely backed up your mnemonic."
+  backup_quiz_title: "Backup Quiz"
+  backup_quiz_prompt: "Word #${position}?"
+  backup_quiz_failed: "Incorrect answer. Please try again."
+  wallet_name_label: "Wallet Name"
+  wallet_name_placeholder: "Hot Wallet"
+  export_title: "View Mnemonic"
+  export_warning: "Never share your mnemonic. Do not capture or photograph the screen."
+  sign_title: "Sign"
+  sign_description: "Enter your PIN to sign the transaction."
+  sign_passphrase_title: "Enter passphrase"
+  sign_passphrase_description: "Enter your BIP39 passphrase to complete signing. It is not stored in the app and must be entered for every signature."
+  sign_failed: "Signing failed. Please check your PIN."
+  passphrase_incorrect: "Incorrect passphrase."
+  passphrase_failed_attempts: "${count} consecutive failures"
+  passphrase_wallet_notice: "This wallet uses a BIP39 passphrase. It is not stored in the app and must be entered each time you sign."
+  export_passphrase_notice: "The BIP39 passphrase is not shown. Store it separately from your mnemonic in a safe place."
+  invalid_mnemonic: "Invalid mnemonic."
+  badge: "Hot"
+  view_mnemonic: "View Mnemonic"
+  hot_wallet_description: "A wallet that signs on this device."

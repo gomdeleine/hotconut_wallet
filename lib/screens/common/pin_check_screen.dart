@@ -1,18 +1,19 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/auth_provider.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/repository/realm/realm_manager.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/auth_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/repository/realm/realm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/pin/pin_input_pad.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/pin/pin_input_pad.dart';
 import 'package:provider/provider.dart';
 
 class PinCheckScreen extends StatefulWidget {
   final bool appEntrance;
+  final bool returnPinOnSuccess;
   final Function? onComplete;
-  const PinCheckScreen({super.key, this.appEntrance = false, this.onComplete});
+  const PinCheckScreen({super.key, this.appEntrance = false, this.returnPinOnSuccess = false, this.onComplete});
 
   @override
   State<PinCheckScreen> createState() => _PinCheckScreenState();
@@ -90,7 +91,7 @@ class _PinCheckScreenState extends State<PinCheckScreen> with WidgetsBindingObse
         .then((value) {
           if (value) {
             if (!widget.appEntrance && mounted) {
-              Navigator.pop(context, true);
+              Navigator.pop(context, widget.returnPinOnSuccess ? pin : true);
             }
             widget.onComplete?.call();
           } else {

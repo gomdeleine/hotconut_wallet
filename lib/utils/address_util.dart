@@ -1,7 +1,7 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/wallet/wallet_address.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_address.dart';
+import 'package:hotconut_wallet/utils/balance_format_util.dart';
 
 String shortenAddress(String address, {int head = 8, int tail = 8}) {
   if (address.length <= head + tail) return address;

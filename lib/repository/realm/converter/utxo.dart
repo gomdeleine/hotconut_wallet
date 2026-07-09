@@ -1,7 +1,7 @@
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
 
 UtxoTag mapRealmUtxoTagToUtxoTag(RealmUtxoTag utxoTag) {
   return UtxoTag(

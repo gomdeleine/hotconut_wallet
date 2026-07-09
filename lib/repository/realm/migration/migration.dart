@@ -1,11 +1,11 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/realm_constants.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/services/wallet_add_service.dart';
-import 'package:coconut_wallet/utils/descriptor_util.dart';
-import 'package:coconut_wallet/utils/hash_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/realm_constants.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/services/wallet_add_service.dart';
+import 'package:hotconut_wallet/utils/descriptor_util.dart';
+import 'package:hotconut_wallet/utils/hash_util.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:realm/realm.dart';
 
 /// Realm 마이그레이션 주의사항

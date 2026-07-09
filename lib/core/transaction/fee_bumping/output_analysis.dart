@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
-import 'package:coconut_wallet/core/exceptions/rbf_creation/rbf_creation_exception.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/core/exceptions/rbf_creation/rbf_creation_exception.dart';
 
 class OutputAnalysis {
   final List<TransactionAddress> externalOutputs; // 남의 주소

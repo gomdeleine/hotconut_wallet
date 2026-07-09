@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/utils/hex_util.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/i_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/utils/hex_util.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/i_qr_scan_data_handler.dart';
 
 class RawSignedTransactionDataHandler implements IQrScanDataHandler {
   final String _version = '02000000';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:coconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
-import 'package:coconut_wallet/model/wallet/watch_only_wallet.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
+import 'package:hotconut_wallet/model/wallet/watch_only_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

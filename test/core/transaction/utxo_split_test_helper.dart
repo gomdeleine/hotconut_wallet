@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/constants/dust_constants.dart';
-import 'package:coconut_wallet/core/transaction/utxo_split_transaction_builder.dart';
+import 'package:hotconut_wallet/constants/dust_constants.dart';
+import 'package:hotconut_wallet/core/transaction/utxo_split_transaction_builder.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 String formatAmountCountMap(Map<int, int> amountCountMap) {

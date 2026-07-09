@@ -1,20 +1,20 @@
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/watch_only_wallet.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/services/wallet_add_service.dart';
-import 'package:coconut_wallet/utils/file_logger.dart';
-import 'package:coconut_wallet/utils/third_party_util.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/bb_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/composed_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/composed_scan_data_handler2.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/extended_pub_key_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/watch_only_wallet.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/services/wallet_add_service.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/third_party_util.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/bb_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/composed_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/composed_scan_data_handler2.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/extended_pub_key_qr_scan_data_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:ur/ur.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/bc_ur_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/coconut_wallet_add_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/descriptor_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/i_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/bc_ur_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/coconut_wallet_add_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/descriptor_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/i_qr_scan_data_handler.dart';
 
 const kMaxStarLenght = 5;
 const String className = 'WalletAddScannerViewModel';
@@ -51,6 +51,8 @@ class WalletAddScannerViewModel extends ChangeNotifier {
       case WalletImportSource.descriptor:
         _qrDataHandler = ComposedScanDataHandler2();
         break;
+      case WalletImportSource.hotWallet:
+        throw StateError('Hot wallet does not use WalletAddScannerScreen');
     }
   }
 

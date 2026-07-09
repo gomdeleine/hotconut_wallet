@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/node/script_status.dart';
-import 'package:coconut_wallet/model/node/subscribe_stream_dto.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/node_provider/balance_sync_service.dart';
-import 'package:coconut_wallet/providers/node_provider/subscription/script_callback_service.dart';
-import 'package:coconut_wallet/providers/node_provider/subscription/script_callback_util.dart';
-import 'package:coconut_wallet/providers/node_provider/transaction/transaction_sync_service.dart';
-import 'package:coconut_wallet/providers/node_provider/utxo_sync_service.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/result.dart';
-import 'package:coconut_wallet/providers/node_provider/state/state_manager_interface.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/node/script_status.dart';
+import 'package:hotconut_wallet/model/node/subscribe_stream_dto.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/node_provider/balance_sync_service.dart';
+import 'package:hotconut_wallet/providers/node_provider/subscription/script_callback_service.dart';
+import 'package:hotconut_wallet/providers/node_provider/subscription/script_callback_util.dart';
+import 'package:hotconut_wallet/providers/node_provider/transaction/transaction_sync_service.dart';
+import 'package:hotconut_wallet/providers/node_provider/utxo_sync_service.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/providers/node_provider/state/state_manager_interface.dart';
 
 /// 스크립트 상태 변경 이벤트 처리를 담당하는 클래스
 class ScriptSyncService {

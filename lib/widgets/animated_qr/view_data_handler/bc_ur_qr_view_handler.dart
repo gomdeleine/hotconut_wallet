@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:coconut_wallet/providers/view_model/send/unsigned_transaction_view_model.dart';
-import 'package:coconut_wallet/utils/print_util.dart';
+import 'package:hotconut_wallet/providers/view_model/send/unsigned_transaction_view_model.dart';
+import 'package:hotconut_wallet/utils/print_util.dart';
 import 'package:ur/ur.dart';
 import 'package:ur/ur_encoder.dart';
 import 'package:ur/cbor_lite.dart';
-import 'package:coconut_wallet/widgets/animated_qr/view_data_handler/i_qr_view_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/view_data_handler/i_qr_view_data_handler.dart';
 
 class BcUrQrViewHandler implements IQrViewDataHandler {
   final String _source;

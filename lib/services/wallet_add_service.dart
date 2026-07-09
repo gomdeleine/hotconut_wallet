@@ -1,11 +1,11 @@
 import 'package:cbor/simple.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/watch_only_wallet.dart';
-import 'package:coconut_wallet/utils/descriptor_util.dart';
-import 'package:coconut_wallet/utils/file_logger.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/type_converter_utils.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/watch_only_wallet.dart';
+import 'package:hotconut_wallet/utils/descriptor_util.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/type_converter_utils.dart';
 import 'package:ur/ur.dart';
 
 class WalletAddService {
@@ -111,5 +111,9 @@ class WalletAddService {
 
     // xpub으로 지갑 생성 (fallback)
     return createExtendedPublicKeyWallet(xpub, name, fingerprint);
+  }
+
+  WatchOnlyWallet createHotWalletFromVault({required SingleSignatureVault vault, required String name}) {
+    return WatchOnlyWallet(name, 0, 0, vault.descriptor, null, null, WalletImportSource.hotWallet.name);
   }
 }

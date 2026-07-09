@@ -1,4 +1,3 @@
-
 # flutter pub run slang
 
 # t.glossary
@@ -8,11 +7,12 @@
 coconut_wallet: "coconut_wallet"
 coconut_vault: "coconut_vault"
 coconut_lib: "coconut_lib"
+hotconut_wallet: "hotconut_wallet"
 
 bitcoin_name: "Bitcoin"
 wallet: "Billetera"
 btc: "BTC"
-bitcoin: "Bitcoin" 
+bitcoin: "Bitcoin"
 sats: "sats"
 satoshi: "Satoshi"
 testnet: "Red de prueba (Testnet)"
@@ -74,7 +74,7 @@ app_info: "Info de la app"
 update_failed: "Actualización fallida"
 calculation_failed: "Cálculo fallido"
 contact_email: "hello@noncelab.com"
-email_subject: "[Coconut Wallet] Consulta"
+email_subject: "[Hotconut Wallet] Consulta"
 amount: "Cantidad"
 send_amount: "Cantidad a enviar"
 fetch_fee_failed: "Fallo al obtener comisión"
@@ -267,7 +267,7 @@ wallet_home_screen:
   received: "Recibido"
 
 wallet_add_scanner_screen:
-  add_wallet: "Añadir billetera" 
+  add_wallet: "Añadir billetera"
   add_watch_only_wallet: "Añadir billetera de solo lectura (watch-only)"
   vault: "Coconut Vault"
   keystone: "Keystone 3 Pro"
@@ -275,10 +275,11 @@ wallet_add_scanner_screen:
   seed_signer: "SeedSigner"
   cold_card: "Coldcard"
   krux: "Krux"
+  hot_wallet: "Hot Wallet"
   self: "Ingresar datos de wallet"
   self_description: "Agrega una wallet watch-only desde otra app."
   select: "Seleccionar"
-  guide_vault: "En la pantalla principal de Coconut Vault, ve a: 'Exportar a billetera de solo lectura → Seleccionar billetera' o 'Seleccionar billetera → Exportar billetera → Exportar a billetera de solo lectura'. Luego escanea el código QR."  
+  guide_vault: "En la pantalla principal de Coconut Vault, ve a: 'Exportar a billetera de solo lectura → Seleccionar billetera' o 'Seleccionar billetera → Exportar billetera → Exportar a billetera de solo lectura'. Luego escanea el código QR."
   guide_seedsigner:
     step1: "1. En la pantalla principal, "
     step1_em: " Semillas"
@@ -303,7 +304,7 @@ wallet_add_scanner_screen:
     step2_em: " Connect Software Wallet"
     step3: "3. Selecciona una de las billeteras BlueWallet, Sparrow o Zeus"
   guide_jade:
-    step0_preposition: "En un " 
+    step0_preposition: "En un "
     step0_em: "Estado "
     step0: "Activo,"
     step1: "1. "
@@ -332,14 +333,14 @@ wallet_add_scanner_screen:
     select: "Seleccionar"
   paste:
     paste_button: "Importar mediante pegado"
-    app_bar_title_text: "Entrada manual" 
-    placeholder_text: "Ingresa la clave pública extendida (zpub) o el descriptor"  
-    format_error_text: "Formato no reconocido"  
-    invalid_character_error_text: "Contiene caracteres no permitidos"  
-    mainnet_wallet_error_text: "No es una billetera de red principal (Mainnet)"  
-    testnet_wallet_error_text: "No es una billetera de red de prueba (Testnet)"  
-    unsupported_wallet_error_text: "Billetera no compatible" 
-    wallet_description_text: "¿Dónde puedo encontrar la información adicional de la billetera?" 
+    app_bar_title_text: "Entrada manual"
+    placeholder_text: "Ingresa la clave pública extendida (zpub) o el descriptor"
+    format_error_text: "Formato no reconocido"
+    invalid_character_error_text: "Contiene caracteres no permitidos"
+    mainnet_wallet_error_text: "No es una billetera de red principal (Mainnet)"
+    testnet_wallet_error_text: "No es una billetera de red de prueba (Testnet)"
+    unsupported_wallet_error_text: "Billetera no compatible"
+    wallet_description_text: "¿Dónde puedo encontrar la información adicional de la billetera?"
     blue_wallet_texts:
       - "· BlueWallet"
       - "· Hot Wallet - More(•••) - Show Wallet XPUB"
@@ -359,7 +360,7 @@ wallet_add_scanner_screen:
     mfp_input_placeholder: "Huella digital maestra ej: f75f7ab5"
     mfp_skip: "Omitir"
     back_scan: "Volver al escaneo de QR"
-  
+
 # lib/screens/wallet_list
 wallet_list:
   wallet_count: "$count Elementos"
@@ -419,24 +420,24 @@ send_screen:
     one: " • ${count} UTXO"
     other: " • ${count} UTXOs"
   delete: "Eliminar"
-  fee_rate: "Tasa de comisión"  
+  fee_rate: "Tasa de comisión"
   fee_rate_suffix: "sat/vB"
-  estimated_fee: "Comisión estimada"  
-  fee_subtracted_from_send_amount: "Comisión restada del monto enviado"  
-  fee_subtracted_from_send_amount_disabled_description: "El destinatario recibe el monto exacto ingresado" 
-  fee_subtracted_from_send_amount_enabled_description: "La comisión se restará del monto del destinatario"  
+  estimated_fee: "Comisión estimada"
+  fee_subtracted_from_send_amount: "Comisión restada del monto enviado"
+  fee_subtracted_from_send_amount_disabled_description: "El destinatario recibe el monto exacto ingresado"
+  fee_subtracted_from_send_amount_enabled_description: "La comisión se restará del monto del destinatario"
   my_address: "Mis direcciones"
   current_wallet_label: "Actual"
-  add_recipient: "Agregar destinatario"  
+  add_recipient: "Agregar destinatario"
   use_btc_unit: "Usar unidad BTC"
   input_maximum_amount: "Enviar todo"
-  address_placeholder: "Ingrese la dirección del destinatario" 
-  recommended_fee_unavailable: "No se pudo obtener la tasa de comisión recomendada" 
-  recommended_fee_unavailable_description: "Por favor, ingrese la tasa de comisión manualmente." 
+  address_placeholder: "Ingrese la dirección del destinatario"
+  recommended_fee_unavailable: "No se pudo obtener la tasa de comisión recomendada"
+  recommended_fee_unavailable_description: "Por favor, ingrese la tasa de comisión manualmente."
   tooltip_text: "${count} direcciones • Total ${amount}"
   tooltip_max_mode_text: "Modo enviar todo habilitado"
   max_mode_insufficient_balance: "Saldo insuficiente"
-  unintended_dust_fee: "El cambio de ${unintendedDustFee} sat será usado como comisión." 
+  unintended_dust_fee: "El cambio de ${unintendedDustFee} sat será usado como comisión."
   fee_rate_too_low: "El valor mínimo permitido es 0.1"
   dialog:
     load_draft_failed: "Error al cargar"
@@ -456,7 +457,7 @@ utxo_selection_screen:
 select_wallet_with_options_bottom_sheet:
   select_utxo: "Seleccionar UTXO"
   select_utxo_auto: "Selección automática"
-  select_utxo_auto_minimal_fee_description: "Selecciona automáticamente los UTXO para pagar la mínima comisión" 
+  select_utxo_auto_minimal_fee_description: "Selecciona automáticamente los UTXO para pagar la mínima comisión"
   select_utxo_auto_selected_utxo_description: "La transacción usará solo los UTXO que elijas"
   n_utxos(param=count):
     one: " • ${count} UTXO"
@@ -467,7 +468,7 @@ select_wallet_with_options_bottom_sheet:
 broadcasting_screen:
   title: "Revisión final"
   description: "Listo para enviar usando los detalles a continuación"
-  self_sending: "Esta es una transacción enviada a mi propia billetera." 
+  self_sending: "Esta es una transacción enviada a mi propia billetera."
   error_popup_title: "Envío fallido"
   btn_submit: "Enviar"
   toast:
@@ -489,7 +490,7 @@ send_confirm_screen:
 signed_psbt_scanner_screen:
   title: "Escanear transacción firmada"
   bbqr_mode_switching: "Cambiando a modo BBQR.\nPor favor, espere un momento."
-  
+
 unsigned_tx_qr_screen:
   hardware_wallet_screen_guide: "Guía"
   guide_keystone:
@@ -528,14 +529,14 @@ unsigned_tx_qr_screen:
   view_ur: "Ver UR"
 
   guide_hardware_wallet:
-    step1: "Escanea el código QR a continuación con tu billetera de hardware para iniciar el proceso de firma." 
+    step1: "Escanea el código QR a continuación con tu billetera de hardware para iniciar el proceso de firma."
 
 coconut_qr_scanner:
   reading_extra_data: "Leyendo datos adicionales para recopilar\nPor favor, sigue escaneando"
   camera_error:
     title: "Acceso a cámara no disponible"
     need_camera_permission: "Por favor, permite el acceso a la cámara en Configuración."
-   
+
 #lib/screens/settings
 app_info_screen:
   coconut_crew_genesis_member: "Coconut Crew: Miembro Genesis"
@@ -545,14 +546,14 @@ app_info_screen:
   ask_to_discord: "Preguntar vía canal de Discord"
   ask_to_x: "Preguntar vía X"
   ask_to_email: "Preguntar vía email"
-  category2_opensource: "Coconut Wallet es de código abierto"
+  category2_opensource: "Hotconut Wallet es de código abierto"
   contribution: "Participar en el desarrollo de código abierto"
   tos_and_policy: "Términos y políticas"
   terms_of_service: "Términos de servicio"
   privacy_policy: "Política de privacidad"
   license: "Licencia de código abierto"
   data_collection: "Aviso de recopilación de datos"
-  version_and_date: "CoconutWallet ver. $version (lanzado el $releasedAt)"
+  version_and_date: "HotconutWallet ver. $version (lanzado el $releasedAt)"
   inquiry: "Contenido de consulta"
 bip39_list_screen:
   result: "Resultados de búsqueda para '$text'"
@@ -572,7 +573,7 @@ settings_screen:
   utxo_manual_selection: "Selección manual de UTXO"
   utxo_manual_selection_description: "Selecciona UTXOs manualmente para enviar"
   utxo_tier_theme: "Color de moneda"
-  electrum_server: 
+  electrum_server:
     server_address: "Dirección del servidor"
     port: "Puerto"
     use_ssl: "Usar SSL"
@@ -584,7 +585,7 @@ settings_screen:
     error_msg:
       invalid_domain_format: "No es un formato de dominio válido"
       port_out_of_range: "Por favor, ingrese un número de puerto válido (1–65535)"
-    alert: 
+    alert:
       connection_failed: "¡No se puede conectar!"
       connecting: "Conectando..."
       connected: "Conectado"
@@ -605,11 +606,11 @@ settings_screen:
     log_description_1: "Si encuentras algún problema, presiona el botón [Compartir] y envíalo vía email o contacta con nosotros en Discord."
     log_description_2: "La información compartida solo se usará para la resolución de problemas y se descartará inmediatamente después de resolver el problema."
     log_target: "[Objetivo de registro]"
-    log_target_description_1: "Para la verificación de síntomas y resolución de problemas, estamos registrando información cuando agregamos la billetera Keystone 3 Pro. Algunos dispositivos pueden enfrentar problemas, por lo que el registro está en progreso para verificar esto."  
+    log_target_description_1: "Para la verificación de síntomas y resolución de problemas, estamos registrando información cuando agregamos la billetera Keystone 3 Pro. Algunos dispositivos pueden enfrentar problemas, por lo que el registro está en progreso para verificar esto."
     log_target_description_2: "Registra la causa de las fases de error en el broadcast."
     clear_log: "Limpiar registro"
     clear_log_description: "¿Estás seguro de querer limpiar el registro?"
-    email_subject: "[Coconut Wallet] Registro de depuración"
+    email_subject: "[Hotconut Wallet] Registro de depuración"
     email_body: "Situación: (Por favor, describe brevemente la situación en la que ocurrió el problema)"
     email_error_msg: "No se puede abrir la aplicación de correo electrónico. Por favor, copie el registro y publíquelo en el canal de Discord."
     buttons:
@@ -708,21 +709,21 @@ wallet_info_screen:
   view_xpub: "Ver clave pública extendida"
   duplicated_name: "Nombre ya en uso"
   view_descriptor: "Ver descriptor"
-  view_wallet_backup_data: "Ver datos de respaldo de billetera" 
-  wallet_backup_data: "Datos de respaldo de billetera" 
+  view_wallet_backup_data: "Ver datos de respaldo de billetera"
+  wallet_backup_data: "Datos de respaldo de billetera"
   confirm_backup_data: "Confirmar datos de respaldo"
   no_info: "No hay datos"
   tooltip:
-    mfp_placeholder_description: "Esta es una billetera agregada con clave pública extendida\n y la huella digital maestra no se ingresó\n por lo que se muestra como 00000000." 
-    wallet_backup_data: "Esta es la información de respaldo BSMS(BIP-129) para esta billetera. Puedes usar estos datos para reconstruir la billetera multifirma en caso de pérdida o reemplazo de dispositivo. Por favor, manténgalo seguro y ten cuidado al compartir externamente." 
-    taproot_wallet_backup_data: "Esta es la información de respaldo para esta billetera. Puedes usar estos datos para reconstruir la billetera de herencia en caso de pérdida o reemplazo de dispositivo. Por favor, manténgalo seguro y ten cuidado al compartir externamente." 
+    mfp_placeholder_description: "Esta es una billetera agregada con clave pública extendida\n y la huella digital maestra no se ingresó\n por lo que se muestra como 00000000."
+    wallet_backup_data: "Esta es la información de respaldo BSMS(BIP-129) para esta billetera. Puedes usar estos datos para reconstruir la billetera multifirma en caso de pérdida o reemplazo de dispositivo. Por favor, manténgalo seguro y ten cuidado al compartir externamente."
+    taproot_wallet_backup_data: "Esta es la información de respaldo para esta billetera. Puedes usar estos datos para reconstruir la billetera de herencia en caso de pérdida o reemplazo de dispositivo. Por favor, manténgalo seguro y ten cuidado al compartir externamente."
     taproot_created_at: "Esta es la fecha en que se creó esta billetera en Coconut Vault"
     confirm_backup_data:
-      step1_em: "Ir a la pantalla de detalle de billetera $name" 
+      step1_em: "Ir a la pantalla de detalle de billetera $name"
       step2_preposition: "1. "
-      step2_em: "Exportar billetera" 
+      step2_em: "Exportar billetera"
       step3_preposition: "2. "
-      step3_em: "Datos de respaldo de billetera" 
+      step3_em: "Datos de respaldo de billetera"
       step4: "Por favor, escanea el código QR a continuación con la cámara."
       select: "Seleccionar"
   error:
@@ -739,31 +740,31 @@ wallet_signer_section:
 transaction_fee_bumping_screen:
   rbf: "RBF"
   cpfp: "CPFP"
-  existing_fee: "Comisión existente"  
+  existing_fee: "Comisión existente"
   existing_fee_value: "${value} sat/vB"
   total_fee: "Total $fee sats / ${vB} vB"
-  new_fee: "Nueva comisión"  
+  new_fee: "Nueva comisión"
   sats_vb: "sat/vB"
-  recommend_fee: "Comisión mínima: ${fee} sat/vB o superior"  
-  recommend_fee_info_rbf: "Se requiere una comisión adicional de al menos 1 sat por cada 1 vB del tamaño de la nueva transacción.\nSi la tasa mínima calculada es menor que la tasa de comisión lenta de la red actual, recomendamos usar la tasa lenta.\nSi el tamaño de la nueva transacción aumenta, la tasa de comisión recomendada puede ser inferior a la existente."  
-  recommend_fee_info_cpfp: "Debes compensar la comisión insuficiente con una nueva transacción.\n • Tamaño de la nueva transacción = ${newTxSize} vB, tasa de comisión recomendada = ${recommendedFeeRate} sat/vB\n • Comisión total requerida = (${originalTxSize} + ${newTxSize}) × ${recommendedFeeRate} = ${totalRequiredFee} sat\n • Comisión de la nueva transacción = ${totalRequiredFee} - ${originalFee} = ${newTxFee} sat\n • Tasa de comisión de la nueva transacción = ${newTxFee} ÷ ${newTxSize} ${inequalitySign} ${newTxFeeRate} sat/vB"  
+  recommend_fee: "Comisión mínima: ${fee} sat/vB o superior"
+  recommend_fee_info_rbf: "Se requiere una comisión adicional de al menos 1 sat por cada 1 vB del tamaño de la nueva transacción.\nSi la tasa mínima calculada es menor que la tasa de comisión lenta de la red actual, recomendamos usar la tasa lenta.\nSi el tamaño de la nueva transacción aumenta, la tasa de comisión recomendada puede ser inferior a la existente."
+  recommend_fee_info_cpfp: "Debes compensar la comisión insuficiente con una nueva transacción.\n • Tamaño de la nueva transacción = ${newTxSize} vB, tasa de comisión recomendada = ${recommendedFeeRate} sat/vB\n • Comisión total requerida = (${originalTxSize} + ${newTxSize}) × ${recommendedFeeRate} = ${totalRequiredFee} sat\n • Comisión de la nueva transacción = ${totalRequiredFee} - ${originalFee} = ${newTxFee} sat\n • Tasa de comisión de la nueva transacción = ${newTxFee} ÷ ${newTxSize} ${inequalitySign} ${newTxFeeRate} sat/vB"
   current_fee: "Comisión recomendada"
   utxo_auto_selection: "Selección automática de UTXO"
   utxo_auto_selection_description: "Se seleccionan automáticamente los UTXO debido a las comisiones adicionales."
   n_utxos: " • ${count} seleccionados"
   no_utxos_selected: " • Selección requerida"
-  estimated_fee: "Comisión total estimada de ${fee} sats"  
-  estimated_fee_too_high_error: "¡La comisión total estimada es superior a 0.01 BTC!" 
+  estimated_fee: "Comisión total estimada de ${fee} sats"
+  estimated_fee_too_high_error: "¡La comisión total estimada es superior a 0.01 BTC!"
   fee_rate_too_low_error: "¡La comisión es demasiado baja!"
   insufficient_balance_error: "¡Saldo insuficiente!"
-  recommended_fees_fetch_error: "¡No se pueden obtener comisiones recomendadas!" 
-  recommended_fees_is_null: "Obteniendo comisiones..." 
-  recommended_fee_less_than_pending_tx_fee: "Por favor, especifique una comisión superior a la comisión existente"  
-  recommended_fee_less_than_network_fee: "Por favor, especifique al menos la comisión recomendada" 
+  recommended_fees_fetch_error: "¡No se pueden obtener comisiones recomendadas!"
+  recommended_fees_is_null: "Obteniendo comisiones..."
+  recommended_fee_less_than_pending_tx_fee: "Por favor, especifique una comisión superior a la comisión existente"
+  recommended_fee_less_than_network_fee: "Por favor, especifique al menos la comisión recomendada"
   please_select_more_utxo: "Por favor, seleccione UTXOs por valor de al menos ${amount}"
   dialog:
     fee_alert_title: "Aviso"
-    fee_alert_description: "La comisión total que estableció es superior a 0.01 BTC. ¿Quieres continuar de todas formas?"  
+    fee_alert_description: "La comisión total que estableció es superior a 0.01 BTC. ¿Quieres continuar de todas formas?"
     confirmed_alert_title: "Transacción completada"
     confirmed_alert_description: "La transacción que estaba pendiente ha sido completada."
     rbf_duplicated_output_title: "Dirección duplicada detectada"
@@ -878,7 +879,7 @@ split_utxo_screen:
 
 # lib/widgets/card
 wallet_list_add_guide_card:
-  add_watch_only: "¡Intenta agregar una billetera de solo lectura (watch-only)!"
+  add_watch_only: "¡Intenta agregar una billetera!"
 wallet_list_glossary_shortcut_card:
   any_word_you_dont_know: "¿No conoces algún término?"
   top_right: "Arriba a la derecha "
@@ -890,13 +891,13 @@ faucet_request_bottom_sheet:
   title: "Obtener Bitcoin de prueba"
   recipient: "Dirección de recepción"
   placeholder: "Por favor, ingrese la dirección.\nPuedes verificar la dirección presionando el botón [Recibir]."
-  my_address: "Mi billetera($name) dirección - $index" 
+  my_address: "Mi billetera($name) dirección - $index"
   requesting: "Solicitando..."
   request_amount: "Solicitar $bitcoin BTC"
 license_bottom_sheet:
   title: "Información de licencia"
-  coconut_wallet: "Coconut Wallet"
-  copyright_text1: "Coconut Wallet sigue la licencia MIT y el copyright pertenece a NonceLab Inc. de la República de Corea. El texto completo de la licencia MIT se puede encontrar en "
+  coconut_wallet: "Hotconut Wallet"
+  copyright_text1: "Hotconut Wallet sigue la licencia MIT y el copyright pertenece a NonceLab Inc. de la República de Corea. El texto completo de la licencia MIT se puede encontrar en "
   copyright_text2: ".\n\nLos derechos de autor de software de terceros incluido en esta aplicación se establecen de la siguiente manera. Si tiene alguna pregunta sobre esto, por favor contáctenos en "
   copyright_text3: "."
   email_subject: "[Wallet] Consulta de licencia"
@@ -908,9 +909,9 @@ security_self_check_bottom_sheet:
   check5: "Verifico doblemente que no se incluyan caracteres no deseados en la frase de contraseña."
   check6: "Verifico frases mnemónicas y contraseñas en un lugar seguro donde no haya nadie presente."
   check7: "No almaceno frases mnemónicas y contraseñas juntas."
-  check8: "Comienzo a usar la billetera después de probar con pequeñas cantidades." 
+  check8: "Comienzo a usar la billetera después de probar con pequeñas cantidades."
   check9: "Verificaré periódicamente los elementos anteriores y almacenaré la frase mnemónica de forma segura."
-  guidance: "Por favor, entiende los elementos de auto-verificación a continuación y asegúrate de almacenar la frase mnemónica de forma segura."  
+  guidance: "Por favor, entiende los elementos de auto-verificación a continuación y asegúrate de almacenar la frase mnemónica de forma segura."
 tag_bottom_sheet:
   title_new_tag: "Agregar etiqueta"
   title_edit_tag: "Editar etiqueta"
@@ -926,7 +927,7 @@ glossary_bottom_sheet:
   related: "Términos relacionados"
 user_experience_survey_bottom_sheet:
   text1: "¡Has completado la transferencia de Bitcoin!👍"
-  text2: "¿Fue útil Coconut Wallet?"
+  text2: "¿Fue útil Hotconut Wallet?"
   text3: "¡Sí, es bueno!"
   text4: "Justo bien"
 unit_bottom_sheet:
@@ -939,13 +940,13 @@ errors:
   storage_write_error: "Fallo al guardar datos en el almacenamiento."
   network_error: "No se puede conectar a la red. Por favor, verifique su estado de conexión."
   node_connection_error: "Fallo al conectar a la red Bitcoin."
-  fetch_wallet_error: "Fallo al obtener la billetera." 
-  wallet_sync_failed_error: "Fallo al cargar la información de la billetera desde la red" 
+  fetch_wallet_error: "Fallo al obtener la billetera."
+  wallet_sync_failed_error: "Fallo al cargar la información de la billetera desde la red"
   fetch_balance_error: "Fallo al obtener el saldo."
   fetch_transaction_list_error: "Fallo al obtener el historial de transacciones."
   fetch_transactions_error: "Fallo al obtener el historial de transacciones."
   database_path_error: "No se puede encontrar la ruta de la base de datos."
-  fee_estimation_error: "Fallo al calcular la comisión." 
+  fee_estimation_error: "Fallo al calcular la comisión."
   realm_unknown: "Se produjo un error desconocido."
   realm_not_found: "Datos no encontrados."
   realm_exception: "Se produjo un error durante la operación Realm."
@@ -958,14 +959,14 @@ errors:
   vpn_connected: "Por favor, verifique su estado de conexión VPN"
   insufficient_balance: "Saldo insuficiente."
   fee_selection_error:
-    insufficient_balance: "Saldo insuficiente para pagar la comisión"  
-    recommended_fee_unavailable: "No se puede obtener la comisión recomendada.\nPresione el botón 'Cambiar' para ingresar la comisión directamente."  
+    insufficient_balance: "Saldo insuficiente para pagar la comisión"
+    recommended_fee_unavailable: "No se puede obtener la comisión recomendada.\nPresione el botón 'Cambiar' para ingresar la comisión directamente."
     insufficient_utxo: "UTXOs seleccionados son insuficientes"
   address_error:
     empty: "La dirección está vacía"
     invalid: "No es una dirección válida"
-    not_for_testnet: "No es una dirección de red de prueba (Testnet)" 
-    not_for_mainnet: "No es una dirección de red principal (Mainnet)"  
+    not_for_testnet: "No es una dirección de red de prueba (Testnet)"
+    not_for_mainnet: "No es una dirección de red principal (Mainnet)"
     not_for_regtest: "No es una dirección de red de registro"
     duplicated: "La dirección ya ha sido agregada"
   pin_check_error:
@@ -985,18 +986,18 @@ errors:
   transaction_draft:
     invalid_id: "No se pueden encontrar los datos del borrador de transacción"
   unexpected: "Ocurrió un error inesperado."
-  
+
 text_field:
   enter_fee_with_two_decimal_places: "Hasta dos decimales permitidos (sat/vB)"
   enter_fee_directly: "Introducir manualmente"
   search_mnemonic_word: "Buscar en inglés o números"
 
 tooltip:
-  recommended_fee1: "No se puede obtener la comisión recomendada. Por favor, ingrese la comisión manualmente." 
-  recommended_fee2: "La comisión que estableció es $bitcoin $unit o superior."  
-  wallet_add1: "Agregar nueva billetera o actualizar billeteras existentes." 
+  recommended_fee1: "No se puede obtener la comisión recomendada. Por favor, ingrese la comisión manualmente."
+  recommended_fee2: "La comisión que estableció es $bitcoin $unit o superior."
+  wallet_add1: "Agregar nueva billetera o actualizar billeteras existentes."
   wallet_add2: "Vault"
-  wallet_add3: "Selecciona la billetera que quieres usar en " 
+  wallet_add3: "Selecciona la billetera que quieres usar en "
   wallet_add4: "Exportar "
   wallet_add5: "y escanea el código QR que aparece en la pantalla."
   amount_to_be_sent: "Solo se puede enviar Bitcoin recibido.\nCantidad recibida: $bitcoin $unit"
@@ -1007,7 +1008,7 @@ tooltip:
     by_keystone: "Keystone"
     by_coldcard: "Coldcard"
     by_krux: "Krux"
-    by_hardware_wallet: "billetera de hardware" 
+    by_hardware_wallet: "billetera de hardware"
     by_vault_app: "aplicación Vault"
   unsigned_tx_qr:
     open_vault: "Abrir Coconut Vault"
@@ -1018,15 +1019,15 @@ tooltip:
   address_change: "Esta es la dirección donde recibes cambio cuando envías Bitcoin. En inglés, se llama Change."
   utxo: "UTXO significa Unspent Transaction Output, es decir, saldo no utilizado. Bitcoin no tiene el concepto de saldo. Recuerda que el saldo mostrado en tu billetera es la suma de UTXOs."
   faucet: "Prueba libremente con Bitcoin de prueba"
-  multisig_wallet: "Esta es una billetera multifirma que requiere\n$count firmas de $total claves."  
-  mfp: "Este es el valor único de la billetera.\nTambién llamado Huella Digital Maestra (MFP)."  
-  rbf: "Una característica para reemplazar una transacción existente con una nueva aumentando la comisión. (RBF, Replace-By-Fee)"  
-  cpfp: "Una característica para aumentar la prioridad estableciendo una alta comisión en una nueva transacción (Child) para hacer que la transacción existente (Parent) procese más rápido. (CPFP, Child-Pays-For-Parent)" 
+  multisig_wallet: "Esta es una billetera multifirma que requiere\n$count firmas de $total claves."
+  mfp: "Este es el valor único de la billetera.\nTambién llamado Huella Digital Maestra (MFP)."
+  rbf: "Una característica para reemplazar una transacción existente con una nueva aumentando la comisión. (RBF, Replace-By-Fee)"
+  cpfp: "Una característica para aumentar la prioridad estableciendo una alta comisión en una nueva transacción (Child) para hacer que la transacción existente (Parent) procese más rápido. (CPFP, Child-Pays-For-Parent)"
   dont_show_again: "No mostrar de nuevo"
 
 toast:
   back_exit: "Presiona el botón de retroceso una vez más para salir."
-  min_fee: "La comisión mínima recomendada actual es $minimum sat/vB."  
+  min_fee: "La comisión mínima recomendada actual es $minimum sat/vB."
   fetching_onchain_data: "Obteniendo los datos más recientes. Por favor, espera un momento."
   screen_capture: "Captura de pantalla detectada."
   no_balance: "No hay saldo."
@@ -1063,20 +1064,20 @@ alert:
     btn_view: "Ir al tutorial"
   forgot_password:
     title: "¿Olvidaste tu contraseña?"
-    description: "Puedes restablecer tu contraseña pulsando [Restablecer]. Cambiar la contraseña restablecerá la lista de billeteras sincronizadas."  
+    description: "Puedes restablecer tu contraseña pulsando [Restablecer]. Cambiar la contraseña restablecerá la lista de billeteras sincronizadas."
     btn_reset: "Restablecer"
   wallet_add:
     update_failed: "Fallo al actualizar"
     update_failed_description: "No hay información para actualizar para $name"
     duplicate_name: "Nombre duplicado"
-    duplicate_name_description: "Hay una billetera con el mismo nombre.\nPor favor, cambia el nombre y sincroniza."  
-    add_failed: "Fallo al agregar la billetera de solo lectura" 
-    add_failed_description: "Información de billetera inválida."  
-    already_exist: "Billetera duplicada"  
-    already_exist_description: "Billetera ya agregada. ($name)"  
+    duplicate_name_description: "Hay una billetera con el mismo nombre.\nPor favor, cambia el nombre y sincroniza."
+    add_failed: "Fallo al agregar la billetera de solo lectura"
+    add_failed_description: "Información de billetera inválida."
+    already_exist: "Billetera duplicada"
+    already_exist_description: "Billetera ya agregada. ($name)"
   wallet_delete:
-    confirm_delete: "Eliminar billetera"  
-    confirm_delete_description: "¿Estás seguro de querer eliminar la billetera?"  
+    confirm_delete: "Eliminar billetera"
+    confirm_delete_description: "¿Estás seguro de querer eliminar la billetera?"
   update:
     title: "Notificación de actualización"
     description: "Para un servicio estable,\npor favor, actualiza a la última versión."
@@ -1114,7 +1115,7 @@ third_party:
   jade: "Jade"
   seed_signer: "SeedSigner"
   cold_card: "Coldcard"
-  krux: "Krux"  
+  krux: "Krux"
   extended_public_keys:
     zpub: "zpub"
     vpub: "vpub"
@@ -1137,9 +1138,9 @@ language_bottom_sheet:
   spanish: "Español"
 
 estimated_fee_bottom_sheet:
-    title: "Comisión estimada"
-    estimated_fee: "Comisión estimada"
-    fee_rate: "Tasa de comisión"
+  title: "Comisión estimada"
+  estimated_fee: "Comisión estimada"
+  fee_rate: "Tasa de comisión"
 
 long_pressed_menu:
   hide: "Ocultar"
@@ -1166,3 +1167,58 @@ taproot:
   setup_summary_card:
     signer_configuration: "Configuración de firmantes"
     inheritance_condition: "Condición de herencia"
+
+hot_wallet:
+  title: "Hot Wallet"
+  onboarding_title: "Crear Hot Wallet"
+  onboarding_description: "Tu mnemónico se cifra y guarda en este dispositivo para firmar en la app. Es menos seguro que un firmador offline. Prueba primero con una cantidad pequeña."
+  pin_required_title: "PIN requerido"
+  pin_required_description: "Los hot wallets cifran y guardan tu mnemónico en este dispositivo. Configura un PIN antes de crear uno."
+  set_pin: "Configurar PIN"
+  pin_disable_blocked_title: "No se puede desactivar el PIN"
+  pin_disable_blocked_description: "No puedes desactivar el PIN mientras exista un hot wallet. Usa Cambiar contraseña para actualizar el PIN. Elimina el hot wallet primero si necesitas desactivar la protección por PIN."
+  create_hot_wallet: "Crear Hot Wallet"
+  create_new: "Generar nuevo mnemónico"
+  import_existing: "Importar mnemónico"
+  generate_title: "Generar mnemónico"
+  generate_description: "Guarda estas 24 palabras en un lugar seguro. No captures ni fotografíes esta pantalla."
+  generate_description_12: "Guarda estas 12 palabras en un lugar seguro. No captures ni fotografíes esta pantalla."
+  generate_description_24: "Guarda estas 24 palabras en un lugar seguro. No captures ni fotografíes esta pantalla."
+  mnemonic_length_12: "12 palabras"
+  mnemonic_length_24: "24 palabras"
+  regenerate_mnemonic: "Regenerar"
+  regenerate_confirm_title: "¿Regenerar mnemónico?"
+  regenerate_confirm_description: "El mnemónico actual dejará de ser válido. Si ya lo respaldaste, guarda el nuevo mnemónico de forma segura."
+  copy_mnemonic: "Copiar todo"
+  copy_mnemonic_warning: "Copiar el mnemónico al portapapeles puede exponerlo a otras apps. Borra el portapapeles después y no lo compartas con nadie."
+  copy_mnemonic_success: "Mnemónico copiado."
+  skip_backup: "Respaldar después"
+  skip_backup_warning: "Si omites la verificación de respaldo, no podrás recuperar tu cartera si pierdes el mnemónico. Puedes verlo después en la información de la cartera."
+  scan_mnemonic_qr: "Escanear QR"
+  scan_mnemonic_qr_title: "Escanear mnemónico QR"
+  import_title: "Importar mnemónico"
+  import_placeholder: "Introduce las palabras del mnemónico separadas por espacios"
+  passphrase_label: "Frase de contraseña (opcional)"
+  passphrase_placeholder: "Frase de contraseña BIP39"
+  backup_title: "Verificación de respaldo"
+  backup_description: "Verifica que has respaldado tu mnemónico de forma segura."
+  backup_quiz_title: "Cuestionario de respaldo"
+  backup_quiz_prompt: "¿Palabra n.º ${position}?"
+  backup_quiz_failed: "Respuesta incorrecta. Inténtalo de nuevo."
+  wallet_name_label: "Nombre de la cartera"
+  wallet_name_placeholder: "Hot Wallet"
+  export_title: "Ver mnemónico"
+  export_warning: "Nunca compartas tu mnemónico. No captures ni fotografíes la pantalla."
+  sign_title: "Firmar"
+  sign_description: "Introduce tu PIN para firmar la transacción."
+  sign_passphrase_title: "Introducir frase de contraseña"
+  sign_passphrase_description: "Introduce tu frase de contraseña BIP39 para completar la firma. No se guarda en la app y debes introducirla en cada firma."
+  sign_failed: "Error al firmar. Comprueba tu PIN."
+  passphrase_incorrect: "Frase de contraseña incorrecta."
+  passphrase_failed_attempts: "${count} fallos consecutivos"
+  passphrase_wallet_notice: "Esta cartera usa una frase de contraseña BIP39. No se guarda en la app y debes introducirla cada vez que firmes."
+  export_passphrase_notice: "La frase de contraseña BIP39 no se muestra. Guárdala por separado del mnemónico en un lugar seguro."
+  invalid_mnemonic: "Mnemónico no válido."
+  badge: "Hot"
+  view_mnemonic: "Ver mnemónico"
+  hot_wallet_description: "Una cartera que firma en este dispositivo."

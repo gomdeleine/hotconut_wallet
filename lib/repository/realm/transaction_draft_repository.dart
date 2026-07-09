@@ -1,12 +1,12 @@
-import 'package:coconut_wallet/constants/secure_keys.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/model/wallet/transaction_draft.dart';
-import 'package:coconut_wallet/repository/realm/base_repository.dart';
-import 'package:coconut_wallet/repository/realm/converter/transaction_draft.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/repository/secure_storage/secure_storage_repository.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/constants/secure_keys.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_draft.dart';
+import 'package:hotconut_wallet/repository/realm/base_repository.dart';
+import 'package:hotconut_wallet/repository/realm/converter/transaction_draft.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/repository/secure_storage/secure_storage_repository.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 import 'package:realm/realm.dart';
 
 class TransactionDraftRepository extends BaseRepository {

@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/node/wallet_update_info.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/node/wallet_update_info.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 /// NodeProvider 상태 정보를 담는 클래스
 class NodeProviderState {

@@ -1,6 +1,6 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
 import 'package:flutter/material.dart';
 
 /// 단일 입력 필드 + 하단 [FixedBottomButton]

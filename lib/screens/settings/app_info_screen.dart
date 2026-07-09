@@ -3,20 +3,20 @@ import 'dart:ui';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/external_links.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
-import 'package:coconut_wallet/widgets/button/single_button.dart';
+import 'package:hotconut_wallet/constants/external_links.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/widgets/button/shrink_animation_button.dart';
+import 'package:hotconut_wallet/widgets/button/single_button.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:coconut_wallet/constants/app_info.dart';
-import 'package:coconut_wallet/screens/settings/app_info_license_bottom_sheet.dart';
-import 'package:coconut_wallet/utils/uri_launcher.dart';
-import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
-import 'package:coconut_wallet/widgets/button/button_group.dart';
+import 'package:hotconut_wallet/constants/app_info.dart';
+import 'package:hotconut_wallet/screens/settings/app_info_license_bottom_sheet.dart';
+import 'package:hotconut_wallet/utils/uri_launcher.dart';
+import 'package:hotconut_wallet/widgets/overlays/common_bottom_sheets.dart';
+import 'package:hotconut_wallet/widgets/button/button_group.dart';
 
 class AppInfoScreen extends StatefulWidget {
   const AppInfoScreen({super.key});
@@ -169,8 +169,6 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                   CoconutLayout.spacing_400h,
                   coconutCrewWidget(),
                   CoconutLayout.spacing_400h,
-                  socialMediaWidget(),
-                  CoconutLayout.spacing_400h,
                   githubWidget(),
                   CoconutLayout.spacing_400h,
                   termsOfServiceWidget(),
@@ -275,66 +273,6 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
     );
   }
 
-  Widget socialMediaWidget() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: const BoxDecoration(color: CoconutColors.black),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _category(t.app_info_screen.category1_ask),
-          ButtonGroup(
-            buttons: [
-              SingleButton(
-                enableShrinkAnim: true,
-                buttonPosition: SingleButtonPosition.middle,
-                title: t.app_info_screen.ask_to_discord,
-                leftElement: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset('assets/images/discord-full-logo.png', width: 24, height: 24, fit: BoxFit.cover),
-                ),
-                onPressed: () {
-                  launchURL(DISCORD_COCONUT);
-                },
-              ),
-              SingleButton(
-                enableShrinkAnim: true,
-                buttonPosition: SingleButtonPosition.middle,
-                title: t.app_info_screen.ask_to_x,
-                leftElement: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset('assets/images/x-logo.jpg', width: 24, height: 24, fit: BoxFit.cover),
-                ),
-                onPressed: () {
-                  launchURL(X_POW);
-                },
-              ),
-              SingleButton(
-                enableShrinkAnim: true,
-                buttonPosition: SingleButtonPosition.bottom,
-                title: t.app_info_screen.ask_to_email,
-                leftElement: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset('assets/images/mail-icon.png', width: 24, height: 24, fit: BoxFit.cover),
-                ),
-                onPressed: () async {
-                  String info = await _getDeviceInfo(_packageInfoFuture);
-                  final Uri params = Uri(
-                    scheme: 'mailto',
-                    path: CONTACT_EMAIL_ADDRESS,
-                    query: 'subject=${t.email_subject}&body=$info',
-                  );
-
-                  launchURL(params.toString());
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget githubWidget() {
     Widget githubLogo = SvgPicture.asset('assets/svg/github-logo-white.svg', width: 24, height: 24, fit: BoxFit.cover);
     return Container(
@@ -366,7 +304,7 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
               ),
               SingleButton(
                 enableShrinkAnim: true,
-                buttonPosition: SingleButtonPosition.middle,
+                buttonPosition: SingleButtonPosition.bottom,
                 title: t.coconut_vault,
                 leftElement: githubLogo,
                 onPressed: () {
@@ -376,9 +314,10 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
               SingleButton(
                 enableShrinkAnim: true,
                 buttonPosition: SingleButtonPosition.bottom,
-                title: t.app_info_screen.contribution,
+                title: t.hotconut_wallet,
+                leftElement: githubLogo,
                 onPressed: () {
-                  launchURL(CONTRIBUTING_URL);
+                  launchURL(GITHUB_URL_HOTCONUT_WALLET);
                 },
               ),
             ],
@@ -400,22 +339,6 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
             buttons: [
               SingleButton(
                 enableShrinkAnim: true,
-                buttonPosition: SingleButtonPosition.top,
-                title: t.app_info_screen.terms_of_service,
-                onPressed: () {
-                  launchURL(TERMS_OF_SERVICE_URL);
-                },
-              ),
-              SingleButton(
-                enableShrinkAnim: true,
-                buttonPosition: SingleButtonPosition.middle,
-                title: t.app_info_screen.privacy_policy,
-                onPressed: () {
-                  launchURL(PRIVACY_POLICY_URL);
-                },
-              ),
-              SingleButton(
-                enableShrinkAnim: true,
                 buttonPosition: SingleButtonPosition.bottom,
                 title: t.app_info_screen.license,
                 onPressed: () {
@@ -426,14 +349,6 @@ class _AppInfoScreenState extends State<AppInfoScreen> {
                   );
                 },
               ),
-              if (appFlavor == "mainnet")
-                SingleButton(
-                  buttonPosition: SingleButtonPosition.bottom,
-                  title: t.app_info_screen.data_collection,
-                  onPressed: () {
-                    launchURL(DATA_COLLECTION_URL);
-                  },
-                ),
             ],
           ),
         ],

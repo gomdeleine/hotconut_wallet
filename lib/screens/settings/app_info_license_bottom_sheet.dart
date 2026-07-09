@@ -1,9 +1,9 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/constants/external_links.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/constants/external_links.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/utils/uri_launcher.dart';
+import 'package:hotconut_wallet/utils/uri_launcher.dart';
 
 import '../../oss_licenses.dart';
 
@@ -80,11 +80,6 @@ class _LicenseBottomSheetState extends State<LicenseBottomSheet> {
                           style: defaultTextStyle,
                           children: <TextSpan>[
                             linkSpan(text: MIT_LICENSE_URL, url: MIT_LICENSE_URL),
-                            TextSpan(text: t.license_bottom_sheet.copyright_text2),
-                            linkSpan(
-                              text: CONTACT_EMAIL_ADDRESS,
-                              url: 'mailto:$CONTACT_EMAIL_ADDRESS?subject=${t.license_bottom_sheet.email_subject}',
-                            ),
                             TextSpan(text: t.license_bottom_sheet.copyright_text3, style: defaultTextStyle),
                           ],
                         ),

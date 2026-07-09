@@ -1,7 +1,7 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/external_links.dart';
-import 'package:coconut_wallet/services/model/response/recommended_fee.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/external_links.dart';
+import 'package:hotconut_wallet/services/model/response/recommended_fee.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:dio/dio.dart';
 
 class FeeService {

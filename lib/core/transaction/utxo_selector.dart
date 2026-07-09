@@ -1,11 +1,11 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/dust_constants.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
-import 'package:coconut_wallet/model/taproot_script_path_config.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/multisig_config.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/dust_constants.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
+import 'package:hotconut_wallet/model/taproot_script_path_config.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_config.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 class UtxoSelectionResult {
   final List<UtxoState> selectedUtxos;

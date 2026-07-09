@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/providers/view_model/settings/realm_debug_view_model.dart';
-import 'package:coconut_wallet/widgets/realm_debug/sort_options_section.dart';
-import 'package:coconut_wallet/widgets/realm_debug/statistics_section.dart';
+import 'package:hotconut_wallet/providers/view_model/settings/realm_debug_view_model.dart';
+import 'package:hotconut_wallet/widgets/realm_debug/sort_options_section.dart';
+import 'package:hotconut_wallet/widgets/realm_debug/statistics_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

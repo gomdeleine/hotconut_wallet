@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 
 class AppError {
   final String code;

@@ -1,9 +1,9 @@
-import 'package:coconut_wallet/constants/external_links.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/utils/uri_launcher.dart';
+import 'package:hotconut_wallet/constants/external_links.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/utils/uri_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -76,15 +76,15 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
               try {
                 final logContent = await FileLogger.getLogContent();
                 final logText = logContent ?? 'No log content available';
-
-                final Uri emailUri = Uri(
-                  scheme: 'mailto',
-                  path: CONTACT_EMAIL_ADDRESS,
-                  query:
-                      'subject=${t.settings_screen.log_viewer_screen.email_subject}&body=${t.settings_screen.log_viewer_screen.email_body}\n\n$logText',
-                );
-
-                await launchURL(emailUri.toString());
+                await Clipboard.setData(ClipboardData(text: logText));
+                if (context.mounted) {
+                  CoconutToast.showToast(
+                    context: context,
+                    isVisibleIcon: true,
+                    text: t.settings_screen.log_viewer_screen.buttons.toast.copy_success,
+                    seconds: 2,
+                  );
+                }
               } catch (e) {
                 if (context.mounted) {
                   CoconutToast.showToast(
@@ -195,10 +195,6 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
   Widget _buildButtons() {
     return Row(
       children: [
-        _buildButton(t.settings_screen.log_viewer_screen.buttons.discord, () {
-          launchURL(DISCORD_COCONUT);
-        }),
-        CoconutLayout.spacing_100w,
         _buildButton(t.settings_screen.log_viewer_screen.buttons.copy, () {
           Clipboard.setData(ClipboardData(text: _logContent));
           CoconutToast.showToast(

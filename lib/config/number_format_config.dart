@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/utils/locale_util.dart';
+import 'package:hotconut_wallet/utils/locale_util.dart';
 
 /// 앱 전역 숫자 포맷 설정 (싱글톤)
 ///

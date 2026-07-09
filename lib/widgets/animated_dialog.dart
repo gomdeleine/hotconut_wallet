@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:coconut_wallet/styles.dart';
+import 'package:hotconut_wallet/styles.dart';
 
 class AnimatedDialog extends StatefulWidget {
   final BuildContext context;

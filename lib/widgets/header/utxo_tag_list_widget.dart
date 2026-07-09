@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/providers/view_model/wallet_detail/utxo_list_view_model.dart';
-import 'package:coconut_wallet/widgets/selector/custom_tag_horizontal_selector.dart';
+import 'package:hotconut_wallet/providers/view_model/wallet_detail/utxo_list_view_model.dart';
+import 'package:hotconut_wallet/widgets/selector/custom_tag_horizontal_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

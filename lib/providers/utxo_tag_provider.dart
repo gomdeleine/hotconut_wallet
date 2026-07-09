@@ -1,8 +1,8 @@
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/repository/realm/utxo_repository.dart';
-import 'package:coconut_wallet/screens/common/tag_apply_bottom_sheet.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/repository/realm/utxo_repository.dart';
+import 'package:hotconut_wallet/screens/common/tag_apply_bottom_sheet.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 

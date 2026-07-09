@@ -1,8 +1,9 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/utils/colors_util.dart';
-import 'package:coconut_wallet/utils/icons_util.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/utils/colors_util.dart';
+import 'package:hotconut_wallet/utils/icons_util.dart';
 import 'package:flutter/material.dart';
+import 'package:hotconut_wallet/widgets/icon/wallet_import_source_icon.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'dart:math' as math;
@@ -61,8 +62,8 @@ class WalletIconSmall extends StatelessWidget {
               bottom: 6,
               child:
                   isExternalWallet
-                      ? SvgPicture.asset(
-                        walletImportSource.externalWalletIconPath,
+                      ? WalletImportSourceIcon(
+                        walletImportSource: walletImportSource,
                         colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
                       )
                       : SvgPicture.asset(

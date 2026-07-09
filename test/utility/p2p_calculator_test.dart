@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/providers/connectivity_provider.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/price_provider.dart';
-import 'package:coconut_wallet/providers/view_model/utility/p2p_calculator_view_model.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/providers/connectivity_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/price_provider.dart';
+import 'package:hotconut_wallet/providers/view_model/utility/p2p_calculator_view_model.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class FakePreferenceProvider extends Fake implements PreferenceProvider {

@@ -1,15 +1,16 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/send_info_provider.dart';
-import 'package:coconut_wallet/providers/view_model/send/send_confirm_view_model.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
-import 'package:coconut_wallet/widgets/card/send_transaction_flow_card.dart';
-import 'package:coconut_wallet/widgets/send_amount_header.dart';
-import 'package:coconut_wallet/widgets/send_output_detail_card.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/send_info_provider.dart';
+import 'package:hotconut_wallet/providers/view_model/send/send_confirm_view_model.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/utils/balance_format_util.dart';
+import 'package:hotconut_wallet/utils/hot_wallet_util.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/widgets/card/send_transaction_flow_card.dart';
+import 'package:hotconut_wallet/widgets/send_amount_header.dart';
+import 'package:hotconut_wallet/widgets/send_output_detail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
@@ -79,17 +80,22 @@ class _SendConfirmScreenState extends State<SendConfirmScreen> {
                     ),
                   ),
                   FixedBottomButton(
-                    onButtonClicked: () {
+                    onButtonClicked: () async {
                       context.loaderOverlay.show();
                       viewModel.setTxWaitingForSign();
-                      if (context.mounted) {
-                        context.loaderOverlay.hide();
-                        Navigator.pushNamed(
-                          context,
-                          '/unsigned-transaction-qr',
-                          arguments: {'walletName': viewModel.walletName},
-                        );
+                      if (!context.mounted) return;
+                      context.loaderOverlay.hide();
+
+                      if (viewModel.isHotWallet) {
+                        final canProceed = await ensureHotWalletPinSet(context);
+                        if (!canProceed || !context.mounted) return;
                       }
+
+                      Navigator.pushNamed(
+                        context,
+                        viewModel.isHotWallet ? '/hot-wallet-sign' : '/unsigned-transaction-qr',
+                        arguments: viewModel.isHotWallet ? null : {'walletName': viewModel.walletName},
+                      );
                     },
                     text: t.next,
                     backgroundColor: CoconutColors.gray100,

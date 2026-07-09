@@ -1,7 +1,7 @@
-import 'package:coconut_wallet/utils/file_logger.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/i_fragmented_qr_scan_data_handler.dart';
-import 'package:coconut_wallet/widgets/animated_qr/scan_data_handler/scan_data_handler_exceptions.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/i_fragmented_qr_scan_data_handler.dart';
+import 'package:hotconut_wallet/widgets/animated_qr/scan_data_handler/scan_data_handler_exceptions.dart';
 import 'package:ur/ur_decoder.dart';
 
 enum UrType {

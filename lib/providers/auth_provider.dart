@@ -1,11 +1,13 @@
 import 'dart:math';
 
-import 'package:coconut_wallet/constants/shared_pref_keys.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/repository/secure_storage/secure_storage_repository.dart';
-import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
-import 'package:coconut_wallet/utils/hash_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/shared_pref_keys.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/repository/secure_storage/secure_storage_repository.dart';
+import 'package:hotconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
+import 'package:hotconut_wallet/services/hot_wallet/hot_wallet_key_service.dart';
+import 'package:hotconut_wallet/utils/hash_util.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -14,7 +16,8 @@ import '../constants/secure_keys.dart';
 
 class AuthProvider extends ChangeNotifier {
   final SharedPrefsRepository _sharedPrefs = SharedPrefsRepository();
-  final SecureStorageRepository _secureStorageService = SecureStorageRepository();
+  final SecureStorageRepository _secureStorageService;
+  final HotWalletKeyService _hotWalletKeyService;
   final LocalAuthentication _auth = LocalAuthentication();
 
   /// 사용자 생체인증 on/off 여부
@@ -33,13 +36,18 @@ class AuthProvider extends ChangeNotifier {
   late int _pinLength;
   int get pinLength => _pinLength;
 
+  /// PIN 입력 UI용 길이. 해제 직후 `_pinLength == 0`인 비정상 상태를 방어합니다.
+  int get effectivePinLength => _pinLength == 0 ? 4 : _pinLength;
+
   /// 인증 활성화 여부
   bool get isAuthEnabled => _isSetPin;
 
   /// 생체인식 인증 활성화 여부
   bool get isBiometricsAuthEnabled => _canCheckBiometrics && _isSetBiometrics;
 
-  AuthProvider() {
+  AuthProvider()
+    : _secureStorageService = SecureStorageRepository(),
+      _hotWalletKeyService = HotWalletKeyService() {
     _isSetBiometrics = _sharedPrefs.getBool(SharedPrefKeys.kIsSetBiometrics);
     _canCheckBiometrics = _sharedPrefs.getBool(SharedPrefKeys.kCanCheckBiometrics);
     _isSetPin = _sharedPrefs.getBool(SharedPrefKeys.kIsSetPin);
@@ -48,6 +56,16 @@ class AuthProvider extends ChangeNotifier {
       _pinLength = 4;
     }
     checkDeviceBiometrics();
+  }
+
+  @visibleForTesting
+  AuthProvider.test({required SecureStorageRepository secureStorage, HotWalletKeyService? hotWalletKeyService})
+    : _secureStorageService = secureStorage,
+      _hotWalletKeyService = hotWalletKeyService ?? HotWalletKeyService() {
+    _isSetBiometrics = false;
+    _canCheckBiometrics = false;
+    _isSetPin = false;
+    _pinLength = 4;
   }
 
   /// 생체인증 성공했는지 여부 반환
@@ -105,7 +123,23 @@ class AuthProvider extends ChangeNotifier {
   Future<void> saveIsSetBiometrics(bool value) async {
     _isSetBiometrics = value;
     await _sharedPrefs.setBool(SharedPrefKeys.kIsSetBiometrics, value);
+    if (!value) {
+      await _hotWalletKeyService.disableBiometricFastPath();
+    }
     notifyListeners();
+  }
+
+  /// 생체 빠른 경로 활성화. PIN으로 DEK를 확보해 생체 게이트 뒤 저장소에 사본을 둔다.
+  /// (평문 PIN은 저장하지 않는다.)
+  Future<void> enableHotWalletBiometricFastPath(String pin) async {
+    await _hotWalletKeyService.enableBiometricFastPath(pin);
+  }
+
+  /// 생체인증 성공 후 DEK 사본 반환. 취소/실패/미저장 시 null.
+  Future<List<int>?> unlockHotWalletDeviceKeyWithBiometrics() async {
+    if (!isBiometricsAuthEnabled) return null;
+    if (!await authenticateWithBiometrics()) return null;
+    return _hotWalletKeyService.readBiometricDeviceKey();
   }
 
   /// 비밀번호 저장
@@ -121,6 +155,7 @@ class AuthProvider extends ChangeNotifier {
   /// 비밀번호 삭제
   Future<void> deletePin() async {
     await _secureStorageService.delete(key: kSecureStoragePinKey);
+    await _hotWalletKeyService.disableBiometricFastPath();
     _isSetPin = false;
     _isSetBiometrics = false;
     _pinLength = 0;
@@ -149,11 +184,12 @@ class AuthProvider extends ChangeNotifier {
     await checkDeviceBiometrics();
   }
 
-  List<String> getShuffledNumberPad({bool isSettings = false}) {
+  List<String> getShuffledNumberPad({bool isSettings = false, bool? showBiometric}) {
     final random = Random();
     var randomNumberPad = List<String>.generate(10, (index) => index.toString());
     randomNumberPad.shuffle(random);
-    randomNumberPad.insert(randomNumberPad.length - 1, !isSettings && _isSetBiometrics ? 'bio' : '');
+    final shouldShowBio = showBiometric ?? (!isSettings && _isSetBiometrics);
+    randomNumberPad.insert(randomNumberPad.length - 1, shouldShowBio ? 'bio' : '');
     randomNumberPad.add('<');
     return randomNumberPad;
   }

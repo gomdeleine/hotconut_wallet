@@ -1,16 +1,16 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/error/app_error.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/node/transaction_details.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/node_provider/transaction/transaction_sync_service.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/services/electrum_service.dart';
-import 'package:coconut_wallet/services/model/response/block_timestamp.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/error/app_error.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/node/transaction_details.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/node_provider/transaction/transaction_sync_service.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/services/electrum_service.dart';
+import 'package:hotconut_wallet/services/model/response/block_timestamp.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 
 class TransactionRecordService {
   final ElectrumService _electrumService;

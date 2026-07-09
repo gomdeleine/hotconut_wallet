@@ -3,14 +3,12 @@ import 'dart:io';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/app.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/main.dart';
-import 'package:coconut_wallet/providers/auth_provider.dart';
-import 'package:coconut_wallet/providers/view_model/onboarding/start_view_model.dart';
-import 'package:coconut_wallet/providers/visibility_provider.dart';
-import 'package:coconut_wallet/utils/system_chrome_util.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/app.dart';
+import 'package:hotconut_wallet/main.dart';
+import 'package:hotconut_wallet/providers/auth_provider.dart';
+import 'package:hotconut_wallet/providers/view_model/onboarding/start_view_model.dart';
+import 'package:hotconut_wallet/providers/visibility_provider.dart';
+import 'package:hotconut_wallet/utils/system_chrome_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,37 +63,7 @@ class _StartScreenState extends State<StartScreen> {
 
   void _initialize() async {
     await Future.delayed(const Duration(seconds: 1));
-    if (_viewModel.canUpdate) {
-      bool finishDialogValue = await _showUpdateDialog();
-      if (!finishDialogValue) {
-        await _viewModel.setNextUpdateDialogDate();
-      }
-    }
-
-    AppEntryFlow nextScreen = await _viewModel.determineStartScreen();
+    final AppEntryFlow nextScreen = await _viewModel.determineStartScreen();
     widget.onComplete(nextScreen);
-  }
-
-  /// 업데이트 다이얼로그 표시
-  Future<bool> _showUpdateDialog() async {
-    return (await showDialog<bool>(
-          context: context,
-          barrierDismissible: false,
-          builder:
-              (context) => CoconutPopup(
-                languageCode: context.read<PreferenceProvider>().language,
-                title: t.alert.update.title,
-                description: t.alert.update.description,
-                rightButtonText: t.alert.update.btn_update,
-                rightButtonColor: CoconutColors.primary,
-                leftButtonText: t.alert.update.btn_do_later,
-                onTapRight: () async {
-                  await _viewModel.launchUpdate();
-                  if (mounted) Navigator.pop(context, true);
-                },
-                onTapLeft: () => Navigator.pop(context, false),
-              ),
-        )) ??
-        false;
   }
 }

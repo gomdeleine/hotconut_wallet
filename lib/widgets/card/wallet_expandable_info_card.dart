@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 
 class WalletExpandableInfoCard extends StatefulWidget {
   const WalletExpandableInfoCard({super.key});

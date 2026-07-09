@@ -1,30 +1,31 @@
 import 'dart:async';
 
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/auth_provider.dart';
-import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/view_model/wallet_detail/wallet_info_view_model.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/screens/common/pin_check_screen.dart';
-import 'package:coconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/home/wallet_add_mfp_input_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_signer_section.dart';
-import 'package:coconut_wallet/utils/vibration_util.dart';
-import 'package:coconut_wallet/widgets/button/button_group.dart';
-import 'package:coconut_wallet/widgets/button/single_button.dart';
-import 'package:coconut_wallet/widgets/card/wallet_info_item_card.dart';
-import 'package:coconut_wallet/widgets/custom_loading_overlay.dart';
-import 'package:coconut_wallet/widgets/dialog.dart';
-import 'package:coconut_wallet/screens/common/qr_with_copy_text_screen.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
-import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
-import 'package:coconut_wallet/extensions/string_extensions.dart';
-import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
-import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/auth_provider.dart';
+import 'package:hotconut_wallet/providers/node_provider/node_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/view_model/wallet_detail/wallet_info_view_model.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/screens/common/pin_check_screen.dart';
+import 'package:hotconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
+import 'package:hotconut_wallet/screens/home/wallet_add_mfp_input_bottom_sheet.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_signer_section.dart';
+import 'package:hotconut_wallet/utils/vibration_util.dart';
+import 'package:hotconut_wallet/widgets/button/button_group.dart';
+import 'package:hotconut_wallet/widgets/button/single_button.dart';
+import 'package:hotconut_wallet/widgets/card/wallet_info_item_card.dart';
+import 'package:hotconut_wallet/widgets/custom_loading_overlay.dart';
+import 'package:hotconut_wallet/widgets/dialog.dart';
+import 'package:hotconut_wallet/screens/common/qr_with_copy_text_screen.dart';
+import 'package:hotconut_wallet/utils/balance_format_util.dart';
+import 'package:hotconut_wallet/utils/numeric_input_formatters.dart';
+import 'package:hotconut_wallet/extensions/string_extensions.dart';
+import 'package:hotconut_wallet/widgets/button/shrink_animation_button.dart';
+import 'package:hotconut_wallet/widgets/overlays/common_bottom_sheets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
@@ -59,6 +60,7 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
   double _tooltipTopPadding = 0;
   Timer? _tooltipTimer;
   int _tooltipRemainingTime = 0;
+  bool _isDeleting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +75,10 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
           ),
       child: Consumer<WalletInfoViewModel>(
         builder: (innerContext, viewModel, child) {
+          if (_isDeleting) {
+            return const SizedBox.shrink();
+          }
+
           return Stack(
             children: [
               GestureDetector(
@@ -155,6 +161,19 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
                                     );
                                   },
                                 ),
+                                if (viewModel.isHotWallet)
+                                  SingleButton(
+                                    enableShrinkAnim: true,
+                                    title: t.hot_wallet.view_mnemonic,
+                                    onPressed: () {
+                                      _removeTooltip();
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/hot-wallet-export',
+                                        arguments: {'walletId': widget.id},
+                                      );
+                                    },
+                                  ),
                               ],
                               if (widget.walletType == WalletType.taproot) ...[
                                 SingleButton(
@@ -451,6 +470,7 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
   }
 
   Future<void> _deleteWalletAndGoToEntryPoint(BuildContext context, WalletInfoViewModel viewModel) async {
+    _isDeleting = true;
     Navigator.of(context).pop();
 
     final navigator = Navigator.of(context);

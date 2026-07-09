@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/providers/node_provider/isolate/isolate_enum.dart';
+import 'package:hotconut_wallet/providers/node_provider/isolate/isolate_enum.dart';
 
 class IsolateStateMessage {
   IsolateStateMethod methodName;

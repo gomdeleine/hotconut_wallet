@@ -1,9 +1,9 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
-import 'package:coconut_wallet/utils/balance_format_util.dart';
-import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/screens/common/single_text_field_bottom_sheet.dart';
+import 'package:hotconut_wallet/utils/balance_format_util.dart';
+import 'package:hotconut_wallet/utils/numeric_input_formatters.dart';
 import 'package:flutter/material.dart';
 
 /// [Bip21AmountBottomSheet]에서 사용되는 결과 DTO

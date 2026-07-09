@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/config/number_format_config.dart';
+import 'package:hotconut_wallet/config/number_format_config.dart';
 import 'package:flutter/services.dart';
 
 String filterNumericInput(String input, {required int decimalPlaces, int integerPlaces = -1}) {

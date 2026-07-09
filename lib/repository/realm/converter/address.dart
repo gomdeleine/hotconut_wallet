@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/model/wallet/wallet_address.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_address.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
 
 WalletAddress mapRealmToWalletAddress(RealmWalletAddress realmAddress) {
   return WalletAddress(

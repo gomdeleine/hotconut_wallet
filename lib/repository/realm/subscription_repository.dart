@@ -1,8 +1,8 @@
-import 'package:coconut_wallet/model/node/script_status.dart';
-import 'package:coconut_wallet/repository/realm/base_repository.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/model/node/script_status.dart';
+import 'package:hotconut_wallet/repository/realm/base_repository.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 
 class SubscriptionRepository extends BaseRepository {
   SubscriptionRepository(super._realmManager);

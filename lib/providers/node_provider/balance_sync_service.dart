@@ -1,13 +1,13 @@
-import 'package:coconut_wallet/model/node/script_status.dart';
-import 'package:coconut_wallet/model/node/update_address_balance_dto.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/repository/realm/wallet_repository.dart';
-import 'package:coconut_wallet/services/electrum_service.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/providers/node_provider/state/state_manager_interface.dart';
+import 'package:hotconut_wallet/model/node/script_status.dart';
+import 'package:hotconut_wallet/model/node/update_address_balance_dto.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/repository/realm/wallet_repository.dart';
+import 'package:hotconut_wallet/services/electrum_service.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/providers/node_provider/state/state_manager_interface.dart';
 
 /// NodeProvider의 잔액 관련 기능을 담당하는 매니저 클래스
 class BalanceSyncService {

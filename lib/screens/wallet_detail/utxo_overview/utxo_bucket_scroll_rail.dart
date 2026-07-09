@@ -1,5 +1,5 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/model/utxo/utxo_bucket.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_bucket.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

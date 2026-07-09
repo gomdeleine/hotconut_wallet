@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/packages/bc-ur-dart/lib/cbor_lite.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/packages/bc-ur-dart/lib/cbor_lite.dart';
 import 'package:ur/ur.dart';
-import 'package:coconut_wallet/packages/bc-ur-dart/lib/ur_encoder.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/utils/bb_qr/bb_qr_encoder.dart';
+import 'package:hotconut_wallet/packages/bc-ur-dart/lib/ur_encoder.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/utils/bb_qr/bb_qr_encoder.dart';
 import 'package:flutter/material.dart';
 
 class CoordinatorBsmsQrViewModel extends ChangeNotifier {

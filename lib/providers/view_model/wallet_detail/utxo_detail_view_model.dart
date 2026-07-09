@@ -1,21 +1,21 @@
 import 'dart:async';
 
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/providers/node_provider/transaction/mempool_api_service.dart';
-import 'package:coconut_wallet/providers/preferences/block_explorer_provider.dart';
-import 'package:coconut_wallet/providers/transaction_provider.dart';
-import 'package:coconut_wallet/providers/utxo_tag_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/model/node/wallet_update_info.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/utils/datetime_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/text_utils.dart';
-import 'package:coconut_wallet/utils/transaction_util.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/providers/node_provider/transaction/mempool_api_service.dart';
+import 'package:hotconut_wallet/providers/preferences/block_explorer_provider.dart';
+import 'package:hotconut_wallet/providers/transaction_provider.dart';
+import 'package:hotconut_wallet/providers/utxo_tag_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/model/node/wallet_update_info.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/utils/datetime_util.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/text_utils.dart';
+import 'package:hotconut_wallet/utils/transaction_util.dart';
 import 'package:flutter/material.dart';
 
 class UtxoDetailViewModel extends ChangeNotifier {

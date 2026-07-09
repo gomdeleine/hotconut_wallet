@@ -1,18 +1,18 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/base/async/cancelable_task.dart';
+import 'package:hotconut_wallet/base/async/cancelable_task.dart';
 import 'dart:async';
 import 'dart:isolate';
-import 'package:coconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
-import 'package:coconut_wallet/core/exceptions/utxo_split/utxo_split_exception.dart';
-import 'package:coconut_wallet/core/transaction/transaction_builder.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/model/wallet/wallet_address.dart';
-import 'package:coconut_wallet/repository/realm/address_repository.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/core/exceptions/transaction_creation/transaction_creation_exception.dart';
+import 'package:hotconut_wallet/core/exceptions/utxo_split/utxo_split_exception.dart';
+import 'package:hotconut_wallet/core/transaction/transaction_builder.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_address.dart';
+import 'package:hotconut_wallet/repository/realm/address_repository.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 class UtxoSplitResult {
   final Transaction? transaction;

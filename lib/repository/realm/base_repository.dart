@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/model/error/app_error.dart';
-import 'package:coconut_wallet/repository/realm/realm_manager.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/model/error/app_error.dart';
+import 'package:hotconut_wallet/repository/realm/realm_manager.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 import 'package:realm/realm.dart';
 
 class BaseRepository {

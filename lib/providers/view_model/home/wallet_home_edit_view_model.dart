@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:coconut_wallet/model/preference/home_feature.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/screens/home/wallet_home_edit_screen.dart';
+import 'package:hotconut_wallet/model/preference/home_feature.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/screens/home/wallet_home_edit_screen.dart';
 import 'package:flutter/material.dart';
 
 class WalletHomeEditViewModel extends ChangeNotifier {

@@ -1,17 +1,18 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/view_model/wallet_detail/wallet_info_edit_view_model.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/utils/icons_util.dart';
-import 'package:coconut_wallet/utils/colors_util.dart';
-import 'package:coconut_wallet/widgets/icon/svg_icon.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/view_model/wallet_detail/wallet_info_edit_view_model.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/utils/icons_util.dart';
+import 'package:hotconut_wallet/utils/colors_util.dart';
+import 'package:hotconut_wallet/widgets/icon/wallet_import_source_icon.dart';
+import 'package:hotconut_wallet/widgets/icon/svg_icon.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
-import 'package:coconut_wallet/styles.dart';
+import 'package:hotconut_wallet/styles.dart';
 
 class WalletInfoEditBottomSheet extends StatelessWidget {
   final int id;
@@ -311,17 +312,22 @@ class _WalletInfoEditBottomSheetState extends State<_WalletInfoEditBottomSheetCo
   Widget _buildIcon() {
     final iconColor = _canEditPalette ? ColorUtil.getColor(_selectedColorIndex).backgroundColor : CoconutColors.gray700;
     final iconColorFilter = _canEditPalette ? ColorUtil.getColor(_selectedColorIndex).color : Colors.black;
-    final svgPath =
-        _canEditPalette
-            ? CustomIcons.getPathByIndex(_selectedIconIndex)
-            : widget.walletImportSource.externalWalletIconPath;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       constraints: const BoxConstraints(minHeight: 40, minWidth: 40),
       decoration: BoxDecoration(shape: BoxShape.circle, color: iconColor),
       padding: const EdgeInsets.all(10),
-      child: SvgPicture.asset(svgPath, colorFilter: ColorFilter.mode(iconColorFilter, BlendMode.srcIn)),
+      child:
+          _canEditPalette
+              ? SvgPicture.asset(
+                CustomIcons.getPathByIndex(_selectedIconIndex),
+                colorFilter: ColorFilter.mode(iconColorFilter, BlendMode.srcIn),
+              )
+              : WalletImportSourceIcon(
+                walletImportSource: widget.walletImportSource,
+                colorFilter: ColorFilter.mode(iconColorFilter, BlendMode.srcIn),
+              ),
     );
   }
 

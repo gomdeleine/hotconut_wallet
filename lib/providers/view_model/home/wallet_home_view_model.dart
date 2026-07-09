@@ -1,21 +1,20 @@
 import 'dart:async';
 
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/enums/transaction_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/preference/home_feature.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/wallet/wallet_address.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/connectivity_provider.dart';
-import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/services/app_review_service.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/transaction_util.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/enums/transaction_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/preference/home_feature.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_address.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/connectivity_provider.dart';
+import 'package:hotconut_wallet/providers/node_provider/node_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/transaction_util.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:tuple/tuple.dart';
@@ -57,7 +56,6 @@ class WalletHomeViewModel extends ChangeNotifier {
 
   late bool _isBalanceHidden;
   late bool _isFiatBalanceHidden;
-  late final bool _isReviewScreenVisible;
 
   Map<int, AnimatedBalanceData> _walletBalance = {};
   Map<int, dynamic> _fakeBalanceMap = {};
@@ -144,7 +142,6 @@ class WalletHomeViewModel extends ChangeNotifier {
 
   WalletHomeViewModel(this._walletProvider, this._preferenceProvider, this._connectivityProvider, this._nodeProvider)
     : _syncNodeStateStream = _nodeProvider.syncStateStream {
-    _isReviewScreenVisible = AppReviewService.shouldShowReviewScreen();
     _syncNodeStateSubscription = _syncNodeStateStream.listen(_handleNodeSyncState);
     _nodeProvider.currentBlockNotifier.addListener(_onCurrentBlockChanged);
 
@@ -189,7 +186,6 @@ class WalletHomeViewModel extends ChangeNotifier {
   bool get isEmptyFavoriteWallet => _isEmptyFavoriteWallet;
   bool get isBalanceHidden => _isBalanceHidden;
   bool get isFiatBalanceHidden => _isFiatBalanceHidden;
-  bool get isReviewScreenVisible => _isReviewScreenVisible;
 
   /// 에러 표시 지연 중인지 여부
   /// hasConnectionError가 stream보다 먼저 설정되거나 앱 최초 구동 시 지연 시작
@@ -443,10 +439,6 @@ class WalletHomeViewModel extends ChangeNotifier {
   void _setFakeBlanceMap(Map<int, dynamic> value) {
     _fakeBalanceMap = value;
     notifyListeners();
-  }
-
-  void updateAppReviewRequestCondition() async {
-    await AppReviewService.increaseAppRunningCountIfRejected();
   }
 
   int? getFakeBalance(int id) {

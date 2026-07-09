@@ -1,7 +1,7 @@
-import 'package:coconut_wallet/core/exceptions/cpfp_creation/cpfp_creation_exception.dart';
-import 'package:coconut_wallet/core/transaction/fee_bumping/cpfp_builder.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
-import 'package:coconut_wallet/utils/fee_rate_util.dart';
+import 'package:hotconut_wallet/core/exceptions/cpfp_creation/cpfp_creation_exception.dart';
+import 'package:hotconut_wallet/core/transaction/fee_bumping/cpfp_builder.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/utils/fee_rate_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../mock/wallet_mock.dart';

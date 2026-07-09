@@ -1,7 +1,7 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/styles.dart';
+import 'package:hotconut_wallet/styles.dart';
 
 class CustomDialogs {
   static void showFullScreenDialog(BuildContext context, String title, Widget body) {

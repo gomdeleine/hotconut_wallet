@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/utils/bb_qr/bb_qr_encoder.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/utils/bb_qr/bb_qr_encoder.dart';
 import 'package:flutter/material.dart';
 
 enum QrScanDensity { slow, normal, fast }

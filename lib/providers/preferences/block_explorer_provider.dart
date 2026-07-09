@@ -1,9 +1,9 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/external_links.dart';
-import 'package:coconut_wallet/constants/shared_pref_keys.dart';
-import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
-import 'package:coconut_wallet/utils/locale_util.dart';
-import 'package:coconut_wallet/utils/url_normalize_util.dart';
+import 'package:hotconut_wallet/constants/external_links.dart';
+import 'package:hotconut_wallet/constants/shared_pref_keys.dart';
+import 'package:hotconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
+import 'package:hotconut_wallet/utils/locale_util.dart';
+import 'package:hotconut_wallet/utils/url_normalize_util.dart';
 import 'package:flutter/widgets.dart';
 
 class BlockExplorerProvider extends ChangeNotifier {

@@ -1,9 +1,9 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:coconut_wallet/widgets/button/key_button.dart';
-import 'package:coconut_wallet/widgets/pin/pin_box.dart';
+import 'package:hotconut_wallet/widgets/button/key_button.dart';
+import 'package:hotconut_wallet/widgets/pin/pin_box.dart';
 
 class PinInputPad extends StatefulWidget {
   final String title;

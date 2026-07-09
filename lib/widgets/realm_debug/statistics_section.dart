@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/providers/view_model/settings/realm_debug_view_model.dart';
+import 'package:hotconut_wallet/providers/view_model/settings/realm_debug_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

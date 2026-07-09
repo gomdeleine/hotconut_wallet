@@ -1,7 +1,7 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/node/cpfp_history.dart';
-import 'package:coconut_wallet/model/node/rbf_history.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/node/cpfp_history.dart';
+import 'package:hotconut_wallet/model/node/rbf_history.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
 
 class TransactionRecord {
   final String _transactionHash;

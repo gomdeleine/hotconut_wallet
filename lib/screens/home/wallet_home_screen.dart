@@ -3,51 +3,52 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/constants/external_links.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/node/wallet_update_info.dart';
-import 'package:coconut_wallet/model/preference/home_feature.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/screens/home/analysis_period_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/send/refactor/utxo_selection_screen.dart';
-import 'package:coconut_wallet/utils/transaction_util.dart';
-import 'package:coconut_wallet/providers/connectivity_provider.dart';
-import 'package:coconut_wallet/providers/node_provider/node_provider.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/providers/send_info_provider.dart';
-import 'package:coconut_wallet/providers/visibility_provider.dart';
-import 'package:coconut_wallet/screens/home/wallet_list_user_experience_survey_bottom_sheet.dart';
-import 'package:coconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
-import 'package:coconut_wallet/utils/datetime_util.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/uri_launcher.dart';
-import 'package:coconut_wallet/widgets/animated_balance.dart';
-import 'package:coconut_wallet/widgets/animated_dots_text.dart';
-import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
-import 'package:coconut_wallet/widgets/card/wallet_list_add_guide_card.dart';
-import 'package:coconut_wallet/widgets/contents/fiat_price.dart';
-import 'package:coconut_wallet/widgets/loading_indicator/loading_indicator.dart';
-import 'package:coconut_wallet/widgets/long_pressed_menu_widget.dart';
+import 'package:hotconut_wallet/constants/external_links.dart';
+import 'package:hotconut_wallet/widgets/icon/wallet_import_source_icon.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/node/wallet_update_info.dart';
+import 'package:hotconut_wallet/model/preference/home_feature.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/screens/home/analysis_period_bottom_sheet.dart';
+import 'package:hotconut_wallet/screens/send/refactor/utxo_selection_screen.dart';
+import 'package:hotconut_wallet/utils/transaction_util.dart';
+import 'package:hotconut_wallet/providers/connectivity_provider.dart';
+import 'package:hotconut_wallet/providers/node_provider/node_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/providers/send_info_provider.dart';
+import 'package:hotconut_wallet/providers/visibility_provider.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/wallet_info_screen.dart';
+import 'package:hotconut_wallet/utils/datetime_util.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/uri_launcher.dart';
+import 'package:hotconut_wallet/widgets/animated_balance.dart';
+import 'package:hotconut_wallet/widgets/animated_dots_text.dart';
+import 'package:hotconut_wallet/widgets/button/shrink_animation_button.dart';
+import 'package:hotconut_wallet/widgets/card/wallet_list_add_guide_card.dart';
+import 'package:hotconut_wallet/widgets/contents/fiat_price.dart';
+import 'package:hotconut_wallet/widgets/loading_indicator/loading_indicator.dart';
+import 'package:hotconut_wallet/widgets/long_pressed_menu_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/utils/colors_util.dart';
-import 'package:coconut_wallet/providers/view_model/home/wallet_home_view_model.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
-import 'package:coconut_wallet/screens/settings/settings_screen.dart';
-import 'package:coconut_wallet/widgets/card/wallet_item_card.dart';
-import 'package:coconut_wallet/widgets/overlays/common_bottom_sheets.dart';
-import 'package:coconut_wallet/screens/home/wallet_list_glossary_bottom_sheet.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/utils/colors_util.dart';
+import 'package:hotconut_wallet/utils/hot_wallet_util.dart';
+import 'package:hotconut_wallet/providers/view_model/home/wallet_home_view_model.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/screens/settings/settings_screen.dart';
+import 'package:hotconut_wallet/widgets/card/wallet_item_card.dart';
+import 'package:hotconut_wallet/widgets/overlays/common_bottom_sheets.dart';
+import 'package:hotconut_wallet/screens/home/wallet_list_glossary_bottom_sheet.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tuple/tuple.dart';
 import 'package:collection/collection.dart';
@@ -382,25 +383,6 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
       }
 
       if (!context.mounted) return;
-
-      if (_viewModel.isReviewScreenVisible) {
-        var animationController = BottomSheet.createAnimationController(this)..duration = const Duration(seconds: 2);
-        await CommonBottomSheets.showBottomSheet_100(
-          context: context,
-          child: const UserExperienceSurveyBottomSheet(),
-          enableDrag: false,
-          backgroundColor: CoconutColors.gray900,
-          isDismissible: false,
-          isScrollControlled: true,
-          useSafeArea: false,
-          animationController: animationController,
-        );
-
-        Future.delayed(const Duration(seconds: 5), () {
-          animationController.dispose();
-          _viewModel.updateAppReviewRequestCondition();
-        });
-      }
     });
   }
 
@@ -1635,6 +1617,14 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
     );
   }
 
+  void _goToHotWalletOnboarding() async {
+    Navigator.pop(context);
+    final canProceed = await ensureHotWalletPinSet(context);
+    if (canProceed && mounted) {
+      Navigator.pushNamed(context, '/hot-wallet-onboarding');
+    }
+  }
+
   void _goToScannerScreen(WalletImportSource walletImportSource) async {
     Navigator.pop(context);
     final ResultOfSyncFromVault? scanResult =
@@ -1734,6 +1724,14 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
                           ],
                         ),
                         CoconutLayout.spacing_400h,
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width,
+                          child: _buildWalletIconShrinkButton(
+                            () => _goToHotWalletOnboarding(),
+                            WalletImportSource.hotWallet,
+                          ),
+                        ),
+                        CoconutLayout.spacing_200h,
                         SizedBox(
                           width: MediaQuery.sizeOf(context).width,
                           child: _buildWalletIconShrinkButton(
@@ -1984,18 +1982,22 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
     return '';
   }
 
+  Widget _buildWalletImportSourceIcon(WalletImportSource scanType) {
+    return WalletImportSourceIcon(walletImportSource: scanType, width: 24, height: 24);
+  }
+
   Widget _buildWalletIconShrinkButton(VoidCallback onPressed, WalletImportSource scanType) {
     return ShrinkAnimationButton(
       defaultColor: CoconutColors.black,
       pressedColor: CoconutColors.gray750,
       onPressed: () => onPressed(),
       child:
-          scanType == WalletImportSource.extendedPublicKey
+          scanType == WalletImportSource.extendedPublicKey || scanType == WalletImportSource.hotWallet
               ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                 child: Row(
                   children: [
-                    SvgPicture.asset(scanType.externalWalletIconPath),
+                    _buildWalletImportSourceIcon(scanType),
                     CoconutLayout.spacing_400w,
                     Expanded(
                       child: Column(
@@ -2010,7 +2012,9 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
                           ),
                           CoconutLayout.spacing_50h,
                           Text(
-                            t.wallet_add_scanner_screen.self_description,
+                            scanType == WalletImportSource.hotWallet
+                                ? t.hot_wallet.hot_wallet_description
+                                : t.wallet_add_scanner_screen.self_description,
                             style: CoconutTypography.body3_12,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
@@ -2025,7 +2029,7 @@ class _WalletHomeScreenState extends State<WalletHomeScreen> with TickerProvider
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                 child: Column(
                   children: [
-                    SvgPicture.asset(scanType.externalWalletIconPath),
+                    _buildWalletImportSourceIcon(scanType),
                     CoconutLayout.spacing_100h,
                     Text(scanType.displayName, style: CoconutTypography.body2_14, textAlign: TextAlign.center),
                   ],

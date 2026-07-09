@@ -1,14 +1,14 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/core/transaction/fee_bumping/rbf_builder.dart';
-import 'package:coconut_wallet/core/transaction/fee_bumping/rbf_preparer.dart';
-import 'package:coconut_wallet/core/transaction/fee_bumping/output_analysis.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/wallet/wallet_address.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/packages/bc-ur-dart/lib/utils.dart';
+import 'package:hotconut_wallet/core/transaction/fee_bumping/rbf_builder.dart';
+import 'package:hotconut_wallet/core/transaction/fee_bumping/rbf_preparer.dart';
+import 'package:hotconut_wallet/core/transaction/fee_bumping/output_analysis.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_address.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/packages/bc-ur-dart/lib/utils.dart';
 
 import '../../../mock/transaction_record_mock.dart';
 

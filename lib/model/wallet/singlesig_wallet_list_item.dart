@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
 import 'package:coconut_lib/coconut_lib.dart';
 
 class SinglesigWalletListItem extends WalletListItemBase {

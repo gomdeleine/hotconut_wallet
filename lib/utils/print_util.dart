@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 void printLongString(String str) {
   const int chunkSize = 500;

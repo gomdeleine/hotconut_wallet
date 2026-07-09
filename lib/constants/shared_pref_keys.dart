@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/enums/electrum_enums.dart';
+import 'package:hotconut_wallet/enums/electrum_enums.dart';
 
 class SharedPrefKeys {
   /// 아래 7개는 비밀번호 분실 시 초기화 필요
@@ -12,7 +12,6 @@ class SharedPrefKeys {
   static const String kFakeBalanceTotal = 'FAKE_BALANCE_TOTAL';
   static const String kFakeBalanceMap = 'FAKE_BALANCE_MAP';
 
-  static const String kNextVersionUpdateDialogDate = "NEXT_VERSION_UPDATE_DIALOG_DATE";
   static const String kCanCheckBiometrics = "CAN_CHECK_BIOMETRICS";
   static const String kIsBtcUnit = "IS_BTC_UNIT"; // deprecated: 마이그레이션 전용
   static const String kBitcoinUnit = "BITCOIN_UNIT";
@@ -37,11 +36,6 @@ class SharedPrefKeys {
   static const String kAnalysisPeriodStart = "ANALYSIS_PERIOD_START"; // 분석 위젯에 사용되는 조회 기간 시작 날짜
   static const String kAnalysisPeriodEnd = "ANALYSIS_PERIOD_END"; // 분석 위젯에 사용되는 조회 기간 종료 날짜
   static const String kSelectedTransactionTypeIndices = "SELECTED_TRANSACTION_TYPE_INDICES"; // 분석 위젯에 사용되는 거래 유형
-
-  /// 리뷰 요청 관련
-  static const String kHaveSent = 'HAVE_SENT';
-  static const String kHaveReviewed = 'HAVE_REVIEWED';
-  static const String kAppRunCountAfterRejectReview = 'APP_RUN_COUNT_AFTER_REJECT_REVIEW';
 
   /// Language
   static const String kLanguage = 'LANGUAGE';
@@ -79,9 +73,6 @@ class SharedPrefKeys {
   // Block explorer
   static const String kUseDefaultExplorer = 'USE_DEFAULT_EXPLORER';
   static const String kCustomExplorerUrl = 'CUSTOM_EXPLORER_URL';
-
-  /// 생일 아이콘 변경 날짜 (해당 기간 동안 한번만 변경하기 위해)
-  static const String kEventIconChangedDate = 'EVENT_ICON_CHANGED_DATE';
 
   /// UTXO 수동선택 모드 여부
   static const String kIsManualUtxoSelectionMode = 'IS_MANUAL_UTXO_SELECTION_MODE';

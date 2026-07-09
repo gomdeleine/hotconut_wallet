@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
 
 class UtxoBucket {
   final String label;

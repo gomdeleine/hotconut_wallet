@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/model/node/electrum_server.dart';
+import 'package:hotconut_wallet/model/node/electrum_server.dart';
 
 enum DefaultElectrumServer {
   coconut(

@@ -1,6 +1,6 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/enums/utxo_enums.dart';
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/enums/utxo_enums.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
 
 enum UtxoStatus {
   unspent, // 사용되지 않은 상태, confirmed

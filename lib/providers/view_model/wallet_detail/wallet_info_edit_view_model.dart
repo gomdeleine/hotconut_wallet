@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/wallet_provider.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/wallet_provider.dart';
 import 'package:flutter/cupertino.dart';
 
 class WalletInfoEditViewModel extends ChangeNotifier {

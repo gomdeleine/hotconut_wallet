@@ -1,13 +1,13 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/extensions/int_extensions.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/utxo/utxo_bucket.dart';
-import 'package:coconut_wallet/providers/preferences/preference_provider.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_overview/utxo_chart_bubble.dart';
-import 'package:coconut_wallet/screens/wallet_detail/utxo_overview/utxo_total_balance_header.dart';
-import 'package:coconut_wallet/utils/utxo_amount_format_util.dart';
-import 'package:coconut_wallet/utils/utxo_tier_theme.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/extensions/int_extensions.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_bucket.dart';
+import 'package:hotconut_wallet/providers/preferences/preference_provider.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_overview/utxo_chart_bubble.dart';
+import 'package:hotconut_wallet/screens/wallet_detail/utxo_overview/utxo_total_balance_header.dart';
+import 'package:hotconut_wallet/utils/utxo_amount_format_util.dart';
+import 'package:hotconut_wallet/utils/utxo_tier_theme.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';

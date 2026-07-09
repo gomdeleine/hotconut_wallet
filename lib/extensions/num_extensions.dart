@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/config/number_format_config.dart';
-import 'package:coconut_wallet/utils/numeric_input_formatters.dart';
+import 'package:hotconut_wallet/config/number_format_config.dart';
+import 'package:hotconut_wallet/utils/numeric_input_formatters.dart';
 
 extension NumberFormatting on num {
   /// 숫자를 로케일에 맞는 표시 형식의 문자열로 변환합니다.

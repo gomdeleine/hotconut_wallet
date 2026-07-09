@@ -1,5 +1,5 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/widgets/button/single_button.dart';
+import 'package:hotconut_wallet/widgets/button/single_button.dart';
 import 'package:flutter/material.dart';
 
 class MultiButton extends StatefulWidget {

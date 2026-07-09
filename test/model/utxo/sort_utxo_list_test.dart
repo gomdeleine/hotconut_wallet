@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/enums/utxo_enums.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/enums/utxo_enums.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

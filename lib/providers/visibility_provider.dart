@@ -3,9 +3,9 @@
 // 1. 최초 구동인지 - 홈 / 온보딩
 // 2. 지갑 목록이 비었는지 → 지갑이 몇 개인지?! - 홈
 
-import 'package:coconut_wallet/constants/shared_pref_keys.dart';
-import 'package:coconut_wallet/repository/secure_storage/secure_storage_repository.dart';
-import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
+import 'package:hotconut_wallet/constants/shared_pref_keys.dart';
+import 'package:hotconut_wallet/repository/secure_storage/secure_storage_repository.dart';
+import 'package:hotconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
 import 'package:flutter/material.dart';
 
 class VisibilityProvider extends ChangeNotifier {

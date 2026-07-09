@@ -1,5 +1,5 @@
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/utils/third_party_util.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/utils/third_party_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,7 +1,7 @@
-import 'package:coconut_wallet/model/node/script_status.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/node_provider/subscription/script_callback_service.dart';
-import 'package:coconut_wallet/providers/node_provider/subscription/script_callback_util.dart';
+import 'package:hotconut_wallet/model/node/script_status.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/node_provider/subscription/script_callback_service.dart';
+import 'package:hotconut_wallet/providers/node_provider/subscription/script_callback_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // test/mock/wallet_mock.dart 에서 필요한 함수 임포트

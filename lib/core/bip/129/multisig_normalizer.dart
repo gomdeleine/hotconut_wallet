@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/core/bip/129/normalized_multisig_config.dart';
-import 'package:coconut_wallet/core/exceptions/network_mismatch_exception.dart';
+import 'package:hotconut_wallet/core/bip/129/normalized_multisig_config.dart';
+import 'package:hotconut_wallet/core/exceptions/network_mismatch_exception.dart';
 
 /// CoordinatorBsmsQrDataHandler.result -> NormalizedMultisigConfig
 class MultisigNormalizer {

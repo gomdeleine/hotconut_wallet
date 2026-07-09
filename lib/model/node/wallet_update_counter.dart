@@ -1,4 +1,4 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
 
 class WalletUpdateCounter {
   int _balanceCounter;

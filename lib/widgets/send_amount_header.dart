@@ -1,9 +1,9 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/styles.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/widgets/bitcoin_amount_unit.dart';
-import 'package:coconut_wallet/widgets/contents/fiat_price.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/styles.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/widgets/bitcoin_amount_unit.dart';
+import 'package:hotconut_wallet/widgets/contents/fiat_price.dart';
 import 'package:flutter/material.dart';
 
 class SendAmountHeader extends StatelessWidget {

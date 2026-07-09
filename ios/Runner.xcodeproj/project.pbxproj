@@ -443,7 +443,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\n\n# Configuration에 따른 앱 이름 설정\nif [[ \"${CONFIGURATION}\" == *\"mainnet\"* ]]; then\n    EN_APP_NAME=\"Coconut Wallet\"\n    KO_APP_NAME=\"코코넛 월렛\"\n    JA_APP_NAME=\"Coconut Wallet\"\nelif [[ \"${CONFIGURATION}\" == *\"regtest\"* ]]; then\n    EN_APP_NAME=\"Coconut Wallet-Regtest\"\n    KO_APP_NAME=\"코코넛 월렛 학습용\"\n    JA_APP_NAME=\"Coconut Wallet-Regtest\"\nelse\n    EN_APP_NAME=\"Coconut Wallet\"\n    KO_APP_NAME=\"코코넛 월렛\"\n    JA_APP_NAME=\"Coconut Wallet\"\nfi\n\n# 권한 문구 설정\nEN_NSCameraUsageDescription=\"Camera access is required for QR code scanning.\"\nKO_NSCameraUsageDescription=\"QR 코드 스캔을 위해 카메라가 필요합니다.\"\nJA_NSCameraUsageDescription=\"QRコードのスキャンにカメラへのアクセスが必要です。\"\n\nEN_NSFaceIDUsageDescription=\"Face ID is required to unlock the app.\"\nKO_NSFaceIDUsageDescription=\"앱의 잠금을 해제할 때 Face ID를 사용하기 위해 필요합니다.\"\nJA_NSFaceIDUsageDescription=\"アプリのロック解除にFace IDを使用するために必要です。\"\n\necho \"EN_APP_NAME: $EN_APP_NAME\"\necho \"KO_APP_NAME: $KO_APP_NAME\"\necho \"JA_APP_NAME: $JA_APP_NAME\"\n\n# 영어 InfoPlist.strings 파일 경로\nEN_STRINGS_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/en.lproj\"\nEN_STRINGS_FILE=\"${EN_STRINGS_PATH}/InfoPlist.strings\"\n\n# 한국어 InfoPlist.strings 파일 경로\nKO_STRINGS_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/ko.lproj\"\nKO_STRINGS_FILE=\"${KO_STRINGS_PATH}/InfoPlist.strings\"\n\n# 일본어 InfoPlist.strings 파일 경로\nJA_STRINGS_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/ja.lproj\"\nJA_STRINGS_FILE=\"${JA_STRINGS_PATH}/InfoPlist.strings\"\n\n# 디렉토리 생성\nmkdir -p \"$EN_STRINGS_PATH\"\nmkdir -p \"$KO_STRINGS_PATH\"\nmkdir -p \"$JA_STRINGS_PATH\"\n\n# InfoPlist.strings 생성\ncat > \"$EN_STRINGS_FILE\" <<EOF\nCFBundleDisplayName = \"$EN_APP_NAME\";\nNSCameraUsageDescription = \"$EN_NSCameraUsageDescription\";\nNSFaceIDUsageDescription = \"$EN_NSFaceIDUsageDescription\";\nEOF\n\ncat > \"$KO_STRINGS_FILE\" <<EOF\nCFBundleDisplayName = \"$KO_APP_NAME\";\nNSCameraUsageDescription = \"$KO_NSCameraUsageDescription\";\nNSFaceIDUsageDescription = \"$KO_NSFaceIDUsageDescription\";\nEOF\n\ncat > \"$JA_STRINGS_FILE\" <<EOF\nCFBundleDisplayName = \"$JA_APP_NAME\";\nNSCameraUsageDescription = \"$JA_NSCameraUsageDescription\";\nNSFaceIDUsageDescription = \"$JA_NSFaceIDUsageDescription\";\nEOF\n\n\necho \"✅ 앱 이름 및 권한 설명 설정 완료\"\necho \"📝 Configuration: $CONFIGURATION\"\necho \"📝 English App Name: $EN_APP_NAME\"\necho \"📝 Korean App Name: $KO_APP_NAME\"\n\n# DART_DEFINES에서 USE_FIREBASE 값 추출\nfor value in $(echo \"$DART_DEFINES\" | tr ',' '\\n'); do\n  decoded=$(echo \"$value\" | base64 --decode)\n  if [[ $decoded == USE_FIREBASE=* ]]; then\n    USE_FIREBASE_VALUE=\"${decoded#*=}\"\n  fi\ndone\n\nif [ \"$USE_FIREBASE_VALUE\" = \"true\" ]; then\n  echo \"✅ Firebase enabled - copying GoogleService-Info.plist\"\n  cp \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelse\n  echo \"✅ Firebase disabled - skipping GoogleService-Info.plist\"\nfi\n\n";
+			shellScript = "#!/bin/bash\n\n\n# Configuration에 따른 앱 이름 설정\nif [[ \"${CONFIGURATION}\" == *\"mainnet\"* ]]; then\n    EN_APP_NAME=\"Hotconut Wallet\"\n    KO_APP_NAME=\"핫코넛 월렛\"\n    JA_APP_NAME=\"Hotconut Wallet\"\nelif [[ \"${CONFIGURATION}\" == *\"regtest\"* ]]; then\n    EN_APP_NAME=\"Hotconut Wallet-Regtest\"\n    KO_APP_NAME=\"핫코넛 월렛 학습용\"\n    JA_APP_NAME=\"Hotconut Wallet-Regtest\"\nelse\n    EN_APP_NAME=\"Hotconut Wallet\"\n    KO_APP_NAME=\"핫코넛 월렛\"\n    JA_APP_NAME=\"Hotconut Wallet\"\nfi\n\n# 권한 문구 설정\nEN_NSCameraUsageDescription=\"Camera access is required for QR code scanning.\"\nKO_NSCameraUsageDescription=\"QR 코드 스캔을 위해 카메라가 필요합니다.\"\nJA_NSCameraUsageDescription=\"QRコードのスキャンにカメラへのアクセスが必要です。\"\n\nEN_NSFaceIDUsageDescription=\"Face ID is required to unlock the app.\"\nKO_NSFaceIDUsageDescription=\"앱의 잠금을 해제할 때 Face ID를 사용하기 위해 필요합니다.\"\nJA_NSFaceIDUsageDescription=\"アプリのロック解除にFace IDを使用するために必要です。\"\n\necho \"EN_APP_NAME: $EN_APP_NAME\"\necho \"KO_APP_NAME: $KO_APP_NAME\"\necho \"JA_APP_NAME: $JA_APP_NAME\"\n\n# 영어 InfoPlist.strings 파일 경로\nEN_STRINGS_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/en.lproj\"\nEN_STRINGS_FILE=\"${EN_STRINGS_PATH}/InfoPlist.strings\"\n\n# 한국어 InfoPlist.strings 파일 경로\nKO_STRINGS_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/ko.lproj\"\nKO_STRINGS_FILE=\"${KO_STRINGS_PATH}/InfoPlist.strings\"\n\n# 일본어 InfoPlist.strings 파일 경로\nJA_STRINGS_PATH=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/ja.lproj\"\nJA_STRINGS_FILE=\"${JA_STRINGS_PATH}/InfoPlist.strings\"\n\n# 디렉토리 생성\nmkdir -p \"$EN_STRINGS_PATH\"\nmkdir -p \"$KO_STRINGS_PATH\"\nmkdir -p \"$JA_STRINGS_PATH\"\n\n# InfoPlist.strings 생성\ncat > \"$EN_STRINGS_FILE\" <<EOF\nCFBundleDisplayName = \"$EN_APP_NAME\";\nNSCameraUsageDescription = \"$EN_NSCameraUsageDescription\";\nNSFaceIDUsageDescription = \"$EN_NSFaceIDUsageDescription\";\nEOF\n\ncat > \"$KO_STRINGS_FILE\" <<EOF\nCFBundleDisplayName = \"$KO_APP_NAME\";\nNSCameraUsageDescription = \"$KO_NSCameraUsageDescription\";\nNSFaceIDUsageDescription = \"$KO_NSFaceIDUsageDescription\";\nEOF\n\ncat > \"$JA_STRINGS_FILE\" <<EOF\nCFBundleDisplayName = \"$JA_APP_NAME\";\nNSCameraUsageDescription = \"$JA_NSCameraUsageDescription\";\nNSFaceIDUsageDescription = \"$JA_NSFaceIDUsageDescription\";\nEOF\n\n\necho \"✅ 앱 이름 및 권한 설명 설정 완료\"\necho \"📝 Configuration: $CONFIGURATION\"\necho \"📝 English App Name: $EN_APP_NAME\"\necho \"📝 Korean App Name: $KO_APP_NAME\"\n\n# DART_DEFINES에서 USE_FIREBASE 값 추출\nfor value in $(echo \"$DART_DEFINES\" | tr ',' '\\n'); do\n  decoded=$(echo \"$value\" | base64 --decode)\n  if [[ $decoded == USE_FIREBASE=* ]]; then\n    USE_FIREBASE_VALUE=\"${decoded#*=}\"\n  fi\ndone\n\nif [ \"$USE_FIREBASE_VALUE\" = \"true\" ]; then\n  echo \"✅ Firebase enabled - copying GoogleService-Info.plist\"\n  cp \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelse\n  echo \"✅ Firebase disabled - skipping GoogleService-Info.plist\"\nfi\n\n";
 		};
 		DFD5326D7C61DE059C053AD8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -549,7 +549,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -605,8 +604,7 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = mainnet;
-				APP_NAME = "코코넛 월렛";
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
+				APP_NAME = "핫코넛 월렛";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
@@ -614,7 +612,7 @@
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreen;
@@ -623,7 +621,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -690,7 +688,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -751,15 +748,14 @@
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = mainnet;
-				APP_NAME = "코코넛 월렛";
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
+				APP_NAME = "핫코넛 월렛";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreen;
@@ -768,7 +764,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -865,7 +861,7 @@
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = regtest;
-				APP_NAME = "코코넛 월렛 학습용";
+				APP_NAME = "핫코넛 월렛 학습용";
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconRegtest;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconRegtest;
 				CLANG_ENABLE_MODULES = YES;
@@ -873,7 +869,7 @@
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreenRegtest;
@@ -882,7 +878,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet.regtest;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet.regtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -918,7 +914,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIconBirthDay\n";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -976,8 +971,7 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = mainnet;
-				APP_NAME = "코코넛 월렛";
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
+				APP_NAME = "핫코넛 월렛";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
@@ -985,7 +979,7 @@
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreen;
@@ -994,7 +988,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.4.6;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1085,7 +1079,7 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = regtest;
-				APP_NAME = "코코넛 월렛 학습용";
+				APP_NAME = "핫코넛 월렛 학습용";
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconRegtest;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconRegtest;
 				CLANG_ENABLE_MODULES = YES;
@@ -1094,7 +1088,7 @@
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreenRegtest;
@@ -1103,7 +1097,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.3.1;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet.regtest;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet.regtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1136,7 +1130,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIconBirthDay\n";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1192,15 +1185,14 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = mainnet;
-				APP_NAME = "코코넛 월렛";
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
+				APP_NAME = "핫코넛 월렛";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreen;
@@ -1209,7 +1201,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 3.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1298,15 +1290,14 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = regtest;
-				APP_NAME = "코코넛 월렛 학습용\n";
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
+				APP_NAME = "핫코넛 월렛 학습용\n";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconRegtest;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreenRegtest;
@@ -1315,7 +1306,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet.regtest;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet.regtest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1348,7 +1339,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIconBirthDay\n";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1408,7 +1398,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1466,15 +1455,14 @@
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = mainnet;
-				APP_NAME = "코코넛 월렛";
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconBirthDay;
+				APP_NAME = "핫코넛 월렛";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreen;
@@ -1483,7 +1471,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1502,7 +1490,7 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_FLAVOR = mainnet;
-				APP_NAME = "코코넛 월렛";
+				APP_NAME = "핫코넛 월렛";
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = AppIconRegtest;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1510,7 +1498,7 @@
 				DEVELOPMENT_TEAM = B4QCD2QSS8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "코코넛 월렛";
+				INFOPLIST_KEY_CFBundleDisplayName = "핫코넛 월렛";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN = LaunchScreen;
@@ -1519,7 +1507,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = onl.coconut.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = app.hotconut.wallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

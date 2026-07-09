@@ -1,31 +1,38 @@
 import 'dart:convert';
 
-import 'package:coconut_wallet/constants/shared_pref_keys.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/constants/shared_pref_keys.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
 
-import 'package:coconut_wallet/model/wallet/multisig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/multisig_signer.dart';
-import 'package:coconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/model/wallet/watch_only_wallet.dart';
-import 'package:coconut_wallet/repository/realm/base_repository.dart';
-import 'package:coconut_wallet/repository/realm/transaction_draft_repository.dart';
-import 'package:coconut_wallet/repository/realm/converter/multisig_wallet.dart';
-import 'package:coconut_wallet/repository/realm/converter/singlesig_wallet.dart';
-import 'package:coconut_wallet/repository/realm/converter/taproot_wallet.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/multisig_signer.dart';
+import 'package:hotconut_wallet/model/wallet/singlesig_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/model/wallet/watch_only_wallet.dart';
+import 'package:hotconut_wallet/repository/realm/base_repository.dart';
+import 'package:hotconut_wallet/repository/realm/transaction_draft_repository.dart';
+import 'package:hotconut_wallet/repository/secure_storage/hot_wallet_key_repository.dart';
+import 'package:hotconut_wallet/repository/realm/converter/multisig_wallet.dart';
+import 'package:hotconut_wallet/repository/realm/converter/singlesig_wallet.dart';
+import 'package:hotconut_wallet/repository/realm/converter/taproot_wallet.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/repository/shared_preference/shared_prefs_repository.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:realm/realm.dart';
 
 class WalletRepository extends BaseRepository {
   final SharedPrefsRepository _sharedPrefs;
   final TransactionDraftRepository _transactionDraftRepository;
+  final HotWalletKeyRepository _hotWalletKeyRepository;
 
-  WalletRepository(super._realmManager, this._transactionDraftRepository) : _sharedPrefs = SharedPrefsRepository();
+  WalletRepository(
+    super._realmManager,
+    this._transactionDraftRepository, {
+    HotWalletKeyRepository? hotWalletKeyRepository,
+  }) : _sharedPrefs = SharedPrefsRepository(),
+       _hotWalletKeyRepository = hotWalletKeyRepository ?? HotWalletKeyRepository();
 
   /// 지갑 목록을 DB에서 로드
   Future<List<WalletListItemBase>> getWalletItemList() async {
@@ -203,6 +210,7 @@ class WalletRepository extends BaseRepository {
 
     // signed draft의 SecureStorage 데이터 삭제
     await _transactionDraftRepository.deleteAllByWalletId(walletId);
+    await _hotWalletKeyRepository.deleteEncryptedSeed(walletId);
 
     final transactions = realm.query<RealmTransaction>('walletId == $walletId');
     final walletBalance = realm.query<RealmWalletBalance>('walletId == $walletId');
@@ -351,12 +359,8 @@ class WalletRepository extends BaseRepository {
       throw StateError('[updateMasterFingerprint] Wallet not found');
     }
 
-    final oldDescriptor = realmWalletBase.descriptor;
     realm.write(() {
       realmWalletBase.descriptor = newDescriptor;
     });
-
-    Logger.log('[updateMasterFingerprint] before: $oldDescriptor');
-    Logger.log('[updateMasterFingerprint] after : ${realm.find<RealmWalletBase>(walletId)?.descriptor}');
   }
 }

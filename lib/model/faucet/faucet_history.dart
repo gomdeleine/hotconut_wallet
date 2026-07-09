@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:coconut_wallet/utils/datetime_util.dart';
+import 'package:hotconut_wallet/utils/datetime_util.dart';
 
 class FaucetRecord extends Equatable {
   final int id;

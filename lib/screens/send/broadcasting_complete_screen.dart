@@ -1,11 +1,10 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/providers/send_info_provider.dart';
-import 'package:coconut_wallet/providers/transaction_provider.dart';
-import 'package:coconut_wallet/services/app_review_service.dart';
-import 'package:coconut_wallet/utils/text_utils.dart';
-import 'package:coconut_wallet/widgets/button/fixed_bottom_button.dart';
-import 'package:coconut_wallet/widgets/ripple_effect.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/providers/send_info_provider.dart';
+import 'package:hotconut_wallet/providers/transaction_provider.dart';
+import 'package:hotconut_wallet/utils/text_utils.dart';
+import 'package:hotconut_wallet/widgets/button/fixed_bottom_button.dart';
+import 'package:hotconut_wallet/widgets/ripple_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -133,19 +132,7 @@ class _BroadcastingCompleteScreenState extends State<BroadcastingCompleteScreen>
       return;
     }
 
-    Future<dynamic>? showReviewScreenFuture = AppReviewService.showReviewScreenIfFirstSending(
-      context,
-      animationController: _animationController,
-    );
-    if (showReviewScreenFuture == null) {
-      Navigator.pop(context);
-    } else {
-      showReviewScreenFuture.whenComplete(() {
-        if (context.mounted) {
-          Navigator.pop(context);
-        }
-      });
-    }
+    Navigator.pop(context);
   }
 
   Widget _buildMemoTags() {

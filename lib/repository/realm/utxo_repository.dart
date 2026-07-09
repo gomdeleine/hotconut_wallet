@@ -1,12 +1,12 @@
 import 'package:coconut_lib/coconut_lib.dart' as lib;
-import 'package:coconut_wallet/model/error/app_error.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/utxo/utxo_tag.dart';
-import 'package:coconut_wallet/repository/realm/base_repository.dart';
-import 'package:coconut_wallet/repository/realm/converter/utxo.dart';
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/model/error/app_error.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_tag.dart';
+import 'package:hotconut_wallet/repository/realm/base_repository.dart';
+import 'package:hotconut_wallet/repository/realm/converter/utxo.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 
 /// 선택된 UTXO의 상태를 나타내는 enum
 enum SelectedUtxoExcludedStatus {

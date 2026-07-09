@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/styles.dart';
-import 'package:coconut_wallet/widgets/button/action_bottom_button.dart';
+import 'package:hotconut_wallet/styles.dart';
+import 'package:hotconut_wallet/widgets/button/action_bottom_button.dart';
 
 class GuideDialog extends StatelessWidget {
   final Widget? child;

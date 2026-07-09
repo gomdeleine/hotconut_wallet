@@ -1,12 +1,12 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/widgets/animated_balance.dart';
-import 'package:coconut_wallet/widgets/icon/wallet_icon_small.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/widgets/animated_balance.dart';
+import 'package:hotconut_wallet/widgets/icon/wallet_icon_small.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/widgets/button/shrink_animation_button.dart';
+import 'package:hotconut_wallet/widgets/button/shrink_animation_button.dart';
 import 'package:flutter_svg/svg.dart';
 
 class WalletItemCard extends StatelessWidget {

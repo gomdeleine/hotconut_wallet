@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/core/exceptions/cpfp_creation/cpfp_creation_exception.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/core/exceptions/cpfp_creation/cpfp_creation_exception.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
 
 class CpfpPreparer {
   final TransactionRecord pendingTx;

@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/wallet/transaction_address.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_address.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
 
 class TransactionRecordMock {
   static const String testTxHash = 'test_tx_hash';

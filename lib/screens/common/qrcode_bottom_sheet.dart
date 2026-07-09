@@ -1,7 +1,7 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/widgets/qrcode_info.dart';
+import 'package:hotconut_wallet/widgets/qrcode_info.dart';
 
 // Usage:
 // address_list_screen.dart

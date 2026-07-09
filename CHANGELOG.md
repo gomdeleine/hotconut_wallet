@@ -1,3 +1,8 @@
+## Unreleased
+### Added
+• 싱글시그 P2WPKH 핫월렛 지원 (니모닉 생성·가져오기·백업, 앱 내 PSBT 서명)
+• 핫월렛 설계 문서 (`docs/hot-wallet/`)
+
 ## mainnet 0.13.0, regtest 3.13.0
 • 코코넛 볼트로부터 탭루트 상속 지갑 추가, 서명 가능
 

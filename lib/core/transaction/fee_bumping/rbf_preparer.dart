@@ -1,9 +1,9 @@
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/core/exceptions/rbf_creation/rbf_creation_exception.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/utxo/utxo_state.dart';
-import 'package:coconut_wallet/core/transaction/fee_bumping/output_analysis.dart';
-import 'package:coconut_wallet/repository/realm/service/realm_id_service.dart';
+import 'package:hotconut_wallet/core/exceptions/rbf_creation/rbf_creation_exception.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/utxo/utxo_state.dart';
+import 'package:hotconut_wallet/core/transaction/fee_bumping/output_analysis.dart';
+import 'package:hotconut_wallet/repository/realm/service/realm_id_service.dart';
 
 class RbfPreparer {
   final TransactionRecord pendingTx;

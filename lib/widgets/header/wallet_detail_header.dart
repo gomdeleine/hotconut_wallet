@@ -1,10 +1,10 @@
 import 'package:coconut_design_system/coconut_design_system.dart';
-import 'package:coconut_wallet/enums/fiat_enums.dart';
-import 'package:coconut_wallet/localization/strings.g.dart';
-import 'package:coconut_wallet/model/wallet/balance.dart';
-import 'package:coconut_wallet/widgets/animated_balance.dart';
-import 'package:coconut_wallet/widgets/bitcoin_amount_unit.dart';
-import 'package:coconut_wallet/widgets/contents/fiat_price.dart';
+import 'package:hotconut_wallet/enums/fiat_enums.dart';
+import 'package:hotconut_wallet/localization/strings.g.dart';
+import 'package:hotconut_wallet/model/wallet/balance.dart';
+import 'package:hotconut_wallet/widgets/animated_balance.dart';
+import 'package:hotconut_wallet/widgets/bitcoin_amount_unit.dart';
+import 'package:hotconut_wallet/widgets/contents/fiat_price.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lottie/lottie.dart';
 

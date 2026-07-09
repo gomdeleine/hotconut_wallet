@@ -1,27 +1,25 @@
 import 'dart:async';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/utils/file_logger.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/analytics/analytics_event_names.dart';
-import 'package:coconut_wallet/constants/isolate_constants.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/error/app_error.dart';
-import 'package:coconut_wallet/model/node/electrum_server.dart';
-import 'package:coconut_wallet/model/node/node_provider_state.dart';
-import 'package:coconut_wallet/model/node/wallet_update_info.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/model/node/isolate_state_message.dart';
-import 'package:coconut_wallet/providers/node_provider/state/node_state_manager.dart';
-import 'package:coconut_wallet/providers/node_provider/isolate/isolate_manager.dart';
-import 'package:coconut_wallet/providers/connectivity_provider.dart';
-import 'package:coconut_wallet/services/analytics_service.dart';
-import 'package:coconut_wallet/services/electrum_service.dart';
-import 'package:coconut_wallet/services/model/response/block_timestamp.dart';
-import 'package:coconut_wallet/services/model/response/recommended_fee.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/isolate_constants.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/error/app_error.dart';
+import 'package:hotconut_wallet/model/node/electrum_server.dart';
+import 'package:hotconut_wallet/model/node/node_provider_state.dart';
+import 'package:hotconut_wallet/model/node/wallet_update_info.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/model/node/isolate_state_message.dart';
+import 'package:hotconut_wallet/providers/node_provider/state/node_state_manager.dart';
+import 'package:hotconut_wallet/providers/node_provider/isolate/isolate_manager.dart';
+import 'package:hotconut_wallet/providers/connectivity_provider.dart';
+import 'package:hotconut_wallet/services/electrum_service.dart';
+import 'package:hotconut_wallet/services/model/response/block_timestamp.dart';
+import 'package:hotconut_wallet/services/model/response/recommended_fee.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 import 'package:flutter/foundation.dart';
 
 class NodeProvider extends ChangeNotifier {
@@ -31,7 +29,6 @@ class NodeProvider extends ChangeNotifier {
   final ValueNotifier<List<WalletListItemBase>> _walletItemListNotifier;
   ElectrumServer _electrumServer;
   final NetworkType _networkType;
-  final AnalyticsService? _analyticsService;
 
   NodeStateManager? _stateManager;
   StreamSubscription<IsolateStateMessage>? _stateSubscription;
@@ -159,8 +156,7 @@ class NodeProvider extends ChangeNotifier {
     this._networkType,
     this._connectivityProvider,
     this._walletLoadStateNotifier,
-    this._walletItemListNotifier,
-    this._analyticsService, {
+    this._walletItemListNotifier, {
     IsolateManager? isolateManager,
   }) : _isolateManager = isolateManager ?? IsolateManager() {
     Logger.log('NodeProvider: initialized with $host:$port, ssl=$ssl, networkType=$_networkType');
@@ -262,8 +258,6 @@ class NodeProvider extends ChangeNotifier {
           if (result.isFailure) {
             Logger.error('NodeProvider: [${wallet.name}] 지갑 구독 실패: ${result.error}');
             _stateManager?.setNodeSyncStateToFailed();
-          } else {
-            _analyticsService?.logEvent(eventName: AnalyticsEventNames.walletAddSyncCompleted);
           }
         });
       }

@@ -1,21 +1,18 @@
-import 'dart:io';
-
-import 'package:coconut_wallet/services/model/response/recommended_fee.dart';
+import 'package:hotconut_wallet/services/model/response/recommended_fee.dart';
 import 'package:dio/dio.dart';
-import 'package:coconut_wallet/app.dart';
-import 'package:coconut_wallet/constants/network_constants.dart';
-import 'package:coconut_wallet/services/model/request/faucet_request.dart';
-import 'package:coconut_wallet/services/model/error/default_error_response.dart';
-import 'package:coconut_wallet/services/model/response/faucet_response.dart';
-import 'package:coconut_wallet/services/model/response/faucet_status_response.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/services/model/response/app_version_response.dart';
+import 'package:hotconut_wallet/app.dart';
+import 'package:hotconut_wallet/constants/network_constants.dart';
+import 'package:hotconut_wallet/services/model/request/faucet_request.dart';
+import 'package:hotconut_wallet/services/model/error/default_error_response.dart';
+import 'package:hotconut_wallet/services/model/response/faucet_response.dart';
+import 'package:hotconut_wallet/services/model/response/faucet_status_response.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 
 class DioClient {
   DioClient()
     : _dio = Dio(
         BaseOptions(
-          baseUrl: CoconutWalletApp.kFaucetHost,
+          baseUrl: HotconutWalletApp.kFaucetHost,
           connectTimeout: kHttpConnectionTimeout,
           receiveTimeout: kHttpReceiveTimeout,
           responseType: ResponseType.json,
@@ -50,23 +47,6 @@ class DioClient {
   Future<FaucetStatusResponse> getFaucetStatus() async {
     final response = await _dio.get('/faucet/status');
     return FaucetStatusResponse.fromJson(response.data);
-  }
-
-  Future<dynamic> getLatestAppVersion() async {
-    try {
-      String apiUrl = '';
-      if (Platform.isAndroid) {
-        apiUrl = '/app/latest-version/android';
-      } else if (Platform.isIOS) {
-        apiUrl = '/app/latest-version/ios';
-      }
-
-      final response = await _dio.get(apiUrl);
-      return AppVersionResponse.fromString(response.data);
-    } catch (e) {
-      Logger.log("[ERROR] : $e");
-      throw e.toString();
-    }
   }
 
   Future<RecommendedFee> getRecommendedFee() async {

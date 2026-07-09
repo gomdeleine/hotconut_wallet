@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/repository/realm/model/coconut_wallet_model.dart';
-import 'package:coconut_wallet/repository/realm/realm_manager.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/repository/realm/model/hotconut_wallet_model.dart';
+import 'package:hotconut_wallet/repository/realm/realm_manager.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:realm/realm.dart';
 import 'dart:convert';
 

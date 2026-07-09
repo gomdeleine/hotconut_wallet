@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:coconut_wallet/constants/isolate_constants.dart';
-import 'package:coconut_wallet/constants/network_constants.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/services/network/socket/socket_factory.dart';
-import 'package:coconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/constants/isolate_constants.dart';
+import 'package:hotconut_wallet/constants/network_constants.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/services/network/socket/socket_factory.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
 import 'package:flutter/services.dart';
 
 class SocketManager {

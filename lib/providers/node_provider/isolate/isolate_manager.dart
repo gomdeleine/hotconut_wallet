@@ -2,21 +2,21 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:coconut_lib/coconut_lib.dart';
-import 'package:coconut_wallet/constants/isolate_constants.dart';
-import 'package:coconut_wallet/enums/network_enums.dart';
-import 'package:coconut_wallet/model/error/app_error.dart';
-import 'package:coconut_wallet/model/wallet/transaction_record.dart';
-import 'package:coconut_wallet/model/wallet/wallet_list_item_base.dart';
-import 'package:coconut_wallet/providers/node_provider/isolate/isolate_enum.dart';
-import 'package:coconut_wallet/providers/node_provider/isolate/isolate_initializer.dart';
-import 'package:coconut_wallet/model/node/isolate_state_message.dart';
-import 'package:coconut_wallet/services/electrum_service.dart';
-import 'package:coconut_wallet/model/node/spawn_isolate_dto.dart';
-import 'package:coconut_wallet/services/model/response/block_timestamp.dart';
-import 'package:coconut_wallet/services/model/response/recommended_fee.dart';
-import 'package:coconut_wallet/utils/file_logger.dart';
-import 'package:coconut_wallet/utils/logger.dart';
-import 'package:coconut_wallet/utils/result.dart';
+import 'package:hotconut_wallet/constants/isolate_constants.dart';
+import 'package:hotconut_wallet/enums/network_enums.dart';
+import 'package:hotconut_wallet/model/error/app_error.dart';
+import 'package:hotconut_wallet/model/wallet/transaction_record.dart';
+import 'package:hotconut_wallet/model/wallet/wallet_list_item_base.dart';
+import 'package:hotconut_wallet/providers/node_provider/isolate/isolate_enum.dart';
+import 'package:hotconut_wallet/providers/node_provider/isolate/isolate_initializer.dart';
+import 'package:hotconut_wallet/model/node/isolate_state_message.dart';
+import 'package:hotconut_wallet/services/electrum_service.dart';
+import 'package:hotconut_wallet/model/node/spawn_isolate_dto.dart';
+import 'package:hotconut_wallet/services/model/response/block_timestamp.dart';
+import 'package:hotconut_wallet/services/model/response/recommended_fee.dart';
+import 'package:hotconut_wallet/utils/file_logger.dart';
+import 'package:hotconut_wallet/utils/logger.dart';
+import 'package:hotconut_wallet/utils/result.dart';
 
 class IsolateManager {
   Isolate? _isolate;

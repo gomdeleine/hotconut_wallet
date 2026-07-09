@@ -1,6 +1,6 @@
-import 'package:coconut_wallet/enums/wallet_enums.dart';
-import 'package:coconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
-import 'package:coconut_wallet/model/wallet/taproot_wallet_list_item.dart';
+import 'package:hotconut_wallet/enums/wallet_enums.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_script_path_seed_info.dart';
+import 'package:hotconut_wallet/model/wallet/taproot_wallet_list_item.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

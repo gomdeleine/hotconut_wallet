@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:coconut_wallet/providers/preferences/block_explorer_provider.dart';
+import 'package:hotconut_wallet/providers/preferences/block_explorer_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:coconut_wallet/utils/url_normalize_util.dart';
+import 'package:hotconut_wallet/utils/url_normalize_util.dart';
 
 enum ExplorerConnectionStatus { none, connecting, connected, failed }
 
