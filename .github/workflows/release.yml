@@ -38,17 +38,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Flutter (FVM)
-        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          path: .fvmrc
+          flutter-version-file: .fvmrc
           cache: true
 
       - name: Install dependencies
-        run: fvm flutter pub get
+        run: flutter pub get
 
       - name: Code generation
-        run: make ready
+        run: make ready DART_BIN="dart" FLUTTER_BIN="flutter"
 
       - name: Package generated code
         run: |
@@ -92,10 +92,10 @@ jobs:
           yes | sdkmanager --licenses >/dev/null 2>&1 || true
           sdkmanager "platforms;android-36" "build-tools;35.0.0"
 
-      - name: Setup Flutter (FVM)
-        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          path: .fvmrc
+          flutter-version-file: .fvmrc
           cache: true
 
       - name: Download prepare artifacts
@@ -107,7 +107,7 @@ jobs:
         run: tar xzf generated-code.tar.gz
 
       - name: Install dependencies
-        run: fvm flutter pub get
+        run: flutter pub get
 
       - name: Build APK
         run: |
@@ -127,7 +127,7 @@ jobs:
             BUILD_ARGS+=(--dart-define=USE_FIREBASE=true)
           fi
 
-          fvm flutter "${BUILD_ARGS[@]}"
+          flutter "${BUILD_ARGS[@]}"
 
       - name: Rename APK
         run: |
